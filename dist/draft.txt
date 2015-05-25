@@ -1,0 +1,1848 @@
+
+
+
+
+Network Working Group                                          D. Oakley
+Internet-Draft
+Obsoletes: 1459, 2810, 2811, 2812 (if                         J. Allnutt
+           approved)                                            Kiwi IRC
+Intended status: Informational                              May 25, 2015
+Expires: November 26, 2015
+
+
+                 Internet Relay Chat Protocol version 3
+                       draft-oakley-ircv3-latest
+
+Abstract
+
+   This document describes version 3 of the Internet Relay Chat (IRC)
+   protocol.  The IRC protocol has grown over many years to suite many
+   different needs, using many different software packages.  This
+   document describes the behaviour of IRC as it is used today, how to
+   add new features without breaking compatibility with older clients,
+   and to provide a much-needed update to the original RFCs.
+
+   This document obseletes RFCs 1459, 2810, 2811, and 2812.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at http://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on November 26, 2015.
+
+Copyright Notice
+
+   Copyright (c) 2015 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+
+
+
+Oakley & Allnutt        Expires November 26, 2015               [Page 1]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
+     1.1.  Servers . . . . . . . . . . . . . . . . . . . . . . . . .   4
+     1.2.  Clients . . . . . . . . . . . . . . . . . . . . . . . . .   4
+       1.2.1.  Operators . . . . . . . . . . . . . . . . . . . . . .   5
+     1.3.  Channels  . . . . . . . . . . . . . . . . . . . . . . . .   5
+       1.3.1.  Channel Operators . . . . . . . . . . . . . . . . . .   6
+   2.  IRC Concepts  . . . . . . . . . . . . . . . . . . . . . . . .   7
+     2.1.  One-to-one communication  . . . . . . . . . . . . . . . .   7
+   3.  Protocol Structure  . . . . . . . . . . . . . . . . . . . . .   7
+     3.1.  Overview  . . . . . . . . . . . . . . . . . . . . . . . .   7
+       3.1.1.  Character Codes . . . . . . . . . . . . . . . . . . .   7
+     3.2.  Messages  . . . . . . . . . . . . . . . . . . . . . . . .   8
+       3.2.1.  Tags  . . . . . . . . . . . . . . . . . . . . . . . .   8
+       3.2.2.  Message Prefix  . . . . . . . . . . . . . . . . . . .   9
+       3.2.3.  Command . . . . . . . . . . . . . . . . . . . . . . .   9
+     3.3.  Wire Format . . . . . . . . . . . . . . . . . . . . . . .   9
+       3.3.1.  Wire format in 'pseudo' ABNF  . . . . . . . . . . . .  10
+   4.  Connection Registration . . . . . . . . . . . . . . . . . . .  11
+     4.1.  Feature Advertisement . . . . . . . . . . . . . . . . . .  11
+     4.2.  Capability Negotiation  . . . . . . . . . . . . . . . . .  13
+   5.  Client commands . . . . . . . . . . . . . . . . . . . . . . .  14
+     5.1.  Connection commands . . . . . . . . . . . . . . . . . . .  14
+       5.1.1.  Password command  . . . . . . . . . . . . . . . . . .  14
+       5.1.2.  Nick command  . . . . . . . . . . . . . . . . . . . .  14
+       5.1.3.  User command  . . . . . . . . . . . . . . . . . . . .  15
+       5.1.4.  CAP command . . . . . . . . . . . . . . . . . . . . .  16
+       5.1.5.  CAP subcommands . . . . . . . . . . . . . . . . . . .  17
+     5.2.  Server Queries and Commands . . . . . . . . . . . . . . .  19
+       5.2.1.  VERSION command . . . . . . . . . . . . . . . . . . .  19
+       5.2.2.  CONNECT command . . . . . . . . . . . . . . . . . . .  19
+       5.2.3.  TIME command  . . . . . . . . . . . . . . . . . . . .  20
+       5.2.4.  STATS command . . . . . . . . . . . . . . . . . . . .  20
+   6.  Temporary headers so references to unwritten sections work  .  22
+     6.1.  Kill Command  . . . . . . . . . . . . . . . . . . . . . .  22
+     6.2.  Mode Command  . . . . . . . . . . . . . . . . . . . . . .  22
+     6.3.  Channel Prefix  . . . . . . . . . . . . . . . . . . . . .  22
+     6.4.  Feature Advertisement Appendix  . . . . . . . . . . . . .  22
+     6.5.  Notice Command  . . . . . . . . . . . . . . . . . . . . .  22
+     6.6.  Privmsg Command . . . . . . . . . . . . . . . . . . . . .  22
+     6.7.  User Command  . . . . . . . . . . . . . . . . . . . . . .  22
+
+
+
+Oakley & Allnutt        Expires November 26, 2015               [Page 2]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+     6.8.  Squit Command . . . . . . . . . . . . . . . . . . . . . .  22
+     6.9.  Message Tags  . . . . . . . . . . . . . . . . . . . . . .  22
+     6.10. Channel Bans and Exceptions . . . . . . . . . . . . . . .  22
+     6.11. Channel Invitation  . . . . . . . . . . . . . . . . . . .  22
+     6.12. Sending Messages  . . . . . . . . . . . . . . . . . . . .  22
+     6.13. Topic Command . . . . . . . . . . . . . . . . . . . . . .  22
+     6.14. ISON Command  . . . . . . . . . . . . . . . . . . . . . .  22
+   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  22
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  22
+     8.1.  Informative References  . . . . . . . . . . . . . . . . .  22
+     8.2.  Normative References  . . . . . . . . . . . . . . . . . .  23
+   Appendix A.  RPL_ISUPPORT Parameters  . . . . . . . . . . . . . .  23
+     A.1.  CLIENTVER . . . . . . . . . . . . . . . . . . . . . . . .  23
+     A.2.  CASEMAPPING . . . . . . . . . . . . . . . . . . . . . . .  23
+     A.3.  CHANLIMIT . . . . . . . . . . . . . . . . . . . . . . . .  24
+     A.4.  CHANMODES . . . . . . . . . . . . . . . . . . . . . . . .  24
+     A.5.  CHANNELLEN  . . . . . . . . . . . . . . . . . . . . . . .  25
+     A.6.  CHANTYPES . . . . . . . . . . . . . . . . . . . . . . . .  26
+     A.7.  CNOTICE . . . . . . . . . . . . . . . . . . . . . . . . .  26
+     A.8.  CPRIVMSG  . . . . . . . . . . . . . . . . . . . . . . . .  26
+     A.9.  ELIST . . . . . . . . . . . . . . . . . . . . . . . . . .  27
+     A.10. EXCEPTS . . . . . . . . . . . . . . . . . . . . . . . . .  27
+     A.11. INVEX . . . . . . . . . . . . . . . . . . . . . . . . . .  28
+     A.12. MAXLIST . . . . . . . . . . . . . . . . . . . . . . . . .  28
+     A.13. MODES . . . . . . . . . . . . . . . . . . . . . . . . . .  28
+     A.14. NETWORK . . . . . . . . . . . . . . . . . . . . . . . . .  29
+     A.15. NICKLEN . . . . . . . . . . . . . . . . . . . . . . . . .  29
+     A.16. PREFIX  . . . . . . . . . . . . . . . . . . . . . . . . .  30
+     A.17. SAFELIST  . . . . . . . . . . . . . . . . . . . . . . . .  30
+     A.18. SILENCE . . . . . . . . . . . . . . . . . . . . . . . . .  30
+     A.19. STATUSMSG . . . . . . . . . . . . . . . . . . . . . . . .  31
+     A.20. TARGMAX . . . . . . . . . . . . . . . . . . . . . . . . .  31
+     A.21. TOPICLEN  . . . . . . . . . . . . . . . . . . . . . . . .  32
+     A.22. WATCH . . . . . . . . . . . . . . . . . . . . . . . . . .  32
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  33
+
+1.  Introduction
+
+   The Internet Relay Chat (IRC) protocol has been designed and
+   implemented over a number of years, with multitudes of
+   implementations and use cases appearing.  This document describes
+   version 3 of the IRC protocol.
+
+   IRC is a text-based teleconferencing system, which has proven itself
+   as a very valuable and useful protocol.  It is well-suited to running
+   on many machines in a distributed fashion.  A typical setup involves
+   multiple servers connected in a distributed network, through which
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015               [Page 3]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   messages are delivered and state is maintained across the network for
+   the connected clients and active channels.
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+1.1.  Servers
+
+   Servers form the backbone of IRC, providing a point to which clients
+   may connect and talk to each other, and a point for other servers to
+   connect to, forming an IRC network.
+
+   The most common network configuration for IRC servers is that of a
+   spanning tree [see Figure 1], where each server acts as a central
+   node for the rest of the net it sees.
+
+                              [ Server 15 ]  [ Server 13 ] [ Server 14]
+                                    /                \         /
+                                   /                  \       /
+           [ Server 11 ] ------ [ Server 1 ]       [ Server 12]
+                                 /        \          /
+                                /          \        /
+                     [ Server 2 ]          [ Server 3 ]
+                       /       \                      \
+                      /         \                      \
+              [ Server 4 ]    [ Server 5 ]         [ Server 6 ]
+               /    |    \                           /
+              /     |     \                         /
+             /      |      \____                   /
+            /       |           \                 /
+    [ Server 7 ] [ Server 8 ] [ Server 9 ]   [ Server 10 ]
+
+                                     :
+                                  [ etc. ]
+                                     :
+
+                Figure 1: Format of a typical IRC network.
+
+1.2.  Clients
+
+   A client is anything connecting to a server that is not another
+   server.  Each client is distinguished from other clients by a unique
+   nickname.  See the protocol grammar rules for what may and may not be
+   used in a nickname.  In addition to the nickname, all servers must
+   have the following information about all clients: The real name of
+   the host that the client is running on, the username of the client on
+   that host, and the server to which the client is connected.
+
+
+
+Oakley & Allnutt        Expires November 26, 2015               [Page 4]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+1.2.1.  Operators
+
+   To allow a reasonable amount of order to be kept within the IRC
+   network, a special class of clients (operators) are allowed to
+   perform general maintenance functions on the network.  Although the
+   powers granted to an operator can be considered as 'dangerous', they
+   are nonetheless required.
+
+   Operators should be able to to perform basic networking tasks such as
+   disconnecting and reconnecting servers as needed to prevent long-term
+   use of bad network routing.  See Section 6.8 (SQUIT) and
+   Section 5.2.2 (CONNECT).
+
+   A more controversial power of operators is the ability to remove a
+   user from the connected network by 'force', i.e. operators are able
+   to close the connection between a client and server.  The
+   justification for this is delicate since its abuse is both
+   destructive and annoying.  For further details on this action, see
+   Section 6.1 (KILL).
+
+1.3.  Channels
+
+   A channel is a named group of one or more clients which will all
+   receive messages addressed to that channel.  The channel is created
+   implicitly when the first client joins it, and the channel ceases to
+   exist when the last client leaves is.  While the channel exists, any
+   client can reference the channel using the name of the channel.
+
+   Channel names are strings (beginning with a '&' or '#' character).,
+   Apart from the requirement of the first character being either '&' or
+   '#'; the only restriction on a channel name is that it may not
+   contain any spaces (' '), a control G (^G or ASCII 7), or a comma
+   (',' which is used as a list item separator by the protocol).
+
+   There are two types of channels defined by this protocol.  One is a
+   distributed channel which is known to all the servers that are
+   connected to the network.  These channels are marked by the first
+   character being a '#'.  The second type are server-specific channels,
+   where the clients connected can only see and talk to other clients on
+   the same server.  These channels are distinguished by the first
+   character being a '&'.
+
+   On top of these two types, there are various channel modes available
+   to alter the characteristics of individual channels.  See Section 6.2
+   (MODE command) for more details on this.
+
+   To create a new channel of become part of an existing channel, a user
+   is required to JOIN the channel.  If the channel doesn't exist prior
+
+
+
+Oakley & Allnutt        Expires November 26, 2015               [Page 5]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   to joining, the channel is created and the creating user becomes a
+   channel operator.  If the channel already exists, whether or not your
+   request to JOIN that channel is honoured depends on the current modes
+   of the channel.  For example, if the channel is invite-only, (+i),
+   then you may only join if invited.  As part of the protocol, a user
+   may be a part of several channels at once, but a limit may be imposed
+   as to how many channels a user can be in at one time.  This limit is
+   specified the CHANLIMIT RPL_ISUPPORT token.  See Section 4.1
+   (RPL_ISUPPORT) and Appendix A.3 (CHANLIMIT) for more details on this.
+
+   If the IRC network becomes disjoint because of a split between
+   servers, the channel on either side is only composed of those clients
+   which are connected to servers on the respective sides of the split,
+   possibly ceasing to exist on one side of the split.  When the split
+   is healed, the connecting servers ensure the network state is
+   consistent between them.
+
+1.3.1.  Channel Operators
+
+   Channel operators (also referred to as a "chop" or "chanop") on a
+   given channel are considered to 'own' that channel.  In recognition
+   of this status, channel operators are endowed with certain powers
+   which enable them to keep control and some sort of sanity in their
+   channel.
+
+   As owners of a channel, channel operators are not required to have
+   reasons for their actions, although if their actions are abusive, it
+   may be reasonable to ask an IRC operator to intervene, or for the
+   users to go elsewhere and form their own channel.
+
+   The commands which may only be used by channel operators are:
+
+   o  KICK - Eject a client from the channel
+
+   o  MODE - Change the channel's modes
+
+   o  INVITE - Invite a client to an invite-only channel (mode +i)
+
+   o  TOPIC - Change the channel topic in a mode +t channel
+
+   A channel operator is identified by the '@' symbol next to their
+   nickname whenever it is associated with a channel (ie replies to the
+   NAMES, WHO and WHOIS commands).
+
+
+
+
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015               [Page 6]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+2.  IRC Concepts
+
+   This section is devoted to describing the concepts behind the
+   organisation of the IRC protocol and how the current implementations
+   deliver different classes of messages.
+
+                                     1--\
+                                         A        D---4
+                                     2--/ \      /
+                                           B----C
+                                          /      \
+                                         3        E
+
+              Servers: A, B, C, D, E         Clients: 1, 2, 3, 4
+
+                    Figure 2: Sample small IRC network.
+
+2.1.  One-to-one communication
+
+   Communication on a one-to-one basis is usually only performed by
+   clients, since most server-server traffic is not a result of servers
+   talking only to each other.
+
+3.  Protocol Structure
+
+3.1.  Overview
+
+   The protocol as described herein is for use with client to server
+   connections.
+
+   Various server to server protocols have been defined over the years,
+   with TS6 and P10 (both based on the client to server protocol) among
+   the most popular.  However, with the fragmented nature of IRC server
+   to server protocols and differences in server implementations,
+   features and network designs, it is at this point impossible to
+   define a single standard server to server protocol.
+
+3.1.1.  Character Codes
+
+   It is strongly RECOMMENDED that IRC servers and clients use the UTF-8
+   [RFC3629] character encoding, however implementations MAY use an
+   alternative 8-bit character encoding for backwards compatibility or
+   historical reasons.
+
+   For historical reasons, the characters '{', '}', and '|' are
+   considered to be the lower case equivalents of the characters '[',
+   ']', and '', respectively.  This is a critical issue when determining
+   the equivalence of two nicknames.
+
+
+
+Oakley & Allnutt        Expires November 26, 2015               [Page 7]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   If the IRC server uses a character encoding other than UTF-8 or a
+   casemapping other than the one specified in this section, it MUST
+   include such information in the RPL_ISUPPORT numeric sent on
+   completion of client registration, as set out in Appendix A.
+
+3.2.  Messages
+
+   Servers and clients send each other messages which may or may not
+   generate a reply; client to server communication is essentially
+   asynchronous in nature.
+
+   Each IRC message may consist of up to four main parts: tags
+   (optional), the prefix (optional), the command, and the command
+   parameters (of which there may be up to 15).
+
+3.2.1.  Tags
+
+   Tags are additional and optional metadata included with relevant
+   messages.
+
+   Every message tag is enabled by a capacity (as outlined in
+   Section 4.2).  One capability may enable several tags is those tags
+   are intended to be used together.
+
+   Each tag may have its own rules about how it can be used: from client
+   to server only, from server to client only, or in both directions.
+
+   The server MUST NOT add a tag to a message if the client has not
+   requested the capability which enables the tag.  The server MUST NOT
+   add a tag to a message before replying to a client's CAP REQ with CAP
+   ACK.  If a client requests a capability which enables one or more
+   message tags, that client MUST be able to parse the message tags
+   syntax.
+
+   Similarly, the client MUST NOT add a tag to messages before the
+   server replies to the client's CAP REQ with CAP ACK.  If the server
+   accepts the capability request with CAP ACK, the server MUST be able
+   to parse the message tags syntax.
+
+   Both clients and servers MAY parse supplied tags without any
+   capabilities being enabled on the connection.  They SHOULD ignore the
+   tags of capabilities which are not enabled.
+
+   The rules for naming and registering tags are detailed in Section 6.9
+
+
+
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015               [Page 8]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+3.2.2.  Message Prefix
+
+   The prefix is used by servers to indicate the true origin of a
+   message.  If the prefix is missing from the message, it is assumed to
+   have originated from the connection from which it was received.
+
+   Clients SHOULD NOT use a prefix when sending a message from
+   themselves; if they use a prefix, the only valid prefix is the
+   registered nickname associated with the client.  If the source
+   identified by the prefix cannot be found in the server's internal
+   database, or if the source is registered from a different link than
+   from which the message arrived, the server MUST ignore the message
+   silently.
+
+3.2.3.  Command
+
+   The command must either be a valid IRC command or a three-digit
+   number represented as text.
+
+3.3.  Wire Format
+
+   The protocol messages are extracted from a contiguous stream of
+   octets.  A pair of characters, CR (0x13) and LF (0x10), act as
+   message separators.  Empty messages are silently ignored, which
+   permits use of the sequence CR-LF between messages.
+
+   The tags, prefix, command, and all parameters are separated by one
+   (or more) ASCII space character(s) (0x20).
+
+   The presense of tags is indicated with a single leading character
+   ('@', 0x40), which MUST be the first character of the message itself.
+   There MUST NOT be any whitespace between this leading character and
+   the list of tags.
+
+   The presence of a prefix is indicated with a single leading colon
+   character (':', 0x3b).  If there are no tags it MUST be the first
+   character of the message itself.  There MUST NOT be any whitespace
+   between this leading character and the prefix
+
+   IRC messages shall not exceed 1024 bytes in length, counting all
+   characters including the trailing CR-LF.  There are a maximum of 512
+   bytes allocated for message tags, including the leading '@' and
+   trailing space.  There are 510 bytes maximum allowed for the command
+   and its parameters.  There is no provision for continuation message
+   lines.
+
+
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015               [Page 9]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+3.3.1.  Wire format in 'pseudo' ABNF
+
+   The extracted message is parsed into the components "tags", "prefix",
+   "command", and a list of parameters ("params").
+
+   The ABNF representation for this is:
+
+     message    =  ["@" tags SPACE ] [ ":" prefix SPACE ] command
+                   [ params ] crlf
+     tags       =  tag *[";" tag]
+     tag        =  key ["=" value]
+     key        =  [ <vendor> '/' ] <sequence of letters, digits,
+                   hyphens (`-`)>
+     value      =  <sequence of any characters except NUL, BELL,
+                   CR, LF, semicolon (`;`) and SPACE>
+     vendor     =  hostname
+     prefix     =  servername / ( nickname [ [ "!" user ] "@" host ] )
+     command    =  1*letter / 3digit
+     params     =  *13( SPACE middle ) [ SPACE ":" trailing ]
+                =/ 14( SPACE middle ) [ SPACE [ ":" ] trailing ]
+
+     nospcrlfcl =  %x01-09 / %x0B-0C / %x0E-1F / %x21-39 / %x3B-FF
+                     ; any octet except NUL, CR, LF, " " and ":"
+     middle     =  nospcrlfcl *( ":" / nospcrlfcl )
+     trailing   =  *( ":" / " " / nospcrlfcl )
+
+     SPACE      =  %x20        ; space character
+     crlf       =  %x0D %x0A   ; "carriage return" "linefeed"
+
+   NOTES:
+
+   1.  After extracting the parameter list, all parameters are equal,
+       whether matched by <middle> or <trailing>. <trailing> is just a
+       syntactic trick to allow ASCII SPACE characters within a
+       parameter.
+
+   2.  The NUL (%x00) character is not special in message framing, but
+       as it would cause extra complexities in traditional C string
+       handling, it is not allowed within messages.
+
+   3.  The last parameter may be an empty string.
+
+   4.  Use of the extended prefix (['!' <user> ] ['@' <host> ]) is only
+       intended for server to client messages in order to provide
+       clients with more useful information about who a message is from
+       without the need for additional queries.
+
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 10]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   Most protocol messages specify additional semantics and syntax for
+   the extracted parameter strings dictated by their position in the
+   list.  For example, many server commands will assume that the first
+   parameter after the command is a list of targets.
+
+4.  Connection Registration
+
+   Immediately upon establishing a connection the client must attempt
+   registration without waiting for any banner message from the server.
+
+   Until registration is complete, only a limited subset of commands may
+   be accepted by the server.
+
+   The recommended order of commands during registration is as follows:
+
+   1.  PASS
+
+   2.  CAP
+
+   3.  NICK
+
+   4.  USER
+
+   The PASS command (see Section 5.1.1) is not required for the
+   connection to be registered, but if included it MUST precede the
+   latter of the NICK and USER commands.
+
+   If the server supports capability negotiation, the CAP command (see
+   Section 5.1.4) suspends the registration process and immediately
+   starts the capability negotiation (see Section 4.2) process.
+
+   The NICK and USER commands (see Section 5.1.2 and Section 5.1.3,
+   respectively) are used to identify the user's nickname, username and
+   "real name".  Unless the registration is suspended by a CAP
+   negotiation, these commands will end the registration process.
+
+   Upon successful completion of the registration process, the server
+   MUST send the RPL_WELCOME (001) and RPL_ISUPPORT (005) numerics.  The
+   server SHOULD also send the Message of the Day (MOTD), if one exists,
+   and MAY send other numerics.
+
+4.1.  Feature Advertisement
+
+   IRC server and networks implement many different IRC features,
+   limits, and protocol options that clients should be aware of.  The
+   RPL_ISUPPORT (005) numeric is designed to advertise these features to
+   clients on connection registration, providing a simple way for
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 11]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   clients to change their behaviour according to what is implemented on
+   the server.
+
+   Once client registration is complete, the server MUST send at least
+   one RPL_ISUPPORT numeric to the client.  The server MAY send more
+   than one RPL_ISUPPORT numeric and it is RECOMMENDED that consecutive
+   RPL_ISUPPORT numerics are sent adjacent to each other.
+
+   Clients SHOULD NOT assume a server supports a feature unless it has
+   been advertised in RPL_ISUPPORT.  For RPL_ISUPPORT parameters which
+   specify a 'default' value, clients SHOULD assume the default value
+   for these parameters until the server advertises these parameters
+   itself.  This is generally done for compatibility reasons with older
+   versions of the IRC protocol that do not require the RPL_ISUPPORT
+   numeric.
+
+   The ABNF representation for this is:
+
+     isupport   =  [ ":" servername SPACE ] "005" SPACE nick SPACE
+                   1*13( token SPACE ) ":are supported by this server"
+
+     token      =  *1"-" parameter / parameter *1( "=" value )
+     parameter  =  1*20 letter
+     value      =  * letpun
+     letter     =  ALPHA / DIGIT
+     punct      =  %d33-47 / %d58-64 / %d91-96 / %d123-126
+     letpun     =  letter / punct
+
+     SPACE      =  %x20        ; space character
+
+   <servername> and <nick> are as specified above.
+
+   As with other local numerics, when RPL_ISUPPORT is delivered
+   remotely, it MUST be converted into a "105" numeric before delivery
+   to the client.
+
+   A token is of the form "-PARAMETER", "PARAMETER", or
+   "PARAMETER=VALUE".  A server MAY send an empty value feild and a
+   parameter MAY have a default value.  A server MUST send the parameter
+   as upper-case text.  Unless otherwise stated, when a parameter
+   contains a value, the value MUST be treated as being case sensitive.
+   The value MAY contain multiple fields, if this is the case the fields
+   MUST be delimited with a comma character (",").
+
+   It is possible for the status of features previously advertised to
+   clients can change.  When this happens, a server SHOULD reissue the
+   RPL_ISUPPORT numeric with the relevant parameters that have changed.
+   If a feature becomes unavailable, the server MUST prefix the
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 12]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   parameter with the dash character ('-') when issuing the updated
+   RPL_ISUPPORT.
+
+   As the maximum number of parameters to any reply is 15, the maximum
+   number of RPL_ISUPPORT tokens that can be advertised is 13.  To
+   counter this, a server MAY issue multiple RPL_ISUPPORT numerics.  A
+   server MUST issue the RPL_ISUPPORT numeric after client registration
+   has completed.  It also MUST be issued after the RPL_WELCOME (001)
+   numeric and MUST be issued before further commands from the client
+   are processed.
+
+   A list of known RPL_ISUPPORT parameters is available in Appendix A.
+
+4.2.  Capability Negotiation
+
+   Over the years, various extensions to the IRC protocol have been made
+   by server programmers.  Often, these extensions are intended to
+   conserve bandwidth, close loopholes left by the original protocol
+   specification, or add new features for users or for the server
+   administrators.  Most of these changes are backwards-compatible with
+   the base protocol specifications: A command may be added, a reply may
+   be extended to contain more parameters, etc.  However, there are
+   extensions which may be designed to change protocol behaviour in a
+   backwards-incompatible way.
+
+   Capability Negotiation is a mechanism for the negotiation of protocol
+   extensions, known as *capabilities*, that is backwards-compatible
+   with all existing IRC clients and servers (including those using
+   earlier versions of the IRC protocol).  While all servers
+   implementing IRCv3 support capability negotiation, it is important
+   for clients implementing IRCv3 to support servers using earlier
+   protocol versions, and for servers implementing IRCv3 connecting to
+   clients without support.
+
+   Any server not implementing capability negotiation will still
+   interoperate with clients that do implement it; similarly, clients
+   that do not implement capability negotiation may successfully
+   communicate with a server that does implement it.
+
+   IRC is an asynchronous protocol, which means that clients may issue
+   additional IRC commands while previous commands are being processed.
+   Additionally, there is no guarantee of a specific kind of banner
+   being issues upon connection.  Some servers also do not complain
+   about unknown commands during registration, which means that a client
+   cannot reliably do passive implementation discovery at registration
+   time.
+
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 13]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   The solution to these problems is to allow for active capability
+   negotiation, and to extend the registration process with this
+   negotiation.  If the server support capability negotiation, the
+   registration process will be suspended until negotiation is
+   completed.  If the server does not support this feature, then
+   registration will complete immediately and the client will not use
+   any capabilities.
+
+   Capability negotiation is started by the client issuing a "CAP LS"
+   command.  Negotiation is then performed with the "CAP REQ", "CAP
+   ACK", and "CAP NAK" commands, and is ended with the "CAP END" command
+   (See Section 5.1.4).
+
+   Once capability negotiation has ended, the registration process shall
+   resume.
+
+5.  Client commands
+
+5.1.  Connection commands
+
+5.1.1.  Password command
+
+        Command: PASS
+     Parameters: <password>
+
+   The PASS command is used to set a 'connection password'.  The
+   password can and must be set before any attempt to register the
+   connection is made.  This requires that clients send a PASS command
+   before sending the CAP/NICK/USER combination.
+
+   The password supplied must match the one contained in I lines.  It is
+   possible to send multiple PASS commands before registering but only
+   the last one sent is used for verification and it may not be changed
+   once registered.
+
+   Numeric replies:
+
+              ERR_NEEDMOREPARAMS              ERR_ALREADYREGISTRED
+
+   Example:
+
+     PASS secretpasswordhere
+
+5.1.2.  Nick command
+
+        Command: NICK
+     Parameters: <nickname>
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 14]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   The NICK command is used to give the client a nickname or change the
+   previous one.
+
+   If the server receives a NICK command from a client with a
+   "<nickname>" which is already in use on the network, it may issue an
+   ERR_NICKCOLLISION to the client and ignore the NICK command.
+
+   Numeric Replies:
+
+              ERR_NONICKNAMEGIVEN             ERR_ERRONEUSNICKNAME
+              ERR_NICKNAMEINUSE               ERR_NICKCOLLISION
+
+   Example:
+
+     NICK Wiz                  ; Introducing the new nick "Wiz".
+
+     :WiZ NICK Kilroy          ; WiZ changed his nickname to Kilroy.
+
+5.1.3.  User command
+
+        Command: USER
+     Parameters: <username> <hostname> <servername> <realname>
+
+   The USER command is used at the beginning of a connection to specify
+   the username, hostname, servername and realname of a new user.
+
+   It must be noted that "<realname>" must be the last parameter,
+   because it may contain space characters and must be prefixed with a
+   colon (":") to make sure this is recognised as such.
+
+   Since it is easy for a client to lie about its username by relying
+   solely on the USER command, the use of an "Identity Server" is
+   recommended.  If the host which a user connects from has such a
+   server enabled, the username is set to that as in the reply from the
+   "Identity Server".  If the host does not have such a server enabled,
+   the username is set to the value of the "<username>" parameter,
+   prefixed by a tilde ("~") to show that this value is user-set.
+
+   Numeric Replies:
+
+                ERR_NEEDMOREPARAMS              ERR_ALREADYREGISTRED
+
+   Examples:
+
+
+
+
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 15]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+     USER guest tolmoon tolsun :Ronnie Reagan
+                                 ; No ident server
+                                 ; User gets registered with username
+                                 "~guest" and real name "Ronnie Reagan"
+
+     USER guest tolmoon tolsun :Ronnie Reagan
+                                 ; Ident server gets contacted and
+                                 returns the name "danp"
+                                 ; User gets registered with username
+                                 "danp" and real name "Ronnie Reagan"
+
+5.1.4.  CAP command
+
+   The CAP command takes a single required subcommand, optionally
+   followed by a single parameter of space-separated capability
+   identifiers.  Each capability in the list MAY be preceded by a
+   capability modifier (see Section 5.1.4.1).
+
+   The subcommands for CAP are: LS, LIST, REQ, ACK, NAK, and END (see
+   Section 5.1.5).
+
+   The LS, LIST, REQ, ACK and NAK subcommands MAY be followed by a
+   single parameter containing a space-separated list of capabilities.
+
+   If more than one capability is named, the designated sentinal (":")
+   for a multi-parameter argument MUST be present.
+
+   If a client sends a subcommand which is not in the list above or
+   otherwise issues an invalid command, then ERR_INVALIDCAPCMD (numeric
+   410) MUST be sent.  The first parameter after the client identifier
+   (usually nickname) MUST be the command name; the second parameter
+   SHOULD be a human-readable description of the error.
+
+   Replies from the server must contain the client identifier name or an
+   asterisk ("*") if one is not yet available.
+
+5.1.4.1.  Capability Modifiers
+
+   There are three capability modifiers specified by this document.  If
+   a capability modifier is to be used, it MUST directly proceede the
+   capability identifier.
+
+   The capability modifiers are:
+
+   o  "-" modifier (disable): this modifier indicates that the
+      capability is being disabled.
+
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 16]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   o  "~" modifier (ack): this modifier indicates the client must
+      acknowledge the capability using an ACK subcommand.
+
+   o  "=" modifier (sticky): this modifier indicates that the specified
+      capability may not be disabled.
+
+5.1.5.  CAP subcommands
+
+5.1.5.1.  CAP LS subcommand
+
+   The LS subcommand is used to list the capabilities supported by the
+   server.  The client should send an LS subcommand with no other
+   arguments to solicit a list of all arguments.
+
+   If a client issues an LS subcommand during client registration,
+   registration must be suspended until an END subcommand is received.
+
+   Example:
+
+     Client: CAP LS
+     Server: CAP * LS :multi-prefix sasl
+
+5.1.5.2.  CAP LIST subcommand
+
+   The LIST subcommand is used to list the capabilities associated with
+   the active connection.  The client should send a LIST subcommand with
+   no other arguments to solicit a list of active capabilities.
+
+   If no other capabilities are active, an empty parameter must be sent.
+
+   Example:
+
+     Client: CAP LIST
+     Server: CAP * LIST :multi-prefix
+
+5.1.5.3.  CAP REQ subcommand
+
+   The REQ subcommand is used to request a change in capabilities
+   associated with the active connection.  Its sole parameter must be a
+   list of space-separated capability identifiers.  Each capability
+   identifier must be prefixed with a dash ("-") to designate that the
+   capability should be disabled.
+
+   The capability identifier set must be accepted as a whole, or
+   rejected entirely.
+
+   If a client issues a REQ subcommand, registration must be suspended
+   until an END subcommand is received.
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 17]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   Example:
+
+     Client: CAP REQ :multi-prefix sasl
+     Server: CAP * ACK :multi-prefix sasl
+
+5.1.5.4.  CAP ACK subcommand
+
+   The ACK subcommand has two uses:
+
+   o  The server sends it to acknowledge a REQ subcommand.
+
+   o  The client sends it to acknowledge capabilities which require
+      client-side acknowledgement.
+
+   If an ACK reply originating from the server is spread across multiple
+   lines, a client MUST NOT change capabilities until the last ACK of
+   the set is received.  Equally, a server MUST NOT change the
+   capabilities of the client until the last ACK of the set has been
+   sent.
+
+   In the first usage, acknowledging a REQ subcommand, the ACK
+   subcommand has a single parameter consisting of a space-separated
+   list of capability names, which may optionally be preceded with one
+   or more modifiers (see Section 5.1.4.1 for details of capability
+   modifiers).
+
+   The third usage is when, in the preceding case, some capability names
+   may have been preceded with the ack modifier.  ACK in this case is
+   used to full enable or disable the capability.  Clients MUST NOT
+   issue an ACK subcommand for any capability not marked with the ack
+   modifier in a server-generated ACK subcommand.
+
+5.1.5.5.  CAP NAK subcommand
+
+   The NAK subcommand designates that the requested capability change
+   was rejected.  The server MUST NOT make any change to any
+   capabilities if it replies with a NAK subcommand.
+
+   The argument of the NAK subcommand MUST consist of at least the first
+   100 characters of the capability list in the REQ subcommand which
+   triggered the NAK.
+
+5.1.5.6.  CAP END subcommand
+
+   The END subcommand signals to the server that capability negotiation
+   is complete and requests that the server continue with client
+   registration.  If the client is already registered, this command MUST
+   be ignored by the server.
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 18]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   Clients that support capabilities but do not wish to enter
+   negotiation SHOULD send CAP END upon connection to the server.
+
+5.2.  Server Queries and Commands
+
+   The server query group of commands has been designed to return
+   information about any server which is connected to the networks.  All
+   servers connected must respond to these queries and respond
+   correctly.  Any invalid response (or lack thereof) must be considered
+   a sign of a broken server and it must be disconnected/disabled as
+   soon as possible until the situation is remedied.
+
+   In these queries, where a parameter appears as "<server>", it usually
+   means it can be a nickname or a server or a wildcard name of some
+   sort.  For each parameter, however, only one query and set or replies
+   is to be generated.
+
+5.2.1.  VERSION command
+
+        Command: VERSION
+     Parameters: [<server>]
+
+   The VERSION command is used to query the version of the server
+   software, and to request the server's ISUPPORT tokens.  An optional
+   parameter "<server>" is used to query the version of the given server
+   instead of the server the client is directly connected to.
+
+   Numeric Replies:
+
+              ERR_NOSUCHSERVER                RPL_VERSION
+
+   Examples:
+
+     :Wiz VERSION *.se               ; message from Wiz to check the
+                                     version of a server matching "*.se"
+
+     VERSION tolsun.oulu.fi          ; check the version of server
+                                     "tolsun.oulu.fi".
+
+5.2.2.  CONNECT command
+
+        Command: CONNECT
+     Parameters: <target server> [<port> [<remote server>]]
+
+   The CONNECT command forces a server to try to establish a new
+   connection to another server.  CONNECT is a privileged command and is
+   available only to IRC Operators.  If a remote server is given, the
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 19]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   connection is attempted by that remote server to "<target server>"
+   using "<port>".
+
+   Numeric Replies:
+
+              ERR_NOSUCHSERVER                ERR_NEEDMOREPARAMS
+              ERR_NOPRIVILEGES
+
+   Examples:
+
+     CONNECT tolsun.oulu.fi
+     ; Attempt to connect the current server to tololsun.oulu.fi
+
+     CONNECT  eff.org 12765 csd.bu.edu
+     ; Attempt to connect csu.bu.edu to eff.org on port 12765
+
+5.2.3.  TIME command
+
+        Command: TIME
+     Parameters: [<server>]
+
+   The TIME command is used to query local time from the specified
+   server.  If the server parameter is not given, the server handling
+   the command must reply to the query.
+
+   Numeric Replies:
+
+              ERR_NOSUCHSERVER                RPL_TIME
+
+   Examples:
+
+     TIME tolsun.oulu.fi             ; check the time on the server
+                                     "tolson.oulu.fi"
+
+     Angel TIME *.au                 ; user angel checking the time on a
+                                     server matching "*.au"
+
+5.2.4.  STATS command
+
+        Command: STATS
+     Parameters: [<query> [<server>]]
+
+   The STATS command is used to query statistics of a certain server.
+   If the "<server>" parameter is ommitted, only the end of stats reply
+   is sent back.  The implemented of this command is highly dependent on
+   the server which replies, although the server must be able to supply
+   information as described by the queries below (or similar).
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 20]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   A query may be given by any single letter which is only checked by
+   the destination server and is otherwise passed on by intermediate
+   servers, ignored and unaltered.
+
+   The following queries are those found in current IRC implementations
+   and provide a large portion of the setup information for that server.
+   All servers should be able to supply a valid reply to a STATS query
+   which is consistent with the reply formats currently used and the
+   purpose of the query.
+
+   The currently supported queries are:
+
+       c - returns a list of servers which the server may connect
+           to or allow connections from;
+       h - returns a list of servers which are either forced to be
+           treated as leaves or allowed to act as hubs;
+       i - returns a list of hosts which the server allows a client
+           to connect from;
+       k - returns a list of banned username/hostname combinations
+           for that server;
+       l - returns a list of the server's connections, showing how
+           long each connection has been established and the traffic
+           over that connection in bytes and messages for each
+           direction;
+       m - returns a list of commands supported by the server and
+           the usage count for each if the usage count is non zero;
+       o - returns a list of hosts from which normal clients may
+           become operators;
+       y - show Y (Class) lines from server's configuration file;
+       u - returns a string showing how long the server has been up.
+
+   Numeric Replies:
+
+           ERR_NOSUCHSERVER
+           RPL_STATSCLINE                  RPL_STATSNLINE
+           RPL_STATSILINE                  RPL_STATSKLINE
+           RPL_STATSQLINE                  RPL_STATSLLINE
+           RPL_STATSLINKINFO               RPL_STATSUPTIME
+           RPL_STATSCOMMANDS               RPL_STATSOLINE
+           RPL_STATSHLINE                  RPL_ENDOFSTATS
+
+   Examples:
+
+     STATS m                         ; check the command usage for the
+                                     server you are connected to
+
+     :Wiz STATS c eff.org            ; request by WiZ for C/N line
+                                     information from server eff.org
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 21]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+6.  Temporary headers so references to unwritten sections work
+
+6.1.  Kill Command
+
+6.2.  Mode Command
+
+6.3.  Channel Prefix
+
+6.4.  Feature Advertisement Appendix
+
+6.5.  Notice Command
+
+6.6.  Privmsg Command
+
+6.7.  User Command
+
+6.8.  Squit Command
+
+6.9.  Message Tags
+
+6.10.  Channel Bans and Exceptions
+
+6.11.  Channel Invitation
+
+6.12.  Sending Messages
+
+6.13.  Topic Command
+
+6.14.  ISON Command
+
+7.  Acknowledgements
+
+   Parts of this document came from the "IRC RPL_ISUPPORT Numeric
+   Definition" Internet Draft authored by L.  Hardy, E.  Brocklesby, and
+   K.  Mitchell.  Parts of this document came from the "IRC Client
+   Capabilities Extension" Internet Draft authored by K.  Mitchell, P.
+   Lorier, L.  Hardy, and P.  Kucharski.
+
+   Thanks to all the IRC software and document authors throughout the
+   years.
+
+8.  References
+
+8.1.  Informative References
+
+   [RFC1459]  Oikarinen, J. and D. Reed, "Internet Relay Chat Protocol",
+              RFC 1459, May 1993.
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 22]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   [RFC2812]  Kalt, C., "Internet Relay Chat: Client Protocol", RFC
+              2812, April 2000.
+
+8.2.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+   [RFC2234]  Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
+              Specifications: ABNF", RFC 2234, November 1997.
+
+   [RFC3629]  Yergeau, F., "UTF-8, a transformation format of ISO
+              10646", STD 63, RFC 3629, November 2003.
+
+   [RFC7194]  Hartmann, R., "Default Port for Internet Relay Chat (IRC)
+              via TLS/SSL", RFC 7194, August 2014.
+
+Appendix A.  RPL_ISUPPORT Parameters
+
+   Servers MAY send parameters that are not covered in this document.
+
+A.1.  CLIENTVER
+
+     CLIENTVER=string
+
+   The CLIENTVER parameter is informational purposes only and indicates
+   the version of the client protocol supported by the server that the
+   client is connected to.  The version specified by this document is
+   "3".
+
+   The value MUST be specified.  A client SHOULD NOT use this value to
+   change client behaviour.
+
+   Example CLIENTVER tokens:
+
+     CLIENTVER=3
+
+     CLIENTVER=3.2
+
+A.2.  CASEMAPPING
+
+     CASEMAPPING=string
+
+   The CASEMAPPING parameter is used to indicate what method if used by
+   the server to compare equality of case-insensitive strings.  Possible
+   values are:
+
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 23]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   o  "ascii": The ASCII characters 97 to 122 (decimal) are defined as
+      the lower-case characters of ASCII 65 to 90 (decimal).  No other
+      character equivalency is defined.
+
+   o  "rfc1459": The ASCII characters 97 to 126 (decimal) are defined as
+      the lower-case characters of ASCII 65 to 94 (decimal).  No other
+      character equivalency is defined.
+
+   o  "strict-rfc1459": The ASCII characters 97 to 125 (decimal) are
+      defined as the lower-case characters of ASCII 65 to 93 (decimal).
+      No other character equivalency is defined.
+
+   The value MUST be specified.  The default value for this token is
+   "rfc1459", and clients should assume this until the server sends a
+   CASEMAPPING token.
+
+   An example CASEMAPPING token:
+
+     CASEMAPPING=rfc1459
+
+A.3.  CHANLIMIT
+
+     CHANLIMIT=prefix:number[,prefix:number[,...]]
+
+   The CHANLIMIT parameter is used to indicate the maximum amount of
+   channels that a client may join.  The value is a series of
+   "prefix:number" pairs, where "prefix" refers to one or more prefix
+   characters defined in the PREFIX (Appendix A.16) token, and "number"
+   indicates how many channels of the given type combined may be joined.
+   The number parameter MAY be omitted if no limit is placed on the
+   number of channels.
+
+   A client SHOULD NOT make any assumptions about how many channels
+   other clients may join based on the CHANLIST parameter.
+
+   An example CHANLIMIT token:
+
+     CHANLIMIT=#+:25,&:
+
+   Indicates that a client may join up to 25 channels with the prefix
+   "#" and "+", and an unlimited number of channels with the "&" prefix.
+
+A.4.  CHANMODES
+
+     CHANMODES=A,B,C,D
+
+
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 24]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   The CHANMODES parameter is used to indicate the channel modes
+   available and the arguments they take.  There are four categories of
+   modes, defined as follows:
+
+   o  Type A: Modes that add or remove an address to or from a list.
+      These modes MUST always have a parameter when sent from the server
+      to a client.  A client MAY issue the mode without an argument to
+      obtain the current contents of the list.
+
+   o  Type B: Modes that change a setting on a channel.  These modes
+      MUST always have a parameter.
+
+   o  Type C: Modes that change a setting on a channel.  These modes
+      MUST have a parameter when being set, and MUST NOT have a
+      parameter when being unset.
+
+   o  Type D: Modes that change a setting on a channel.  These modes
+      MUST NOT have a parameter.
+
+   To allow for future extensions, a server MAY send additional types,
+   delieted by the comma character (",").  The behaviour of any
+   additional types is undefined.
+
+   The IRC server MUST NOT list modes in the CHANMODES parameter that
+   are contained within the PREFIX (Appendix A.16) parameter.  However,
+   for completeness, modes within the PREFIX parameter may be treated as
+   type B modes.
+
+   An example CHANMODES token:
+
+     CHANMODES=b,k,l,imnpst
+
+A.5.  CHANNELLEN
+
+     CHANNELLEN=number
+
+   The CHANNELLEN parameter specifies the maximum length of a channel
+   name that a client may join.  A client elsewhere on the network MAY
+   join a channel with a name length of a higher value.  The value MUST
+   be specified and MUST be numeric.
+
+   An example CHANNELLEN token:
+
+     CHANNELLEN=50
+
+   Limits the length of a channel name that a user may join to 50
+   characters.
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 25]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+A.6.  CHANTYPES
+
+     CHANTYPES=[string]
+
+   Special characters used as prefixes are reserved to differentiate
+   channels from other namespaces within the IRC protocol.  The
+   CHANTYPES parameter specifies these characters.
+
+   The value is OPTIONAL and when it is not specified indicates that no
+   channel types are supported.
+
+   An example CHANTYPES token:
+
+     CHANTYPES=&#
+
+   Denotes the andpersand ("&") and hash ("#") characters as valid
+   channel prefixes
+
+A.7.  CNOTICE
+
+     CNOTICE
+
+   The CNOTICE parameter indicates that the server supports the
+   "CNOTICE" command.  An extension of the NOTICE command, as defined in
+   Section 6.5, it allows users with a specific status in a channel to
+   issue a NOTICE command to a user within that channel, free of certain
+   restrictions a server MAY apply to NOTICE.
+
+   The CNOTICE parameter MUST NOT be specified with a value.
+
+   An example CNOTICE token:
+
+     CNOTICE
+
+A.8.  CPRIVMSG
+
+     CPRIVMSG
+
+   The CPRIVMSG parameter indicates that the server supports the
+   "CPRIVMSG" command.  An extension of the PRIVMSG command, as defined
+   in Section 6.6, it allows users with a specific status in a channel
+   to issue a PRIVMSG command to a user within that channel, free of
+   certain restrictions a server MAY apply to PRIVMSG.
+
+   The CPRIVMSG parameter MUST NOT be specified with a value.
+
+   An example CPRIVMSG token:
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 26]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+     CPRIVMSG
+
+A.9.  ELIST
+
+     ELIST=string
+
+   The ELIST parameter indicates that the server supports search
+   extensions to the LIST command.  The value is required, and is a non-
+   delimited set of characters which each denote an extension.  The
+   following extensions, which a client MUST treat as being case
+   insensitive are defined:
+
+   o  C: Searching based on creation time, via the "C<val" and "C>val"
+      modifiers to search for a channel creation time that is lower or
+      higher than val, respectively.
+
+   o  M: Searching based on mask.
+
+   o  N: Searching based on ~mask.
+
+   o  P: To explain.  XXX -
+
+   o  T: Searching based on topic time, via the "T<val" and "T>val"
+      modifiers to search for a topic time that is lower of higher than
+      val, respectively.
+
+   o  U: Searching based on user count within the channel, but the
+      "<val" and ">val" modifiers to search for a chnanel that has less
+      than or more than val users, respectively.
+
+   An example ELIST token:
+
+     ELIST=CMNTU
+
+A.10.  EXCEPTS
+
+     EXCEPTS[=letter]
+
+   The EXCEPTS parameter indicates that the server supports "ban
+   exceptions", as defined in ()[#channel-bans-and-exceptions].  The
+   value is OPTIONAL and when not specified indicates taht the letter
+   'e' is used as the channel mode for ban exceptions.  When the value
+   is specified, it indiates the letter which is used for ban
+   exceptions.
+
+   An example EXCEPTS token:
+
+     EXCEPTS
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 27]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+A.11.  INVEX
+
+     INVEX[=letter]
+
+   The INVEX parameter indicates that the server supports "invite
+   exceptions", as defined in Section 6.11.  The value is OPTIONAL, and
+   when not specified indicates that the letter "I" is used as the
+   channel mode for invite exceptions.  When the value is specified, it
+   indicates the letter is used for invite exceptions.
+
+   An example INVEX token:
+
+     INVEX
+
+A.12.  MAXLIST
+
+     MAXLIST=mode:number[,mode:number[,...]]
+
+   The MAXLIST parameter limits how many "variable" modes of type A that
+   have been defined in the CHANMODES (()[#chanmodes]) token a client
+   may set in total on a channel.  The value MUST be specified and is a
+   set of "mode:number" pairs, where "mode" refers to a type A mode
+   defined in the CHANMODES token and "number" indicates how many of the
+   given modes combined a client may issue on a channel.
+
+   A client MUST NOT make any assumptions about how many of the given
+   modes actually exist on the channel.  The limit applies only to the
+   client setting new modes of the given types.
+
+   Example MAXLIST tokens:
+
+     MAXLIST=beI:25
+
+   Indicates that a client may set to a total of 25 of a combination of
+   "+b", "+e", and "+I" modes.
+
+     MAXLIST=e:25,eI:50
+
+   Indicates that a client may set up to a total of 25 "+b" modes, and
+   up to a total of 50 of a combination of "+e" and "+I" modes.
+
+A.13.  MODES
+
+     MODES=[number]
+
+   The MODES parameter limits how many "variable" modes may be set on a
+   channel by a single MODE command from a client.  A "variable" mode is
+   defined as being a type A, B or C as defined for the CHANMODES
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 28]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   (Appendix A.4) parameter, and the channel modes specified in the
+   PREFIX (Appendix A.16) parameter.
+
+   A client SHOULD NOT issue more "variables" modes than this in a
+   single "mode" command.  A server MAY however issue more "variable"
+   modes than this in a single MODE command.  The value is OPTIONAL and
+   when specified indicates that no limit is places upon "variable"
+   modes.  The value, if specified, MUST be numeric.
+
+   An example MODES token:
+
+     MODES=3
+
+   Limits the number of "variable" modes from a client to the server to
+   3 per MODE command.
+
+A.14.  NETWORK
+
+     NETWORK=string
+
+   The NETWORK parameter is for informational purposes only and defines
+   the name of the IRC network that the client is connected to.  The
+   value MUST be specified.  A client SHOULD NOT use the value to make
+   assumptions about supported features on the server.
+
+   An example NETWORK token:
+
+     NETWORK=EFnet
+
+   Indicates the client is connected to the EFnet IRC network.
+
+A.15.  NICKLEN
+
+     NICKLEN=number
+
+   The NICKLEN parameter specifies the maximum length of a nickname that
+   a client can use.  A client elsewhere on the network MAY use a nick
+   length of a higher value.  The value MUST be specified and MUST be
+   numeric.
+
+   An example NICKLEN token:
+
+     NICKLEN=9
+
+   Limits the length of a nickname to 9 characters.
+
+
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 29]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+A.16.  PREFIX
+
+     PREFIX=[(modes)prefixes]
+
+   Within channels, clients can have various different statuses, denoted
+   by single character "prefixes".  The PREFIX parameter specifies these
+   pefixes and the channel mode character that it is mapped to.  There
+   is a one-to-one mapping between prefixes and channel modes.  The
+   prefixes are in descending order, from the prefix that gives the most
+   privileges to the prefix that gives the least.
+
+   The value is OPTIONAL and when it is not specified indicates that no
+   prefixes are supported.
+
+   An example PREFIX token:
+
+     PREFIX=(ov)@+
+
+   Denotes that the at character ("@") is mapped to the channel mode
+   denoted by the letter 'o', and the plus character ("+") is mapped to
+   the channel mode denoted by the letter 'v'.
+
+A.17.  SAFELIST
+
+     SAFELIST
+
+   The SAFELIST parameter indicates that the client may request a "LIST"
+   command from the server, without being disconnected by the large
+   amount of data the LIST command generates.  The SAFELIST parameter
+   MUST NOT be specified with a value.
+
+   An example SAFELIST token:
+
+     SAFELIST
+
+A.18.  SILENCE
+
+     SILENCE=number
+
+   The SILENCE parameter indicates the maximum number of entries a user
+   may have in their silence list.  The value is OPTIONAL and if it is
+   not specified indicates SILENCE support is not available.
+
+   Whilst a formal definition of the SILENCE command is outside the
+   scope of this document, it is generally a list of masks of equivalent
+   form to those defined as type A in the CHANMODES (Appendix A.4)
+   parameter.  Any messages, as defined in Section 6.12 that originate
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 30]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   from another client matching the given mask, with a destination of
+   the client itself will be dropped by the server.
+
+   An example SILENCE token:
+
+     SILENCE=15
+
+   Indicates that the client may have 15 masks in their silence list.
+
+A.19.  STATUSMSG
+
+     STATUSMSG=string
+
+   The STATUSMSG parameter indicates that the server supports a method
+   for the client to send a message via the NOTICE command to those
+   people on a channel with the specified status.
+
+   The value MUST be specified and MUST be a non-delimited list of
+   prefixes that have been defined in the PREFIX (Appendix A.16)
+   parameter.  The server MUST NOT advertise a character in STATUSMSG
+   which is also present in CHANTYPES (Appendix A.6).
+
+   An example STATUSMSG token:
+
+     STATUSMSG=@+
+
+   Presuming the hash character ("#") is defined within the CHANTYPES
+   (Appendix A.6) parameter, allows the client to send a NOTICE command
+   to "@#channel" and "+#channel".
+
+A.20.  TARGMAX
+
+     TARGMAX=[cmd:number,cmd:number,...]
+
+   Certain command from a client MAY contain multiple targets, delimited
+   by a comma character (",").  The TARGMAX parameter defines the
+   maximum number of targets allowed for commands which accept multiple
+   targets.  The value is OPTIONAL and is a set of "cmd:number" pairs,
+   where "cmd" refers to a command the client MAY send to the server,
+   and "number" refers to the maximum number of targets for this
+   command.  A client MUST treat the "cmd" field as case insensitive.
+
+   If the number is not specified for a particular command, then the
+   command does not have a limit on the number of targets.  The server
+   MUST specify all commands available to the user which support
+   multiple targets.
+
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 31]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+   If the TARGMAX parameter is not advertised, or a value is not sent
+   then a client SHOULD assume that no commands except the JOIN and PART
+   commands accept multiple parameters.
+
+   An example TARGMAX token:
+
+     TARGMAX=PRIVMSG:3,WHOIS:1,JOIN:
+
+   Indicates that a client could issue 3 targets to a PRIVMSG command, 1
+   target to a WHOIS command and an unlimited number of targets to a
+   JOIN command.
+
+A.21.  TOPICLEN
+
+     TOPICLEN=number
+
+   The TOPICLEN parameter specifies the maximum length of a topic,
+   defined in Section 6.13 that a client may set on a channel.  A
+   channel on the network MAY have a topic with a longer length.  The
+   value MUST be specified and MUST be numeric.
+
+   An example TOPICLEN token:
+
+     TOPICLEN=120
+
+   Limits the length of a topic to 120 characters.
+
+A.22.  WATCH
+
+     WATCH=number
+
+   The WATCH parameter indicates the maximum number of nicknames a user
+   may have in their watch list.  The value MUST be specified.
+
+   Whilst a formal definition of the WATCH command is outside the scope
+   of this document, it is generally a method for clients to have the
+   server notify them when a given nickname joins or leaves the network.
+   It is designed to replace repetitive use by clients of the ISON
+   command, as defined in Section 6.14.
+
+   An example WATCH token:
+
+     WATCH=100
+
+   Indicates that a client may have up to 100 nicks in their watch list.
+
+
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 32]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+Authors' Addresses
+
+   Daniel Oakley
+
+   Email: daniel@danieloaks.net
+   URI:   http://danieloaks.net/
+
+
+   Jack Allnutt
+   Kiwi IRC
+
+   Email: jack@allnutt.eu
+   URI:   http://allnutt.eu/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Oakley & Allnutt        Expires November 26, 2015              [Page 33]

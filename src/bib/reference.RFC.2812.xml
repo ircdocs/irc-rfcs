@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<reference anchor='RFC2812'>
+
+<front>
+<title>Internet Relay Chat: Client Protocol</title>
+<author initials='C.' surname='Kalt' fullname='C. Kalt'>
+<organization /></author>
+<date year='2000' month='April' />
+<abstract>
+<t>This document defines the Client Protocol, and assumes that the reader is familiar with the IRC Architecture.  This memo provides information for the Internet community.</t></abstract></front>
+
+<seriesInfo name='RFC' value='2812' />
+<format type='TXT' octets='122637' target='http://www.rfc-editor.org/rfc/rfc2812.txt' />
+</reference>

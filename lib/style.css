@@ -1,0 +1,51 @@
+@viewport {
+  zoom: 1.0;
+  width: extend-to-zoom;
+}
+
+@-ms-viewport {
+  width: extend-to-zoom;
+  zoom: 1.0;
+}
+
+body {
+  font: 11pt cambria, helvetica, arial, sans-serif;
+  font-size-adjust: 0.5;
+  line-height: 130%;
+  max-width: 700px;
+  margin: 1.5rem auto;
+}
+
+.title, .filename, h1, h2, h3, h4 {
+  font-family: candara, helvetica, arial, sans-serif;
+  font-size-adjust: 0.5;
+}
+.title {
+  color: #20646B;
+}
+
+pre {
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+  border-radius: 0.3rem;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table.header {
+  font-size: 11pt;
+}
+table.header td {
+  background-color: inherit;
+  color: black;
+}
+
+samp, tt, code, pre {
+  font: 11pt consolas, monospace;
+  font-size-adjust: none;
+}
+pre.text, pre.text2 {
+  width: 90%;
+}
