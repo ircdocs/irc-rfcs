@@ -3,11 +3,11 @@
 
 
 Network Working Group                                          D. Oakley
-Internet-Draft
+Internet-Draft                                                 mammon.io
 Obsoletes: 1459, 2810, 2811, 2812 (if                         J. Allnutt
            approved)                                            Kiwi IRC
-Intended status: Informational                              May 25, 2015
-Expires: November 26, 2015
+Intended status: Informational                              May 26, 2015
+Expires: November 27, 2015
 
 
                  Internet Relay Chat Protocol version 3
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 26, 2015.
+   This Internet-Draft will expire on November 27, 2015.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Oakley & Allnutt        Expires November 26, 2015               [Page 1]
+Oakley & Allnutt        Expires November 27, 2015               [Page 1]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Oakley & Allnutt        Expires November 26, 2015               [Page 2]
+Oakley & Allnutt        Expires November 27, 2015               [Page 2]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -147,8 +147,7 @@ Internet-Draft                    IRCv3                         May 2015
      A.19. STATUSMSG . . . . . . . . . . . . . . . . . . . . . . . .  31
      A.20. TARGMAX . . . . . . . . . . . . . . . . . . . . . . . . .  31
      A.21. TOPICLEN  . . . . . . . . . . . . . . . . . . . . . . . .  32
-     A.22. WATCH . . . . . . . . . . . . . . . . . . . . . . . . . .  32
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  33
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  32
 
 1.  Introduction
 
@@ -161,17 +160,15 @@ Internet-Draft                    IRCv3                         May 2015
    as a very valuable and useful protocol.  It is well-suited to running
    on many machines in a distributed fashion.  A typical setup involves
    multiple servers connected in a distributed network, through which
+   messages are delivered and state is maintained across the network for
+   the connected clients and active channels.
 
 
 
-
-Oakley & Allnutt        Expires November 26, 2015               [Page 3]
+Oakley & Allnutt        Expires November 27, 2015               [Page 3]
 
 Internet-Draft                    IRCv3                         May 2015
 
-
-   messages are delivered and state is maintained across the network for
-   the connected clients and active channels.
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
@@ -221,7 +218,10 @@ Internet-Draft                    IRCv3                         May 2015
 
 
 
-Oakley & Allnutt        Expires November 26, 2015               [Page 4]
+
+
+
+Oakley & Allnutt        Expires November 27, 2015               [Page 4]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -277,7 +277,7 @@ Internet-Draft                    IRCv3                         May 2015
 
 
 
-Oakley & Allnutt        Expires November 26, 2015               [Page 5]
+Oakley & Allnutt        Expires November 27, 2015               [Page 5]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -333,7 +333,7 @@ Internet-Draft                    IRCv3                         May 2015
 
 
 
-Oakley & Allnutt        Expires November 26, 2015               [Page 6]
+Oakley & Allnutt        Expires November 27, 2015               [Page 6]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -389,7 +389,7 @@ Internet-Draft                    IRCv3                         May 2015
 
 
 
-Oakley & Allnutt        Expires November 26, 2015               [Page 7]
+Oakley & Allnutt        Expires November 27, 2015               [Page 7]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -445,7 +445,7 @@ Internet-Draft                    IRCv3                         May 2015
 
 
 
-Oakley & Allnutt        Expires November 26, 2015               [Page 8]
+Oakley & Allnutt        Expires November 27, 2015               [Page 8]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -501,7 +501,7 @@ Internet-Draft                    IRCv3                         May 2015
 
 
 
-Oakley & Allnutt        Expires November 26, 2015               [Page 9]
+Oakley & Allnutt        Expires November 27, 2015               [Page 9]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -557,7 +557,7 @@ Internet-Draft                    IRCv3                         May 2015
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 10]
+Oakley & Allnutt        Expires November 27, 2015              [Page 10]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -613,7 +613,7 @@ Internet-Draft                    IRCv3                         May 2015
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 11]
+Oakley & Allnutt        Expires November 27, 2015              [Page 11]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -669,7 +669,7 @@ Internet-Draft                    IRCv3                         May 2015
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 12]
+Oakley & Allnutt        Expires November 27, 2015              [Page 12]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -725,7 +725,7 @@ Internet-Draft                    IRCv3                         May 2015
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 13]
+Oakley & Allnutt        Expires November 27, 2015              [Page 13]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -781,7 +781,7 @@ Internet-Draft                    IRCv3                         May 2015
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 14]
+Oakley & Allnutt        Expires November 27, 2015              [Page 14]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -837,7 +837,7 @@ Internet-Draft                    IRCv3                         May 2015
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 15]
+Oakley & Allnutt        Expires November 27, 2015              [Page 15]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -893,7 +893,7 @@ Internet-Draft                    IRCv3                         May 2015
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 16]
+Oakley & Allnutt        Expires November 27, 2015              [Page 16]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -949,7 +949,7 @@ Internet-Draft                    IRCv3                         May 2015
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 17]
+Oakley & Allnutt        Expires November 27, 2015              [Page 17]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -1005,7 +1005,7 @@ Internet-Draft                    IRCv3                         May 2015
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 18]
+Oakley & Allnutt        Expires November 27, 2015              [Page 18]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -1061,7 +1061,7 @@ Internet-Draft                    IRCv3                         May 2015
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 19]
+Oakley & Allnutt        Expires November 27, 2015              [Page 19]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -1117,7 +1117,7 @@ Internet-Draft                    IRCv3                         May 2015
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 20]
+Oakley & Allnutt        Expires November 27, 2015              [Page 20]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -1173,7 +1173,7 @@ Internet-Draft                    IRCv3                         May 2015
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 21]
+Oakley & Allnutt        Expires November 27, 2015              [Page 21]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -1229,7 +1229,7 @@ Internet-Draft                    IRCv3                         May 2015
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 22]
+Oakley & Allnutt        Expires November 27, 2015              [Page 22]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -1285,7 +1285,7 @@ A.2.  CASEMAPPING
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 23]
+Oakley & Allnutt        Expires November 27, 2015              [Page 23]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -1341,7 +1341,7 @@ A.4.  CHANMODES
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 24]
+Oakley & Allnutt        Expires November 27, 2015              [Page 24]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -1397,7 +1397,7 @@ A.5.  CHANNELLEN
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 25]
+Oakley & Allnutt        Expires November 27, 2015              [Page 25]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -1453,7 +1453,7 @@ A.8.  CPRIVMSG
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 26]
+Oakley & Allnutt        Expires November 27, 2015              [Page 26]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -1509,7 +1509,7 @@ A.10.  EXCEPTS
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 27]
+Oakley & Allnutt        Expires November 27, 2015              [Page 27]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -1565,7 +1565,7 @@ A.13.  MODES
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 28]
+Oakley & Allnutt        Expires November 27, 2015              [Page 28]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -1621,7 +1621,7 @@ A.15.  NICKLEN
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 29]
+Oakley & Allnutt        Expires November 27, 2015              [Page 29]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -1677,7 +1677,7 @@ A.18.  SILENCE
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 30]
+Oakley & Allnutt        Expires November 27, 2015              [Page 30]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -1733,7 +1733,7 @@ A.20.  TARGMAX
 
 
 
-Oakley & Allnutt        Expires November 26, 2015              [Page 31]
+Oakley & Allnutt        Expires November 27, 2015              [Page 31]
 
 Internet-Draft                    IRCv3                         May 2015
 
@@ -1765,38 +1765,10 @@ A.21.  TOPICLEN
 
    Limits the length of a topic to 120 characters.
 
-A.22.  WATCH
-
-     WATCH=number
-
-   The WATCH parameter indicates the maximum number of nicknames a user
-   may have in their watch list.  The value MUST be specified.
-
-   Whilst a formal definition of the WATCH command is outside the scope
-   of this document, it is generally a method for clients to have the
-   server notify them when a given nickname joins or leaves the network.
-   It is designed to replace repetitive use by clients of the ISON
-   command, as defined in Section 6.14.
-
-   An example WATCH token:
-
-     WATCH=100
-
-   Indicates that a client may have up to 100 nicks in their watch list.
-
-
-
-
-
-
-Oakley & Allnutt        Expires November 26, 2015              [Page 32]
-
-Internet-Draft                    IRCv3                         May 2015
-
-
 Authors' Addresses
 
    Daniel Oakley
+   mammon.io
 
    Email: daniel@danieloaks.net
    URI:   http://danieloaks.net/
@@ -1817,32 +1789,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Oakley & Allnutt        Expires November 26, 2015              [Page 33]
+Oakley & Allnutt        Expires November 27, 2015              [Page 32]

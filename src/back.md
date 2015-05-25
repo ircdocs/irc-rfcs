@@ -308,18 +308,3 @@ An example TOPICLEN token:
       TOPICLEN=120
 
 Limits the length of a topic to 120 characters.
-
-
-## WATCH
-
-      WATCH=number
-
-The WATCH parameter indicates the maximum number of nicknames a user may have in their watch list. The value MUST be specified.
-
-Whilst a formal definition of the WATCH command is outside the scope of this document, it is generally a method for clients to have the server notify them when a given nickname joins or leaves the network. It is designed to replace repetitive use by clients of the ISON command, as defined in [](#ison-command).
-
-An example WATCH token:
-
-      WATCH=100
-
-Indicates that a client may have up to 100 nicks in their watch list.
