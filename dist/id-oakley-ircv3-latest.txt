@@ -126,27 +126,26 @@ Internet-Draft                    IRCv3                         May 2015
      8.1.  Informative References  . . . . . . . . . . . . . . . . .  22
      8.2.  Normative References  . . . . . . . . . . . . . . . . . .  23
    Appendix A.  RPL_ISUPPORT Parameters  . . . . . . . . . . . . . .  23
-     A.1.  CLIENTVER . . . . . . . . . . . . . . . . . . . . . . . .  23
-     A.2.  CASEMAPPING . . . . . . . . . . . . . . . . . . . . . . .  23
-     A.3.  CHANLIMIT . . . . . . . . . . . . . . . . . . . . . . . .  24
-     A.4.  CHANMODES . . . . . . . . . . . . . . . . . . . . . . . .  24
-     A.5.  CHANNELLEN  . . . . . . . . . . . . . . . . . . . . . . .  25
-     A.6.  CHANTYPES . . . . . . . . . . . . . . . . . . . . . . . .  26
-     A.7.  CNOTICE . . . . . . . . . . . . . . . . . . . . . . . . .  26
-     A.8.  CPRIVMSG  . . . . . . . . . . . . . . . . . . . . . . . .  26
-     A.9.  ELIST . . . . . . . . . . . . . . . . . . . . . . . . . .  27
-     A.10. EXCEPTS . . . . . . . . . . . . . . . . . . . . . . . . .  27
-     A.11. INVEX . . . . . . . . . . . . . . . . . . . . . . . . . .  28
-     A.12. MAXLIST . . . . . . . . . . . . . . . . . . . . . . . . .  28
-     A.13. MODES . . . . . . . . . . . . . . . . . . . . . . . . . .  28
-     A.14. NETWORK . . . . . . . . . . . . . . . . . . . . . . . . .  29
-     A.15. NICKLEN . . . . . . . . . . . . . . . . . . . . . . . . .  29
-     A.16. PREFIX  . . . . . . . . . . . . . . . . . . . . . . . . .  30
-     A.17. SAFELIST  . . . . . . . . . . . . . . . . . . . . . . . .  30
-     A.18. SILENCE . . . . . . . . . . . . . . . . . . . . . . . . .  30
-     A.19. STATUSMSG . . . . . . . . . . . . . . . . . . . . . . . .  31
-     A.20. TARGMAX . . . . . . . . . . . . . . . . . . . . . . . . .  31
-     A.21. TOPICLEN  . . . . . . . . . . . . . . . . . . . . . . . .  32
+     A.1.  CASEMAPPING . . . . . . . . . . . . . . . . . . . . . . .  23
+     A.2.  CHANLIMIT . . . . . . . . . . . . . . . . . . . . . . . .  24
+     A.3.  CHANMODES . . . . . . . . . . . . . . . . . . . . . . . .  24
+     A.4.  CHANNELLEN  . . . . . . . . . . . . . . . . . . . . . . .  25
+     A.5.  CHANTYPES . . . . . . . . . . . . . . . . . . . . . . . .  25
+     A.6.  CNOTICE . . . . . . . . . . . . . . . . . . . . . . . . .  25
+     A.7.  CPRIVMSG  . . . . . . . . . . . . . . . . . . . . . . . .  26
+     A.8.  ELIST . . . . . . . . . . . . . . . . . . . . . . . . . .  26
+     A.9.  EXCEPTS . . . . . . . . . . . . . . . . . . . . . . . . .  27
+     A.10. INVEX . . . . . . . . . . . . . . . . . . . . . . . . . .  27
+     A.11. MAXLIST . . . . . . . . . . . . . . . . . . . . . . . . .  27
+     A.12. MODES . . . . . . . . . . . . . . . . . . . . . . . . . .  28
+     A.13. NETWORK . . . . . . . . . . . . . . . . . . . . . . . . .  28
+     A.14. NICKLEN . . . . . . . . . . . . . . . . . . . . . . . . .  29
+     A.15. PREFIX  . . . . . . . . . . . . . . . . . . . . . . . . .  29
+     A.16. SAFELIST  . . . . . . . . . . . . . . . . . . . . . . . .  30
+     A.17. SILENCE . . . . . . . . . . . . . . . . . . . . . . . . .  30
+     A.18. STATUSMSG . . . . . . . . . . . . . . . . . . . . . . . .  30
+     A.19. TARGMAX . . . . . . . . . . . . . . . . . . . . . . . . .  31
+     A.20. TOPICLEN  . . . . . . . . . . . . . . . . . . . . . . . .  31
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  32
 
 1.  Introduction
@@ -162,6 +161,7 @@ Internet-Draft                    IRCv3                         May 2015
    multiple servers connected in a distributed network, through which
    messages are delivered and state is maintained across the network for
    the connected clients and active channels.
+
 
 
 
@@ -290,7 +290,7 @@ Internet-Draft                    IRCv3                         May 2015
    may be a part of several channels at once, but a limit may be imposed
    as to how many channels a user can be in at one time.  This limit is
    specified the CHANLIMIT RPL_ISUPPORT token.  See Section 4.1
-   (RPL_ISUPPORT) and Appendix A.3 (CHANLIMIT) for more details on this.
+   (RPL_ISUPPORT) and Appendix A.2 (CHANLIMIT) for more details on this.
 
    If the IRC network becomes disjoint because of a split between
    servers, the channel on either side is only composed of those clients
@@ -1255,40 +1255,13 @@ Appendix A.  RPL_ISUPPORT Parameters
 
    Servers MAY send parameters that are not covered in this document.
 
-A.1.  CLIENTVER
-
-     CLIENTVER=string
-
-   The CLIENTVER parameter is informational purposes only and indicates
-   the version of the client protocol supported by the server that the
-   client is connected to.  The version specified by this document is
-   "3".
-
-   The value MUST be specified.  A client SHOULD NOT use this value to
-   change client behaviour.
-
-   Example CLIENTVER tokens:
-
-     CLIENTVER=3
-
-     CLIENTVER=3.2
-
-A.2.  CASEMAPPING
+A.1.  CASEMAPPING
 
      CASEMAPPING=string
 
    The CASEMAPPING parameter is used to indicate what method if used by
    the server to compare equality of case-insensitive strings.  Possible
    values are:
-
-
-
-
-
-Oakley & Allnutt        Expires November 27, 2015              [Page 23]
-
-Internet-Draft                    IRCv3                         May 2015
-
 
    o  "ascii": The ASCII characters 97 to 122 (decimal) are defined as
       the lower-case characters of ASCII 65 to 90 (decimal).  No other
@@ -1310,14 +1283,21 @@ Internet-Draft                    IRCv3                         May 2015
 
      CASEMAPPING=rfc1459
 
-A.3.  CHANLIMIT
+
+
+Oakley & Allnutt        Expires November 27, 2015              [Page 23]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+A.2.  CHANLIMIT
 
      CHANLIMIT=prefix:number[,prefix:number[,...]]
 
    The CHANLIMIT parameter is used to indicate the maximum amount of
    channels that a client may join.  The value is a series of
    "prefix:number" pairs, where "prefix" refers to one or more prefix
-   characters defined in the PREFIX (Appendix A.16) token, and "number"
+   characters defined in the PREFIX (Appendix A.15) token, and "number"
    indicates how many channels of the given type combined may be joined.
    The number parameter MAY be omitted if no limit is placed on the
    number of channels.
@@ -1332,19 +1312,9 @@ A.3.  CHANLIMIT
    Indicates that a client may join up to 25 channels with the prefix
    "#" and "+", and an unlimited number of channels with the "&" prefix.
 
-A.4.  CHANMODES
+A.3.  CHANMODES
 
      CHANMODES=A,B,C,D
-
-
-
-
-
-
-Oakley & Allnutt        Expires November 27, 2015              [Page 24]
-
-Internet-Draft                    IRCv3                         May 2015
-
 
    The CHANMODES parameter is used to indicate the channel modes
    available and the arguments they take.  There are four categories of
@@ -1369,8 +1339,15 @@ Internet-Draft                    IRCv3                         May 2015
    delieted by the comma character (",").  The behaviour of any
    additional types is undefined.
 
+
+
+Oakley & Allnutt        Expires November 27, 2015              [Page 24]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
    The IRC server MUST NOT list modes in the CHANMODES parameter that
-   are contained within the PREFIX (Appendix A.16) parameter.  However,
+   are contained within the PREFIX (Appendix A.15) parameter.  However,
    for completeness, modes within the PREFIX parameter may be treated as
    type B modes.
 
@@ -1378,7 +1355,7 @@ Internet-Draft                    IRCv3                         May 2015
 
      CHANMODES=b,k,l,imnpst
 
-A.5.  CHANNELLEN
+A.4.  CHANNELLEN
 
      CHANNELLEN=number
 
@@ -1394,15 +1371,7 @@ A.5.  CHANNELLEN
    Limits the length of a channel name that a user may join to 50
    characters.
 
-
-
-
-Oakley & Allnutt        Expires November 27, 2015              [Page 25]
-
-Internet-Draft                    IRCv3                         May 2015
-
-
-A.6.  CHANTYPES
+A.5.  CHANTYPES
 
      CHANTYPES=[string]
 
@@ -1420,9 +1389,18 @@ A.6.  CHANTYPES
    Denotes the andpersand ("&") and hash ("#") characters as valid
    channel prefixes
 
-A.7.  CNOTICE
+A.6.  CNOTICE
 
      CNOTICE
+
+
+
+
+
+Oakley & Allnutt        Expires November 27, 2015              [Page 25]
+
+Internet-Draft                    IRCv3                         May 2015
+
 
    The CNOTICE parameter indicates that the server supports the
    "CNOTICE" command.  An extension of the NOTICE command, as defined in
@@ -1436,7 +1414,7 @@ A.7.  CNOTICE
 
      CNOTICE
 
-A.8.  CPRIVMSG
+A.7.  CPRIVMSG
 
      CPRIVMSG
 
@@ -1450,17 +1428,9 @@ A.8.  CPRIVMSG
 
    An example CPRIVMSG token:
 
-
-
-
-Oakley & Allnutt        Expires November 27, 2015              [Page 26]
-
-Internet-Draft                    IRCv3                         May 2015
-
-
      CPRIVMSG
 
-A.9.  ELIST
+A.8.  ELIST
 
      ELIST=string
 
@@ -1480,6 +1450,14 @@ A.9.  ELIST
 
    o  P: To explain.  XXX -
 
+
+
+
+Oakley & Allnutt        Expires November 27, 2015              [Page 26]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
    o  T: Searching based on topic time, via the "T<val" and "T>val"
       modifiers to search for a topic time that is lower of higher than
       val, respectively.
@@ -1492,7 +1470,7 @@ A.9.  ELIST
 
      ELIST=CMNTU
 
-A.10.  EXCEPTS
+A.9.  EXCEPTS
 
      EXCEPTS[=letter]
 
@@ -1507,14 +1485,7 @@ A.10.  EXCEPTS
 
      EXCEPTS
 
-
-
-Oakley & Allnutt        Expires November 27, 2015              [Page 27]
-
-Internet-Draft                    IRCv3                         May 2015
-
-
-A.11.  INVEX
+A.10.  INVEX
 
      INVEX[=letter]
 
@@ -1528,13 +1499,21 @@ A.11.  INVEX
 
      INVEX
 
-A.12.  MAXLIST
+A.11.  MAXLIST
 
      MAXLIST=mode:number[,mode:number[,...]]
 
    The MAXLIST parameter limits how many "variable" modes of type A that
    have been defined in the CHANMODES (()[#chanmodes]) token a client
    may set in total on a channel.  The value MUST be specified and is a
+
+
+
+Oakley & Allnutt        Expires November 27, 2015              [Page 27]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
    set of "mode:number" pairs, where "mode" refers to a type A mode
    defined in the CHANMODES token and "number" indicates how many of the
    given modes combined a client may issue on a channel.
@@ -1555,23 +1534,15 @@ A.12.  MAXLIST
    Indicates that a client may set up to a total of 25 "+b" modes, and
    up to a total of 50 of a combination of "+e" and "+I" modes.
 
-A.13.  MODES
+A.12.  MODES
 
      MODES=[number]
 
    The MODES parameter limits how many "variable" modes may be set on a
    channel by a single MODE command from a client.  A "variable" mode is
    defined as being a type A, B or C as defined for the CHANMODES
-
-
-
-Oakley & Allnutt        Expires November 27, 2015              [Page 28]
-
-Internet-Draft                    IRCv3                         May 2015
-
-
-   (Appendix A.4) parameter, and the channel modes specified in the
-   PREFIX (Appendix A.16) parameter.
+   (Appendix A.3) parameter, and the channel modes specified in the
+   PREFIX (Appendix A.15) parameter.
 
    A client SHOULD NOT issue more "variables" modes than this in a
    single "mode" command.  A server MAY however issue more "variable"
@@ -1586,9 +1557,18 @@ Internet-Draft                    IRCv3                         May 2015
    Limits the number of "variable" modes from a client to the server to
    3 per MODE command.
 
-A.14.  NETWORK
+A.13.  NETWORK
 
      NETWORK=string
+
+
+
+
+
+Oakley & Allnutt        Expires November 27, 2015              [Page 28]
+
+Internet-Draft                    IRCv3                         May 2015
+
 
    The NETWORK parameter is for informational purposes only and defines
    the name of the IRC network that the client is connected to.  The
@@ -1601,7 +1581,7 @@ A.14.  NETWORK
 
    Indicates the client is connected to the EFnet IRC network.
 
-A.15.  NICKLEN
+A.14.  NICKLEN
 
      NICKLEN=number
 
@@ -1616,17 +1596,7 @@ A.15.  NICKLEN
 
    Limits the length of a nickname to 9 characters.
 
-
-
-
-
-
-Oakley & Allnutt        Expires November 27, 2015              [Page 29]
-
-Internet-Draft                    IRCv3                         May 2015
-
-
-A.16.  PREFIX
+A.15.  PREFIX
 
      PREFIX=[(modes)prefixes]
 
@@ -1648,7 +1618,15 @@ A.16.  PREFIX
    denoted by the letter 'o', and the plus character ("+") is mapped to
    the channel mode denoted by the letter 'v'.
 
-A.17.  SAFELIST
+
+
+
+Oakley & Allnutt        Expires November 27, 2015              [Page 29]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
+A.16.  SAFELIST
 
      SAFELIST
 
@@ -1661,7 +1639,7 @@ A.17.  SAFELIST
 
      SAFELIST
 
-A.18.  SILENCE
+A.17.  SILENCE
 
      SILENCE=number
 
@@ -1671,17 +1649,8 @@ A.18.  SILENCE
 
    Whilst a formal definition of the SILENCE command is outside the
    scope of this document, it is generally a list of masks of equivalent
-   form to those defined as type A in the CHANMODES (Appendix A.4)
+   form to those defined as type A in the CHANMODES (Appendix A.3)
    parameter.  Any messages, as defined in Section 6.12 that originate
-
-
-
-
-Oakley & Allnutt        Expires November 27, 2015              [Page 30]
-
-Internet-Draft                    IRCv3                         May 2015
-
-
    from another client matching the given mask, with a destination of
    the client itself will be dropped by the server.
 
@@ -1691,7 +1660,7 @@ Internet-Draft                    IRCv3                         May 2015
 
    Indicates that the client may have 15 masks in their silence list.
 
-A.19.  STATUSMSG
+A.18.  STATUSMSG
 
      STATUSMSG=string
 
@@ -1700,19 +1669,26 @@ A.19.  STATUSMSG
    people on a channel with the specified status.
 
    The value MUST be specified and MUST be a non-delimited list of
-   prefixes that have been defined in the PREFIX (Appendix A.16)
+   prefixes that have been defined in the PREFIX (Appendix A.15)
    parameter.  The server MUST NOT advertise a character in STATUSMSG
-   which is also present in CHANTYPES (Appendix A.6).
+   which is also present in CHANTYPES (Appendix A.5).
 
    An example STATUSMSG token:
+
+
+
+Oakley & Allnutt        Expires November 27, 2015              [Page 30]
+
+Internet-Draft                    IRCv3                         May 2015
+
 
      STATUSMSG=@+
 
    Presuming the hash character ("#") is defined within the CHANTYPES
-   (Appendix A.6) parameter, allows the client to send a NOTICE command
+   (Appendix A.5) parameter, allows the client to send a NOTICE command
    to "@#channel" and "+#channel".
 
-A.20.  TARGMAX
+A.19.  TARGMAX
 
      TARGMAX=[cmd:number,cmd:number,...]
 
@@ -1729,15 +1705,6 @@ A.20.  TARGMAX
    MUST specify all commands available to the user which support
    multiple targets.
 
-
-
-
-
-Oakley & Allnutt        Expires November 27, 2015              [Page 31]
-
-Internet-Draft                    IRCv3                         May 2015
-
-
    If the TARGMAX parameter is not advertised, or a value is not sent
    then a client SHOULD assume that no commands except the JOIN and PART
    commands accept multiple parameters.
@@ -1750,7 +1717,7 @@ Internet-Draft                    IRCv3                         May 2015
    target to a WHOIS command and an unlimited number of targets to a
    JOIN command.
 
-A.21.  TOPICLEN
+A.20.  TOPICLEN
 
      TOPICLEN=number
 
@@ -1762,6 +1729,14 @@ A.21.  TOPICLEN
    An example TOPICLEN token:
 
      TOPICLEN=120
+
+
+
+
+Oakley & Allnutt        Expires November 27, 2015              [Page 31]
+
+Internet-Draft                    IRCv3                         May 2015
+
 
    Limits the length of a topic to 120 characters.
 
@@ -1779,6 +1754,31 @@ Authors' Addresses
 
    Email: jack@allnutt.eu
    URI:   http://allnutt.eu/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -3,7 +3,7 @@
 Servers MAY send parameters that are not covered in this document.
 
 
-## CLIENTVER
+<!-- ## CLIENTVER
 
       CLIENTVER=string
 
@@ -15,7 +15,7 @@ Example CLIENTVER tokens:
 
       CLIENTVER=3
 
-      CLIENTVER=3.2
+      CLIENTVER=3.2 -->
 
 
 ## CASEMAPPING

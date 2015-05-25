@@ -6,30 +6,7 @@
   <t>
     Servers MAY send parameters that are not covered in this document.
   </t>
-  <section title="CLIENTVER" anchor="clientver">
-    
-    <figure><artwork>
-  CLIENTVER=string
-</artwork></figure>
-    <t>
-      The CLIENTVER parameter is informational purposes only and
-      indicates the version of the client protocol supported by the
-      server that the client is connected to. The version specified by
-      this document is <spanx style="verb">3</spanx>.
-    </t>
-    <t>
-      The value MUST be specified. A client SHOULD NOT use this value to
-      change client behaviour.
-    </t>
-    <t>
-      Example CLIENTVER tokens:
-    </t>
-    <figure><artwork>
-  CLIENTVER=3
-
-  CLIENTVER=3.2
-</artwork></figure>
-  </section>
+  
   <section title="CASEMAPPING" anchor="casemapping">
     
     <figure><artwork>
