@@ -61,7 +61,7 @@ You can also find the occasionally-updated in-progress versions here: [HTML](htt
 
 Most of what you'll be looking for is in [source/middle.md](source/middle.md), with appendixes in [source/back.md](source/back.md).
 
-When putting in a pull request, ***ONLY*** submit a change for the source files. ***DO NOT** include rebuilding the `dist/` files in your pull request. This is to prevent a million conflicts if we have three PRs sitting in the waiting queue and try to merge all of them at once (particularly the .txt files). We can generate new `dist/` files after we merge things into the repo.
+When putting in a pull request, ***ONLY*** submit a change for the source files. ***DO NOT*** include rebuilding the `dist/` files in your pull request. This is to prevent a million conflicts if we have three PRs sitting in the waiting queue and try to merge all of them at once (particularly the .txt files). We can generate new `dist/` files after we merge things into the repo.
 
 **NOTE:** `lib/addstyle.sed` and `lib/style.css` have been adopted from the [HTTP/2 Specification](https://github.com/http2/http2-spec).
 
