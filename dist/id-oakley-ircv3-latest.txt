@@ -142,11 +142,10 @@ Internet-Draft                    IRCv3                         May 2015
      A.14. NICKLEN . . . . . . . . . . . . . . . . . . . . . . . . .  29
      A.15. PREFIX  . . . . . . . . . . . . . . . . . . . . . . . . .  29
      A.16. SAFELIST  . . . . . . . . . . . . . . . . . . . . . . . .  30
-     A.17. SILENCE . . . . . . . . . . . . . . . . . . . . . . . . .  30
-     A.18. STATUSMSG . . . . . . . . . . . . . . . . . . . . . . . .  30
-     A.19. TARGMAX . . . . . . . . . . . . . . . . . . . . . . . . .  31
-     A.20. TOPICLEN  . . . . . . . . . . . . . . . . . . . . . . . .  31
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  32
+     A.17. STATUSMSG . . . . . . . . . . . . . . . . . . . . . . . .  30
+     A.18. TARGMAX . . . . . . . . . . . . . . . . . . . . . . . . .  30
+     A.19. TOPICLEN  . . . . . . . . . . . . . . . . . . . . . . . .  31
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  31
 
 1.  Introduction
 
@@ -161,6 +160,7 @@ Internet-Draft                    IRCv3                         May 2015
    multiple servers connected in a distributed network, through which
    messages are delivered and state is maintained across the network for
    the connected clients and active channels.
+
 
 
 
@@ -1639,28 +1639,7 @@ A.16.  SAFELIST
 
      SAFELIST
 
-A.17.  SILENCE
-
-     SILENCE=number
-
-   The SILENCE parameter indicates the maximum number of entries a user
-   may have in their silence list.  The value is OPTIONAL and if it is
-   not specified indicates SILENCE support is not available.
-
-   Whilst a formal definition of the SILENCE command is outside the
-   scope of this document, it is generally a list of masks of equivalent
-   form to those defined as type A in the CHANMODES (Appendix A.3)
-   parameter.  Any messages, as defined in Section 6.12 that originate
-   from another client matching the given mask, with a destination of
-   the client itself will be dropped by the server.
-
-   An example SILENCE token:
-
-     SILENCE=15
-
-   Indicates that the client may have 15 masks in their silence list.
-
-A.18.  STATUSMSG
+A.17.  STATUSMSG
 
      STATUSMSG=string
 
@@ -1675,20 +1654,13 @@ A.18.  STATUSMSG
 
    An example STATUSMSG token:
 
-
-
-Oakley & Allnutt        Expires November 27, 2015              [Page 30]
-
-Internet-Draft                    IRCv3                         May 2015
-
-
      STATUSMSG=@+
 
    Presuming the hash character ("#") is defined within the CHANTYPES
    (Appendix A.5) parameter, allows the client to send a NOTICE command
    to "@#channel" and "+#channel".
 
-A.19.  TARGMAX
+A.18.  TARGMAX
 
      TARGMAX=[cmd:number,cmd:number,...]
 
@@ -1702,6 +1674,14 @@ A.19.  TARGMAX
 
    If the number is not specified for a particular command, then the
    command does not have a limit on the number of targets.  The server
+
+
+
+Oakley & Allnutt        Expires November 27, 2015              [Page 30]
+
+Internet-Draft                    IRCv3                         May 2015
+
+
    MUST specify all commands available to the user which support
    multiple targets.
 
@@ -1717,7 +1697,7 @@ A.19.  TARGMAX
    target to a WHOIS command and an unlimited number of targets to a
    JOIN command.
 
-A.20.  TOPICLEN
+A.19.  TOPICLEN
 
      TOPICLEN=number
 
@@ -1729,14 +1709,6 @@ A.20.  TOPICLEN
    An example TOPICLEN token:
 
      TOPICLEN=120
-
-
-
-
-Oakley & Allnutt        Expires November 27, 2015              [Page 31]
-
-Internet-Draft                    IRCv3                         May 2015
-
 
    Limits the length of a topic to 120 characters.
 
@@ -1761,32 +1733,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Oakley & Allnutt        Expires November 27, 2015              [Page 32]
+Oakley & Allnutt        Expires November 27, 2015              [Page 31]

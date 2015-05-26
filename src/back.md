@@ -250,21 +250,6 @@ An example SAFELIST token:
       SAFELIST
 
 
-## SILENCE
-
-      SILENCE=number
-
-The SILENCE parameter indicates the maximum number of entries a user may have in their silence list. The value is OPTIONAL and if it is not specified indicates SILENCE support is not available.
-
-Whilst a formal definition of the SILENCE command is outside the scope of this document, it is generally a list of masks of equivalent form to those defined as type A in the CHANMODES ([](#chanmodes)) parameter. Any messages, as defined in [](#sending-messages) that originate from another client matching the given mask, with a destination of the client itself will be dropped by the server.
-
-An example SILENCE token:
-
-      SILENCE=15
-
-Indicates that the client may have 15 masks in their silence list.
-
-
 ## STATUSMSG
 
       STATUSMSG=string
