@@ -26,7 +26,7 @@ Current IRC implementations, and a certain subset of features defined by the [IR
 * `SASL`
 * Message Tags
 
-This spec also assumes that a spanning-tree layout is not the only allowable layout for an IRC network. This may be a controversial decision, but we do have IRCds experimenting with things like mesh networking (as well as competing protocols such as RobustIRC), and I think allowing for that sort of topology in the spec could be a good thing. This is up for discussion, could be premature to be changing the spec like this.
+This spec also assumes that a spanning-tree layout is not the only allowable layout for an IRC network. This may be a controversial decision, but we do have IRCds experimenting with things like mesh networking (as well as competing protocols such as RobustIRC), and I think allowing for this in the spec is a good thing.
 
 
 ## What are we not covering?
@@ -45,7 +45,7 @@ If necessary, we could name this something like the IRCv3 Client RFC, though thi
 
 ---
 
-`STARTTLS` should not be documented in here. There are quite a few issues that make it really annoying to implement client-side, there aren't that many clients that do actually support it, and I think we'd get better adoption and reception if we just present port 6697.
+`STARTTLS` should not be documented in here. There are quite a few issues that make it really annoying to implement client-side, there aren't that many clients that do actually support it, and I think we'd get better adoption and reception if we just present port 6697 as in [RFC7194](https://tools.ietf.org/html/rfc7194).
 
 
 ## Building
@@ -70,4 +70,4 @@ When putting in a pull request, ***ONLY*** submit a change for the source files.
 
 I hope to (when it's good and ready) submit this document to the IETF and get a new RFC more closely describing how IRC works these days.
 
-The 'backup plan' if it won't get accepted is to just try and turn it into a "Modern IRC" document for the IRCv3 WG instead.
+The 'backup plan' is to just try and turn it into a "Modern IRC" document for the IRCv3 WG instead.
