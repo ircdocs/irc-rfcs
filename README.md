@@ -2,6 +2,8 @@
 
 I'm trying to write an update to the outdated [RFC1459](https://tools.ietf.org/html/rfc1459) and [RFC2812](https://tools.ietf.org/html/rfc2812).
 
+Newest builds are available here: [HTML](https://rawgit.com/DanielOaks/ircv3-rfc/master/dist/id-oakley-ircv3-latest.html) / [Text](https://rawgit.com/DanielOaks/ircv3-rfc/master/dist/id-oakley-ircv3-latest.html)
+
 **NOTE**: This is very unfinished and WiP. Especially the architectural components. Most of it is copy-paste from RFC1459 (possibly with minor changes), as I'm starting off with that, then going through it with RFC2812 (and seeing if anything from there is useful / implemented today), and then going through it with the newer specs/IDs and updating as needed. Ignore the stuff that's wrong and/or insane right now (or let me know).
 
 
@@ -52,7 +54,7 @@ To build this, install Python, then [Pandoc](http://pandoc.org/installing.html),
 
 Once you have those tools, the `build.sh` script should put the built txt and html files in the `dist/` directory.
 
-You can also find the occasionally-updated in-progress versions [here](http://danieloaks.net/ircv3-rfc/draft.html).
+You can also find the occasionally-updated in-progress versions here: [HTML](https://rawgit.com/DanielOaks/ircv3-rfc/master/dist/id-oakley-ircv3-latest.html) / [Text](https://rawgit.com/DanielOaks/ircv3-rfc/master/dist/id-oakley-ircv3-latest.html)
 
 
 ## Contributing
