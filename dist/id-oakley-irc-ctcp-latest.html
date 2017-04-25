@@ -306,8 +306,8 @@ address {
   <meta name="dct.creator" content="Mikulenas, M. and D. Oakley" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-oakley-irc-ctcp-latest" />
   <meta name="dct.issued" scheme="ISO8601" content="2017-4-25" />
-  <meta name="dct.abstract" content="This document describes the Client-to-Client Protocol (CTCP) which lets IRC clients send each other messages that get displayed or responded to in special ways. CTCP is widely used, with some IRC networks requiring that clients support it in order to connect to them. This document details how to implement CTCP and lists the most common messages." />
-  <meta name="description" content="This document describes the Client-to-Client Protocol (CTCP) which lets IRC clients send each other messages that get displayed or responded to in special ways. CTCP is widely used, with some IRC networks requiring that clients support it in order to connect to them. This document details how to implement CTCP and lists the most common messages." />
+  <meta name="dct.abstract" content="This document describes the Client-to-Client Protocol (CTCP), which lets IRC clients send each other messages that get displayed or responded to in special ways. CTCP is widely used, with some IRC networks requiring that clients support it in order to connect to them. This document details how to implement CTCP and lists the most common messages." />
+  <meta name="description" content="This document describes the Client-to-Client Protocol (CTCP), which lets IRC clients send each other messages that get displayed or responded to in special ways. CTCP is widely used, with some IRC networks requiring that clients support it in order to connect to them. This document details how to implement CTCP and lists the most common messages." />
 
 </head>
 
@@ -347,7 +347,7 @@ address {
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
 </h1>
-<p>This document describes the Client-to-Client Protocol (CTCP) which lets IRC clients send each other messages that get displayed or responded to in special ways. CTCP is widely used, with some IRC networks requiring that clients support it in order to connect to them. This document details how to implement CTCP and lists the most common messages.</p>
+<p>This document describes the Client-to-Client Protocol (CTCP), which lets IRC clients send each other messages that get displayed or responded to in special ways. CTCP is widely used, with some IRC networks requiring that clients support it in order to connect to them. This document details how to implement CTCP and lists the most common messages.</p>
 <h1 id="rfc.status">
   <a href="#rfc.status">Status of This Memo</a>
 </h1>
@@ -487,13 +487,13 @@ address {
 Type:    Extended Formatting
 Params:  ACTION &lt;text&gt;
 </pre>
-<p id="rfc.section.A.1.p.1">This extended formatting message shows that <samp>&lt;text&gt;</samp> should be displayed as a third-person action or emote; in clients, it&#8217;s generally activated with the command /me.</p>
+<p id="rfc.section.A.1.p.1">This extended formatting message shows that &lt;text&gt; should be displayed as a third-person action or emote; in clients, it&#8217;s generally activated with the command /me.</p>
 <p id="rfc.section.A.1.p.2">ACTION is universally implemented and very commonly used. Clients MUST implement this CTCP message.</p>
 <p id="rfc.section.A.1.p.3">Example:</p>
 <pre>
-  Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION writes!\x01
+  Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION does it!\x01
 
-  Formatted:  * dan writes!
+  Formatted:  * dan does it!
 </pre>
 <h1 id="rfc.appendix.A.2"><a href="#rfc.appendix.A.2">A.2.</a> <a href="#clientinfo" id="clientinfo">CLIENTINFO</a></h1>
 <pre>

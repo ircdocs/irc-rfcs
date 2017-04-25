@@ -14,7 +14,7 @@ Expires: October 27, 2017                                 April 25, 2017
 
 Abstract
 
-   This document describes the Client-to-Client Protocol (CTCP) which
+   This document describes the Client-to-Client Protocol (CTCP), which
    lets IRC clients send each other messages that get displayed or
    responded to in special ways.  CTCP is widely used, with some IRC
    networks requiring that clients support it in order to connect to
@@ -297,7 +297,7 @@ A.1.  ACTION
    Type:    Extended Formatting
    Params:  ACTION <text>
 
-   This extended formatting message shows that "<text>" should be
+   This extended formatting message shows that <text> should be
    displayed as a third-person action or emote; in clients, it's
    generally activated with the command /me.
 
@@ -306,9 +306,9 @@ A.1.  ACTION
 
    Example:
 
-     Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION writes!\x01
+     Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION does it!\x01
 
-     Formatted:  * dan writes!
+     Formatted:  * dan does it!
 
 A.2.  CLIENTINFO
 
