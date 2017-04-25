@@ -391,7 +391,7 @@ address {
   </ul>
 
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a></h1>
-<p id="rfc.section.1.p.1">The core Internet Relay Chat (IRC) protocol as described in <a href="#RFC1459">[RFC1459]</a> and <a href="#RFC2812">[RFC2812]</a> only have a single user messaging type, and do not provide a way for clients to exchange information directly. Client-to-Client Protocol (CTCP) messages let clients exchange messages that get displayed or responded to in special ways. Some examples of how CTCP is used today is to request special formatting on messages, query other clients for metadata, and help initiate file transfers with other clients.</p>
+<p id="rfc.section.1.p.1">The core Internet Relay Chat (IRC) protocol as described in <a href="#RFC1459">[RFC1459]</a> and <a href="#RFC2812">[RFC2812]</a> only has a single user messaging type, and do not provide a way for clients to exchange information directly. Client-to-Client Protocol (CTCP) messages let clients exchange messages that get displayed or responded to in special ways. Some examples of how CTCP is used today is to request special formatting on messages, query other clients for metadata, and help initiate file transfers with other clients.</p>
 <p id="rfc.section.1.p.2">This document goes over the subset of CTCP which is commonly implemented today, and is compatible with clients implementing CTCP as described by older documents.</p>
 <p id="rfc.section.1.p.3">The key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;,  &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.</p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#message-syntax" id="message-syntax">Message Syntax</a></h1>
@@ -410,7 +410,7 @@ address {
 <p id="rfc.section.2.p.2">Commands are case-insensitive. When creating new CTCP commands, authors SHOULD use only alphanumeric characters for ease of implementation.</p>
 <p id="rfc.section.2.p.3">The final <samp>delim</samp> SHOULD be sent on outgoing messages for compatibility reasons, and software MUST accept incoming messages which lack it. This is due to how certain clients implement message splitting.</p>
 <p id="rfc.section.2.p.4">CTCP queries are sent with the PRIVMSG IRC command, and CTCP replies are sent with NOTICE command.</p>
-<p id="rfc.section.2.p.5">Queries MAY be sent to channels. When these queries are responded to, the responses are sent to the querying client rather than the channel which the query was originally sent to. Channel-directed CTCP messages SHOULD never cause an error reply.</p>
+<p id="rfc.section.2.p.5">Queries MAY be sent to channels. When these queries are responded to, the responses are sent to the querying client rather than the channel which the query was originally sent to.</p>
 <p id="rfc.section.2.p.6">Here are two examples of CTCP queries and replies:</p>
 <pre>
   :dx PRIVMSG SaberUK :\x01VERSION\x01
@@ -423,10 +423,9 @@ address {
 <p id="rfc.section.3.p.1">CTCP messages generally take on one of these types. These message types are defined here to simplify understanding, and aren&#8217;t differentiated by the protocol itself.</p>
 <h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#extended-formatting" id="extended-formatting">Extended formatting</a></h1>
 <p id="rfc.section.3.1.p.1">This type of CTCP is used to request special formatting of a user-visible message. That is, to send a user-visible message that should be displayed differently from regular messages - e.g. as an action, a whisper, an announcement.</p>
-<p id="rfc.section.3.1.p.2">Extended formatting messages are sent as a PRIVMSG. There is no automatic response to this message type, as it is not a query nor reply.</p>
-<p id="rfc.section.3.1.p.3">Extended formatting messages are expected to be used in channels as well as between clients. However, implementers should be aware that many servers implement optional filtering to prevent any CTCP messages apart from ACTION from being sent to channels.</p>
-<p id="rfc.section.3.1.p.4">These messages are sent as a PRIVMSG and can have parameters, but generate no reply.</p>
-<p id="rfc.section.3.1.p.5">Example:</p>
+<p id="rfc.section.3.1.p.2">Extended formatting messages are sent as a PRIVMSG, and are expected to be used in channels as well as between clients. There is no automatic response to this message type, as it is not a query nor reply.</p>
+<p id="rfc.section.3.1.p.3">These messages are sent as a PRIVMSG and can have parameters, but generate no reply.</p>
+<p id="rfc.section.3.1.p.4">Example:</p>
 <pre>
   :dan- PRIVMSG #ircv3 :\x01ACTION writes the best specs!\x01
 </pre>
@@ -453,9 +452,10 @@ address {
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#messages" id="messages">Messages</a></h1>
 <p id="rfc.section.4.p.1">CTCP messages themselves are not standardised. Clients that receive either unexpected messages or known messages with unexpected values SHOULD ignore them and produce no response to the sending user.</p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
-<p id="rfc.section.5.p.1">CTCP messages are untrusted data, and clients MUST NOT assume that they are well-formed or complete.</p>
+<p id="rfc.section.5.p.1">CTCP messages are completely untrusted data, and clients MUST NOT assume that they are well-formed or complete.</p>
 <p id="rfc.section.5.p.2">Older CTCP specifications describe quoting which is complex and not widely implemented. Implementations SHOULD NOT implement low-level quoting or CTCP-level quoting when parsing messages.</p>
 <p id="rfc.section.5.p.3">Older CTCP specifications describe including more than one CTCP message inside a PRIVMSG or a NOTICE. Implementations SHOULD NOT implement this form of CTCP parsing as it is not widely-implemented and may result in an implementation can be attacked or spammed more easily.</p>
+<p id="rfc.section.5.p.4">Many servers implement optional filtering to prevent any CTCP messages apart from ACTION from being sent to channels. When this is done, it can typically be enabled or disabled by channel operators with a channel mode.</p>
 <h1 id="rfc.references"><a href="#rfc.references">6.</a> Normative References</h1>
 <table>
   <tbody>
@@ -481,6 +481,7 @@ address {
 </table>
 <h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> <a href="#message-list" id="message-list">Message List</a></h1>
 <p id="rfc.section.A.p.1">This section is not exhaustive, and only lists those CTCP messages which are widely implemented across the IRC ecosystem.</p>
+<p id="rfc.section.A.p.2">The reply and parameter lines below use a simplified syntax that uses represents variables by surrounding them with angle-brackets, and represents repeating segments by surrounding them with curly-brackets.</p>
 <h1 id="rfc.appendix.A.1"><a href="#rfc.appendix.A.1">A.1.</a> <a href="#action" id="action">ACTION</a></h1>
 <pre>
 Type:    Extended Formatting
@@ -499,7 +500,7 @@ Params:  ACTION &lt;text&gt;
 Type:   Metadata Query
 Reply:  CLIENTINFO &lt;token&gt;{ &lt;token&gt;}
 </pre>
-<p id="rfc.section.A.2.p.1">This metadata query returns a list of the CTCP messages that this client supports and implements.</p>
+<p id="rfc.section.A.2.p.1">This metadata query returns a list of the CTCP messages that this client supports and implements, delimited by a single ASCII space.</p>
 <p id="rfc.section.A.2.p.2">CLIENTINFO is widely implemented. Clients SHOULD implement this CTCP message.</p>
 <p id="rfc.section.A.2.p.3">Example:</p>
 <pre>
@@ -532,7 +533,7 @@ Reply:  FINGER &lt;info&gt;
 Type:    Extended Query
 Params:  PING &lt;info&gt;
 </pre>
-<p id="rfc.section.A.5.p.1">This extended query is used to confirm reachability with other clients and to check latency. When receiving a CTCP PING, the reply must contain exactly the same parameters as the original query.</p>
+<p id="rfc.section.A.5.p.1">This extended query is used to confirm reachability with other clients and to check latency. When receiving a CTCP PING, the reply MUST contain exactly the same parameters as the original query.</p>
 <p id="rfc.section.A.5.p.2">PING is universally implemented. Clients MUST implement this CTCP message.</p>
 <p id="rfc.section.A.5.p.3">Example:</p>
 <pre>
@@ -560,7 +561,7 @@ Type:    Extended Query
 Params:  TIME &lt;timestring&gt;
 </pre>
 <p id="rfc.section.A.7.p.1">This extended query is used to return the client&#8217;s local time in an unspecified human-readable format. We recommend ISO 8601 format, but raw ctime() output appears to be the most common in practice.</p>
-<p id="rfc.section.A.7.p.2">New implementations SHOULD default to UTC time for privacy reasons.</p>
+<p id="rfc.section.A.7.p.2">New implementations MAY default to UTC time for privacy reasons.</p>
 <p id="rfc.section.A.7.p.3">TIME is almost universally implemented. Clients SHOULD implement this CTCP message.</p>
 <p id="rfc.section.A.7.p.4">Example:</p>
 <pre>

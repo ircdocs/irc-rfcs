@@ -35,7 +35,7 @@ This document describes the Client-to-Client Protocol (CTCP) which lets IRC clie
 
 # Introduction
 
-The core Internet Relay Chat (IRC) protocol as described in {{!RFC1459}} and {{!RFC2812}} only have a single user messaging type, and do not provide a way for clients to exchange information directly. Client-to-Client Protocol (CTCP) messages let clients exchange messages that get displayed or responded to in special ways. Some examples of how CTCP is used today is to request special formatting on messages, query other clients for metadata, and help initiate file transfers with other clients.
+The core Internet Relay Chat (IRC) protocol as described in {{!RFC1459}} and {{!RFC2812}} only has a single user messaging type, and do not provide a way for clients to exchange information directly. Client-to-Client Protocol (CTCP) messages let clients exchange messages that get displayed or responded to in special ways. Some examples of how CTCP is used today is to request special formatting on messages, query other clients for metadata, and help initiate file transfers with other clients.
 
 This document goes over the subset of CTCP which is commonly implemented today, and is compatible with clients implementing CTCP as described by older documents.
 
@@ -65,7 +65,7 @@ The final `delim` SHOULD be sent on outgoing messages for compatibility reasons,
 
 CTCP queries are sent with the PRIVMSG IRC command, and CTCP replies are sent with NOTICE command.
 
-Queries MAY be sent to channels. When these queries are responded to, the responses are sent to the querying client rather than the channel which the query was originally sent to. Channel-directed CTCP messages SHOULD never cause an error reply.
+Queries MAY be sent to channels. When these queries are responded to, the responses are sent to the querying client rather than the channel which the query was originally sent to.
 
 Here are two examples of CTCP queries and replies:
 
@@ -87,9 +87,7 @@ CTCP messages generally take on one of these types. These message types are defi
 
 This type of CTCP is used to request special formatting of a user-visible message. That is, to send a user-visible message that should be displayed differently from regular messages - e.g. as an action, a whisper, an announcement.
 
-Extended formatting messages are sent as a PRIVMSG. There is no automatic response to this message type, as it is not a query nor reply.
-
-Extended formatting messages are expected to be used in channels as well as between clients. However, implementers should be aware that many servers implement optional filtering to prevent any CTCP messages apart from ACTION from being sent to channels.
+Extended formatting messages are sent as a PRIVMSG, and are expected to be used in channels as well as between clients. There is no automatic response to this message type, as it is not a query nor reply.
 
 These messages are sent as a PRIVMSG and can have parameters, but generate no reply.
 
@@ -143,11 +141,13 @@ CTCP messages themselves are not standardised. Clients that receive either unexp
 
 # Security Considerations
 
-CTCP messages are untrusted data, and clients MUST NOT assume that they are well-formed or complete.
+CTCP messages are completely untrusted data, and clients MUST NOT assume that they are well-formed or complete.
 
 Older CTCP specifications describe quoting which is complex and not widely implemented. Implementations SHOULD NOT implement low-level quoting or CTCP-level quoting when parsing messages.
 
 Older CTCP specifications describe including more than one CTCP message inside a PRIVMSG or a NOTICE. Implementations SHOULD NOT implement this form of CTCP parsing as it is not widely-implemented and may result in an implementation can be attacked or spammed more easily.
+
+Many servers implement optional filtering to prevent any CTCP messages apart from ACTION from being sent to channels. When this is done, it can typically be enabled or disabled by channel operators with a channel mode.
 
 
 --- back
@@ -156,6 +156,8 @@ Older CTCP specifications describe including more than one CTCP message inside a
 # Message List
 
 This section is not exhaustive, and only lists those CTCP messages which are widely implemented across the IRC ecosystem.
+
+The reply and parameter lines below use a simplified syntax that uses represents variables by surrounding them with angle-brackets, and represents repeating segments by surrounding them with curly-brackets.
 
 
 ## ACTION
@@ -185,7 +187,7 @@ Type:   Metadata Query
 Reply:  CLIENTINFO <token>{ <token>}
 ~~~
 
-This metadata query returns a list of the CTCP messages that this client supports and implements.
+This metadata query returns a list of the CTCP messages that this client supports and implements, delimited by a single ASCII space.
 
 CLIENTINFO is widely implemented. Clients SHOULD implement this CTCP message.
 
@@ -239,7 +241,7 @@ Type:    Extended Query
 Params:  PING <info>
 ~~~
 
-This extended query is used to confirm reachability with other clients and to check latency. When receiving a CTCP PING, the reply must contain exactly the same parameters as the original query.
+This extended query is used to confirm reachability with other clients and to check latency. When receiving a CTCP PING, the reply MUST contain exactly the same parameters as the original query.
 
 PING is universally implemented. Clients MUST implement this CTCP message.
 
@@ -282,7 +284,7 @@ Params:  TIME <timestring>
 
 This extended query is used to return the client’s local time in an unspecified human-readable format. We recommend ISO 8601 format, but raw ctime() output appears to be the most common in practice.
 
-New implementations SHOULD default to UTC time for privacy reasons.
+New implementations MAY default to UTC time for privacy reasons.
 
 TIME is almost universally implemented. Clients SHOULD implement this CTCP message.
 

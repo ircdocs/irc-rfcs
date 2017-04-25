@@ -69,13 +69,13 @@ Table of Contents
    4.  Messages  . . . . . . . . . . . . . . . . . . . . . . . . . .   5
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
    6.  Normative References  . . . . . . . . . . . . . . . . . . . .   5
-   Appendix A.  Message List . . . . . . . . . . . . . . . . . . . .   5
+   Appendix A.  Message List . . . . . . . . . . . . . . . . . . . .   6
      A.1.  ACTION  . . . . . . . . . . . . . . . . . . . . . . . . .   6
      A.2.  CLIENTINFO  . . . . . . . . . . . . . . . . . . . . . . .   6
-     A.3.  DCC . . . . . . . . . . . . . . . . . . . . . . . . . . .   6
+     A.3.  DCC . . . . . . . . . . . . . . . . . . . . . . . . . . .   7
      A.4.  FINGER  . . . . . . . . . . . . . . . . . . . . . . . . .   7
      A.5.  PING  . . . . . . . . . . . . . . . . . . . . . . . . . .   7
-     A.6.  SOURCE  . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     A.6.  SOURCE  . . . . . . . . . . . . . . . . . . . . . . . . .   8
      A.7.  TIME  . . . . . . . . . . . . . . . . . . . . . . . . . .   8
      A.8.  VERSION . . . . . . . . . . . . . . . . . . . . . . . . .   8
      A.9.  USERINFO  . . . . . . . . . . . . . . . . . . . . . . . .   9
@@ -84,7 +84,7 @@ Table of Contents
 1.  Introduction
 
    The core Internet Relay Chat (IRC) protocol as described in [RFC1459]
-   and [RFC2812] only have a single user messaging type, and do not
+   and [RFC2812] only has a single user messaging type, and do not
    provide a way for clients to exchange information directly.  Client-
    to-Client Protocol (CTCP) messages let clients exchange messages that
    get displayed or responded to in special ways.  Some examples of how
@@ -138,8 +138,7 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
    Queries MAY be sent to channels.  When these queries are responded
    to, the responses are sent to the querying client rather than the
-   channel which the query was originally sent to.  Channel-directed
-   CTCP messages SHOULD never cause an error reply.
+   channel which the query was originally sent to.
 
    Here are two examples of CTCP queries and replies:
 
@@ -165,19 +164,16 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
 
 
+
 Mikulenas & Oakley      Expires October 27, 2017                [Page 3]
 
 Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
 
-   Extended formatting messages are sent as a PRIVMSG.  There is no
+   Extended formatting messages are sent as a PRIVMSG, and are expected
+   to be used in channels as well as between clients.  There is no
    automatic response to this message type, as it is not a query nor
    reply.
-
-   Extended formatting messages are expected to be used in channels as
-   well as between clients.  However, implementers should be aware that
-   many servers implement optional filtering to prevent any CTCP
-   messages apart from ACTION from being sent to channels.
 
    These messages are sent as a PRIVMSG and can have parameters, but
    generate no reply.
@@ -218,6 +214,10 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
    Queries sent to a channel always generate private replies.
 
+   Extended queries and replies may have parameters.
+
+   Example:
+
 
 
 
@@ -225,10 +225,6 @@ Mikulenas & Oakley      Expires October 27, 2017                [Page 4]
 
 Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
-
-   Extended queries and replies may have parameters.
-
-   Example:
 
      :mt PRIVMSG Jobe :\x01PING 1473523796 918320\x01
      :Jobe NOTICE mt :\x01PING 1473523796 918320\x01
@@ -241,8 +237,8 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
 5.  Security Considerations
 
-   CTCP messages are untrusted data, and clients MUST NOT assume that
-   they are well-formed or complete.
+   CTCP messages are completely untrusted data, and clients MUST NOT
+   assume that they are well-formed or complete.
 
    Older CTCP specifications describe quoting which is complex and not
    widely implemented.  Implementations SHOULD NOT implement low-level
@@ -253,6 +249,11 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2017
    implement this form of CTCP parsing as it is not widely-implemented
    and may result in an implementation can be attacked or spammed more
    easily.
+
+   Many servers implement optional filtering to prevent any CTCP
+   messages apart from ACTION from being sent to channels.  When this is
+   done, it can typically be enabled or disabled by channel operators
+   with a channel mode.
 
 6.  Normative References
 
@@ -269,10 +270,9 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2017
               RFC 2812, DOI 10.17487/RFC2812, April 2000,
               <http://www.rfc-editor.org/info/rfc2812>.
 
-Appendix A.  Message List
 
-   This section is not exhaustive, and only lists those CTCP messages
-   which are widely implemented across the IRC ecosystem.
+
+
 
 
 
@@ -281,6 +281,16 @@ Mikulenas & Oakley      Expires October 27, 2017                [Page 5]
 
 Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
+
+Appendix A.  Message List
+
+   This section is not exhaustive, and only lists those CTCP messages
+   which are widely implemented across the IRC ecosystem.
+
+   The reply and parameter lines below use a simplified syntax that uses
+   represents variables by surrounding them with angle-brackets, and
+   represents repeating segments by surrounding them with curly-
+   brackets.
 
 A.1.  ACTION
 
@@ -306,7 +316,7 @@ A.2.  CLIENTINFO
    Reply:  CLIENTINFO <token>{ <token>}
 
    This metadata query returns a list of the CTCP messages that this
-   client supports and implements.
+   client supports and implements, delimited by a single ASCII space.
 
    CLIENTINFO is widely implemented.  Clients SHOULD implement this CTCP
    message.
@@ -315,6 +325,18 @@ A.2.  CLIENTINFO
 
      Query:     CLIENTINFO
      Response:  CLIENTINFO ACTION DCC CLIENTINFO PING TIME VERSION
+
+
+
+
+
+
+
+
+Mikulenas & Oakley      Expires October 27, 2017                [Page 6]
+
+Internet-Draft        IRC Client-to-Client Protocol           April 2017
+
 
 A.3.  DCC
 
@@ -329,14 +351,6 @@ A.3.  DCC
 
    Explaining DCC requires its own specification, and is not described
    here.
-
-
-
-
-Mikulenas & Oakley      Expires October 27, 2017                [Page 6]
-
-Internet-Draft        IRC Client-to-Client Protocol           April 2017
-
 
    DCC is widely implemented.  Clients MAY implement this CTCP message.
 
@@ -366,12 +380,19 @@ A.5.  PING
 
    This extended query is used to confirm reachability with other
    clients and to check latency.  When receiving a CTCP PING, the reply
-   must contain exactly the same parameters as the original query.
+   MUST contain exactly the same parameters as the original query.
 
    PING is universally implemented.  Clients MUST implement this CTCP
    message.
 
    Example:
+
+
+
+Mikulenas & Oakley      Expires October 27, 2017                [Page 7]
+
+Internet-Draft        IRC Client-to-Client Protocol           April 2017
+
 
      Query:     PING 1473523721 662865
      Response:  PING 1473523721 662865
@@ -386,13 +407,6 @@ A.6.  SOURCE
 
    This metadata query is used to return the location of the source code
    for the client.
-
-
-
-Mikulenas & Oakley      Expires October 27, 2017                [Page 7]
-
-Internet-Draft        IRC Client-to-Client Protocol           April 2017
-
 
    SOURCE is rarely implemented.  Clients MAY implement this CTCP
    message.
@@ -411,7 +425,7 @@ A.7.  TIME
    unspecified human-readable format.  We recommend ISO 8601 format, but
    raw ctime() output appears to be the most common in practice.
 
-   New implementations SHOULD default to UTC time for privacy reasons.
+   New implementations MAY default to UTC time for privacy reasons.
 
    TIME is almost universally implemented.  Clients SHOULD implement
    this CTCP message.
@@ -426,6 +440,16 @@ A.8.  VERSION
    Type:   Metadata Query
    Reply:  VERSION <verstring>
 
+
+
+
+
+
+Mikulenas & Oakley      Expires October 27, 2017                [Page 8]
+
+Internet-Draft        IRC Client-to-Client Protocol           April 2017
+
+
    This metadata query is used to return the name and version of the
    client software in use.  There is no specified format for the version
    string.
@@ -437,18 +461,6 @@ A.8.  VERSION
 
      Query:     VERSION
      Response:  VERSION WeeChat 1.5-rc2 (git: v1.5-rc2-1-gc1441b1)
-
-
-
-
-
-
-
-
-Mikulenas & Oakley      Expires October 27, 2017                [Page 8]
-
-Internet-Draft        IRC Client-to-Client Protocol           April 2017
-
 
 A.9.  USERINFO
 
@@ -481,18 +493,6 @@ Authors' Addresses
    ircdocs
 
    Email: daniel@danieloaks.net
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
