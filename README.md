@@ -40,7 +40,7 @@ This is the big one, the replacement for RFC 1459 and RFC 2812 on the whole. It'
 - SASL Authentication.
 - Message Tags.
 
-This document is being actively worked on as the main [Modern Client Protocol Doc](https://modern.ircdocs.horse/). I'm **not working on this** until that document is at a point where I'm relatively happy removing the WIP tag from it.
+This document is being actively worked on as the main [Modern Client Protocol Doc](https://modern.ircdocs.horse/). I'm **not working on the client protocol spec here** until that linked Modern document is at a point where I'm relatively happy removing the WIP tag from it.
 
 [HTML](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/id-oakley-irc-client-latest.html) / [Text](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/id-oakley-irc-client-latest.txt)
 
@@ -60,7 +60,7 @@ I'm **working on this document currently**, most of that work being copyediting 
 
 The server to server protocol is explicitly not being covered here.
 
-[RFC2812](https://tools.ietf.org/html/rfc2812) says the following: "At the time of writing, the only current implementation of this protocol is the IRC server, version 2.10". Today, that's not the case. You have lots and lots of different IRCds, and lots of different server protocols in use because of it. TS6, a bunch of custom TS6 flavours, TS5, P10, InspIRCd's protocol. We're primarily aiming to document and specify what is being used today, and there simply isn't a single server protocol in use today.
+[RFC 2812](https://tools.ietf.org/html/rfc2812) says the following: "At the time of writing, the only current implementation of this protocol is the IRC server, version 2.10". Today, that's not the case. You have lots and lots of different IRCds, and lots of different server protocols in use because of it. TS6, a bunch of custom TS6 flavours, TS5, P10, InspIRCd's protocol. We're primarily aiming to document and specify what is being used today, and there simply isn't a single server protocol in use today.
 
 Especially given that there are servers (and competing IRC protocol efforts) experimenting with topologies other than the standard spanning-tree, and even their own newly-designed protocols between servers, I don't think it makes sense to try to specify a new version of the server protocol at this point. I think it's best to leave this to server authors themselves and relevant server spec documents sometime later as the technology grows and experiments, as what we specify would probably just be ignored or quickly become irrelevant.
 
