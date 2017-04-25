@@ -1,7 +1,7 @@
 ---
 coding: utf-8
 
-title: "Internet Relay Chat: Client-to-Client Protocol"
+title: "Internet Relay Chat: Client-to-Client Protocol (CTCP)"
 abbrev: IRC Client-to-Client Protocol
 docname: draft-oakley-irc-ctcp-latest
 
@@ -19,23 +19,23 @@ author:
     #name: Mantas Mikulėnas
     ins: M. Mikulenas
     name: Mantas Mikulenas
+    org: Independent
     email: grawity@gmail.com
   -
     ins: D. Oakley
     name: Daniel Oakley
-    role: editor
     org: ircdocs
     email: daniel@danieloaks.net
 
 --- abstract
 
-The Client-to-Client Protocol (CTCP) lets IRC clients send each other messages that get displayed or responded to in special ways. CTCP is widely used today, with some IRC networks requiring that clients support it in order to connect to them. This document goes over CTCP as it is used today, and the most common message types in use.
+This document describes the Client-to-Client Protocol (CTCP) which lets IRC clients send each other messages that get displayed or responded to in special ways. CTCP is widely used today, with some IRC networks requiring that clients support it in order to connect to them. This document details how CTCP is used and lists the common messages in use.
 
 --- middle
 
 # Introduction
 
-The core Internet Relay Chat (IRC) protocol as described in {{!RFC1459}} and {{!RFC2812}} only have a single user messaging type, and do not provide a way for clients to exchange information directly. CTCP messages let clients exchange messages that get displayed or responded to in special ways. Some examples of how CTCP is used today is to request special formatting on messages, query other clients for metadata, and help initiate file transfers with other clients.
+The core Internet Relay Chat (IRC) protocol as described in {{!RFC1459}} and {{!RFC2812}} only have a single user messaging type, and do not provide a way for clients to exchange information directly. Client-to-Client Protocol (CTCP) messages let clients exchange messages that get displayed or responded to in special ways. Some examples of how CTCP is used today is to request special formatting on messages, query other clients for metadata, and help initiate file transfers with other clients.
 
 This document goes over the subset of CTCP which is commonly implemented, and is compatible with clients implementing CTCP as it's described by older documents.
 
@@ -59,9 +59,13 @@ The PRIVMSG and NOTICE messages are used to transmit CTCP frames. To create a CT
 ~~~
 {: artwork-align="center" artwork-name="syntax"}
 
-The final `delim` SHOULD be sent for compatibility reasons, and software MUST accept incoming messages which lack it. This is due to how some software incorrectly implements message splitting.
+Commands are case-insensitive. When creating new CTCP commands, authors SHOULD use only alphanumeric characters for ease of implementation.
 
-CTCP queries are sent with PRIVMSG, and replies are sent with NOTICE. In addition, CTCP queries sent to channels always generate private replies.
+The final `delim` SHOULD be sent on outgoing messages for compatibility reasons, and software MUST accept incoming messages which lack it. This is due to how certain clients implement message splitting.
+
+CTCP queries are sent with the PRIVMSG IRC command, and CTCP replies are sent with NOTICE command.
+
+Queries MAY be sent to channels. When these queries are responded to, the responses are sent to the querying client rather than the channel which the query was originally sent to. Channel-directed CTCP messages SHOULD never cause an error reply.
 
 Here are two examples of CTCP queries and replies:
 
@@ -76,20 +80,18 @@ Here are two examples of CTCP queries and replies:
 
 # Message Types
 
-CTCP messages generally take on one of these types. These message types are defined here for informational purposes (to simplify understanding), and aren’t specified or differentiated by the protocol itself.
-
-Channel-directed CTCPs should never cause an error reply.
+CTCP messages generally take on one of these types. These message types are defined here to simplify understanding, and aren’t differentiated by the protocol itself.
 
 
 ## Extended formatting
 
 This type of CTCP is used to request special formatting of a user-visible message. That is, to send a user-visible message that should be displayed differently from regular messages - e.g. as an action, a whisper, an announcement.
 
-Extended formatting CTCPs are sent as a PRIVMSG. There is no automatic response to this message type, as it is not a query nor reply.
+Extended formatting messages are sent as a PRIVMSG. There is no automatic response to this message type, as it is not a query nor reply.
 
-Extended formatting CTCPs are expected to be used in channels as well as between clients. However, many servers implement optional filtering to block CTCPs in channels (apart from ACTION). Because of this, any future extended-formatting CTCPs may be restricted to private messages.
+Extended formatting messages are expected to be used in channels as well as between clients. However, implementers should be aware that many servers implement optional filtering to prevent any CTCP messages apart from ACTION from being sent to channels.
 
-These CTCP messages are sent as a PRIVMSG and generate no reply.
+These messages are sent as a PRIVMSG and can have parameters, but generate no reply.
 
 Example:
 
@@ -105,6 +107,8 @@ This type of CTCP is used to provide static information about the target client,
 This CTCP takes the form of a query and a response (as a PRIVMSG and NOTICE, respectively). Due to how bouncers interact with multiple clients, there may sometimes be multiple responses to queries.
 
 Metadata queries MUST NOT require the recipient to implement any side effects (beyond sending the reply itself); if a CTCP message causes side effects by design, it should be categorized as an extended query instead.
+
+Metadata queries do not have any parameters, but expect a reply with parameters as the response data.
 
 Example:
 
@@ -122,6 +126,8 @@ This CTCP takes the form of a query and a response (as a PRIVMSG and NOTICE, res
 
 Queries sent to a channel always generate private replies.
 
+Extended queries and replies may have parameters.
+
 Example:
 
 ~~~
@@ -130,15 +136,26 @@ Example:
 ~~~
 
 
-# CTCP Messages
+# Messages
 
-This section lists those CTCP messages which are commonly seen in use today.
+CTCP messages themselves are not standardised. Clients that receive either unexpected messages or known messages with unexpected values SHOULD ignore them and produce no response to the sending user.
 
-Extended formatting messages can have parameters, but do not generate any reply.
 
-Metadata queries do not have any parameters, but expect a reply with parameters as the response data.
+# Security Considerations
 
-Extended queries and replies may have parameters.
+CTCP messages are untrusted data, and clients MUST NOT assume that they are well-formed or complete.
+
+Older CTCP specifications describe quoting which is complex and not widely implemented. Implementations SHOULD NOT implement low-level quoting or CTCP-level quoting when parsing messages.
+
+Older CTCP specifications describe including more than one CTCP message inside a PRIVMSG or a NOTICE. Implementations SHOULD NOT implement this form of CTCP parsing as it is not widely-implemented and may result in an implementation can be attacked or spammed more easily.
+
+
+--- back
+
+
+# Message List
+
+This section is not exhaustive, and only lists those CTCP messages which are widely implemented across the IRC ecosystem.
 
 
 ## ACTION

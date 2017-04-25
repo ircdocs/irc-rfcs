@@ -13,22 +13,22 @@
 <rfc docName="draft-oakley-irc-ctcp-latest" category="info" submissionType="independent" updates="1459, 2812">
 
   <front>
-    <title abbrev="IRC Client-to-Client Protocol">Internet Relay Chat: Client-to-Client Protocol</title>
+    <title abbrev="IRC Client-to-Client Protocol">Internet Relay Chat: Client-to-Client Protocol (CTCP)</title>
 
     <author initials="M." surname="Mikulenas" fullname="Mantas Mikulenas">
-      <organization></organization>
+      <organization>Independent</organization>
       <address>
         <email>grawity@gmail.com</email>
       </address>
     </author>
-    <author initials="D." surname="Oakley" fullname="Daniel Oakley" role="editor">
+    <author initials="D." surname="Oakley" fullname="Daniel Oakley">
       <organization>ircdocs</organization>
       <address>
         <email>daniel@danieloaks.net</email>
       </address>
     </author>
 
-    <date year="2017" month="April" day="20"/>
+    <date year="2017" month="April" day="25"/>
 
     
     
@@ -37,7 +37,7 @@
     <abstract>
 
 
-<t>The Client-to-Client Protocol (CTCP) lets IRC clients send each other messages that get displayed or responded to in special ways. CTCP is widely used today, with some IRC networks requiring that clients support it in order to connect to them. This document goes over CTCP as it is used today, and the most common message types in use.</t>
+<t>This document describes the Client-to-Client Protocol (CTCP) which lets IRC clients send each other messages that get displayed or responded to in special ways. CTCP is widely used today, with some IRC networks requiring that clients support it in order to connect to them. This document details how CTCP is used and lists the common messages in use.</t>
 
 
 
@@ -51,7 +51,7 @@
 
 <section anchor="introduction" title="Introduction">
 
-<t>The core Internet Relay Chat (IRC) protocol as described in <xref target="RFC1459"/> and <xref target="RFC2812"/> only have a single user messaging type, and do not provide a way for clients to exchange information directly. CTCP messages let clients exchange messages that get displayed or responded to in special ways. Some examples of how CTCP is used today is to request special formatting on messages, query other clients for metadata, and help initiate file transfers with other clients.</t>
+<t>The core Internet Relay Chat (IRC) protocol as described in <xref target="RFC1459"/> and <xref target="RFC2812"/> only have a single user messaging type, and do not provide a way for clients to exchange information directly. Client-to-Client Protocol (CTCP) messages let clients exchange messages that get displayed or responded to in special ways. Some examples of how CTCP is used today is to request special formatting on messages, query other clients for metadata, and help initiate file transfers with other clients.</t>
 
 <t>This document goes over the subset of CTCP which is commonly implemented, and is compatible with clients implementing CTCP as it’s described by older documents.</t>
 
@@ -74,9 +74,13 @@
   body    = delim command [ SPACE params ] [ delim ]
 ]]></artwork></figure>
 
-<t>The final <spanx style="verb">delim</spanx> SHOULD be sent for compatibility reasons, and software MUST accept incoming messages which lack it. This is due to how some software incorrectly implements message splitting.</t>
+<t>Commands are case-insensitive. When creating new CTCP commands, authors SHOULD use only alphanumeric characters for ease of implementation.</t>
 
-<t>CTCP queries are sent with PRIVMSG, and replies are sent with NOTICE. In addition, CTCP queries sent to channels always generate private replies.</t>
+<t>The final <spanx style="verb">delim</spanx> SHOULD be sent on outgoing messages for compatibility reasons, and software MUST accept incoming messages which lack it. This is due to how certain clients implement message splitting.</t>
+
+<t>CTCP queries are sent with the PRIVMSG IRC command, and CTCP replies are sent with NOTICE command.</t>
+
+<t>Queries MAY be sent to channels. When these queries are responded to, the responses are sent to the querying client rather than the channel which the query was originally sent to. Channel-directed CTCP messages SHOULD never cause an error reply.</t>
 
 <t>Here are two examples of CTCP queries and replies:</t>
 
@@ -91,19 +95,17 @@
 </section>
 <section anchor="message-types" title="Message Types">
 
-<t>CTCP messages generally take on one of these types. These message types are defined here for informational purposes (to simplify understanding), and aren’t specified or differentiated by the protocol itself.</t>
-
-<t>Channel-directed CTCPs should never cause an error reply.</t>
+<t>CTCP messages generally take on one of these types. These message types are defined here to simplify understanding, and aren’t differentiated by the protocol itself.</t>
 
 <section anchor="extended-formatting" title="Extended formatting">
 
 <t>This type of CTCP is used to request special formatting of a user-visible message. That is, to send a user-visible message that should be displayed differently from regular messages - e.g. as an action, a whisper, an announcement.</t>
 
-<t>Extended formatting CTCPs are sent as a PRIVMSG. There is no automatic response to this message type, as it is not a query nor reply.</t>
+<t>Extended formatting messages are sent as a PRIVMSG. There is no automatic response to this message type, as it is not a query nor reply.</t>
 
-<t>Extended formatting CTCPs are expected to be used in channels as well as between clients. However, many servers implement optional filtering to block CTCPs in channels (apart from ACTION). Because of this, any future extended-formatting CTCPs may be restricted to private messages.</t>
+<t>Extended formatting messages are expected to be used in channels as well as between clients. However, implementers should be aware that many servers implement optional filtering to prevent any CTCP messages apart from ACTION from being sent to channels.</t>
 
-<t>These CTCP messages are sent as a PRIVMSG and generate no reply.</t>
+<t>These messages are sent as a PRIVMSG and can have parameters, but generate no reply.</t>
 
 <t>Example:</t>
 
@@ -119,6 +121,8 @@
 <t>This CTCP takes the form of a query and a response (as a PRIVMSG and NOTICE, respectively). Due to how bouncers interact with multiple clients, there may sometimes be multiple responses to queries.</t>
 
 <t>Metadata queries MUST NOT require the recipient to implement any side effects (beyond sending the reply itself); if a CTCP message causes side effects by design, it should be categorized as an extended query instead.</t>
+
+<t>Metadata queries do not have any parameters, but expect a reply with parameters as the response data.</t>
 
 <t>Example:</t>
 
@@ -136,6 +140,8 @@
 
 <t>Queries sent to a channel always generate private replies.</t>
 
+<t>Extended queries and replies may have parameters.</t>
+
 <t>Example:</t>
 
 <figure><artwork><![CDATA[
@@ -145,15 +151,81 @@
 
 </section>
 </section>
-<section anchor="ctcp-messages" title="CTCP Messages">
+<section anchor="messages" title="Messages">
 
-<t>This section lists those CTCP messages which are commonly seen in use today.</t>
+<t>CTCP messages themselves are not standardised. Clients that receive either unexpected messages or known messages with unexpected values SHOULD ignore them and produce no response to the sending user.</t>
 
-<t>Extended formatting messages can have parameters, but do not generate any reply.</t>
+</section>
+<section anchor="security-considerations" title="Security Considerations">
 
-<t>Metadata queries do not have any parameters, but expect a reply with parameters as the response data.</t>
+<t>CTCP messages are untrusted data, and clients MUST NOT assume that they are well-formed or complete.</t>
 
-<t>Extended queries and replies may have parameters.</t>
+<t>Older CTCP specifications describe quoting which is complex and not widely implemented. Implementations SHOULD NOT implement low-level quoting or CTCP-level quoting when parsing messages.</t>
+
+<t>Older CTCP specifications describe including more than one CTCP message inside a PRIVMSG or a NOTICE. Implementations SHOULD NOT implement this form of CTCP parsing as it is not widely-implemented and may result in an implementation can be attacked or spammed more easily.</t>
+
+</section>
+
+
+  </middle>
+
+  <back>
+
+    <references title='Normative References'>
+
+
+
+
+
+<reference  anchor="RFC1459" target='http://www.rfc-editor.org/info/rfc1459'>
+<front>
+<title>Internet Relay Chat Protocol</title>
+<author initials='J.' surname='Oikarinen' fullname='J. Oikarinen'><organization /></author>
+<author initials='D.' surname='Reed' fullname='D. Reed'><organization /></author>
+<date year='1993' month='May' />
+<abstract><t>The IRC protocol is a text-based protocol, with the simplest client being any socket program capable of connecting to the server.  This memo defines an Experimental Protocol for the Internet community.</t></abstract>
+</front>
+<seriesInfo name='RFC' value='1459'/>
+<seriesInfo name='DOI' value='10.17487/RFC1459'/>
+</reference>
+
+
+
+<reference  anchor="RFC2812" target='http://www.rfc-editor.org/info/rfc2812'>
+<front>
+<title>Internet Relay Chat: Client Protocol</title>
+<author initials='C.' surname='Kalt' fullname='C. Kalt'><organization /></author>
+<date year='2000' month='April' />
+<abstract><t>This document defines the Client Protocol, and assumes that the reader is familiar with the IRC Architecture.  This memo provides information for the Internet community.</t></abstract>
+</front>
+<seriesInfo name='RFC' value='2812'/>
+<seriesInfo name='DOI' value='10.17487/RFC2812'/>
+</reference>
+
+
+
+<reference  anchor="RFC2119" target='http://www.rfc-editor.org/info/rfc2119'>
+<front>
+<title>Key words for use in RFCs to Indicate Requirement Levels</title>
+<author initials='S.' surname='Bradner' fullname='S. Bradner'><organization /></author>
+<date year='1997' month='March' />
+<abstract><t>In many standards track documents several words are used to signify the requirements in the specification.  These words are often capitalized. This document defines these words as they should be interpreted in IETF documents.  This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t></abstract>
+</front>
+<seriesInfo name='BCP' value='14'/>
+<seriesInfo name='RFC' value='2119'/>
+<seriesInfo name='DOI' value='10.17487/RFC2119'/>
+</reference>
+
+
+
+
+    </references>
+
+
+
+<section anchor="message-list" title="Message List">
+
+<t>This section is not exhaustive, and only lists those CTCP messages which are widely implemented across the IRC ecosystem.</t>
 
 <section anchor="action" title="ACTION">
 
@@ -334,141 +406,92 @@ Reply:  USERINFO <info>
 </section>
 
 
-  </middle>
-
-  <back>
-
-    <references title='Normative References'>
-
-
-
-
-
-<reference  anchor="RFC1459" target='http://www.rfc-editor.org/info/rfc1459'>
-<front>
-<title>Internet Relay Chat Protocol</title>
-<author initials='J.' surname='Oikarinen' fullname='J. Oikarinen'><organization /></author>
-<author initials='D.' surname='Reed' fullname='D. Reed'><organization /></author>
-<date year='1993' month='May' />
-<abstract><t>The IRC protocol is a text-based protocol, with the simplest client being any socket program capable of connecting to the server.  This memo defines an Experimental Protocol for the Internet community.</t></abstract>
-</front>
-<seriesInfo name='RFC' value='1459'/>
-<seriesInfo name='DOI' value='10.17487/RFC1459'/>
-</reference>
-
-
-
-<reference  anchor="RFC2812" target='http://www.rfc-editor.org/info/rfc2812'>
-<front>
-<title>Internet Relay Chat: Client Protocol</title>
-<author initials='C.' surname='Kalt' fullname='C. Kalt'><organization /></author>
-<date year='2000' month='April' />
-<abstract><t>This document defines the Client Protocol, and assumes that the reader is familiar with the IRC Architecture.  This memo provides information for the Internet community.</t></abstract>
-</front>
-<seriesInfo name='RFC' value='2812'/>
-<seriesInfo name='DOI' value='10.17487/RFC2812'/>
-</reference>
-
-
-
-<reference  anchor="RFC2119" target='http://www.rfc-editor.org/info/rfc2119'>
-<front>
-<title>Key words for use in RFCs to Indicate Requirement Levels</title>
-<author initials='S.' surname='Bradner' fullname='S. Bradner'><organization /></author>
-<date year='1997' month='March' />
-<abstract><t>In many standards track documents several words are used to signify the requirements in the specification.  These words are often capitalized. This document defines these words as they should be interpreted in IETF documents.  This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t></abstract>
-</front>
-<seriesInfo name='BCP' value='14'/>
-<seriesInfo name='RFC' value='2119'/>
-<seriesInfo name='DOI' value='10.17487/RFC2119'/>
-</reference>
-
-
-
-
-    </references>
-
-
-
-
   </back>
 
 <!-- ##markdown-source:
-H4sIAPmc+FgAA9VZ7XIbtxX9z6dA5OlUynBpUbYVm5E9cSgpVqsPRx/JpEmm
-BndBEqPdxXYBimI8zvQtOn2fPkmfpOdeYD8oSpaSNJ2pZ2Qud7HAxb3nnnsu
-GEVRJzaJzicDMXPj6Hmn47RL1UCsHeROlbly4lSlciGGU+kGYphqlbvImchf
-ibelcSY26VpHjkaluhqIg9Ph3cM6iYlzmWH+pJRjFxl5mapFpMs4il1cRKl0
-yrpOx85GmbZWm/x8UWC0zhNVKPyXu06MMRNTLuju2GCsk3nyV5maHAMXynYK
-PRDfY7musKZ0pRpbXC0yfxGbLMMs9sdOZ1YktNxA9J8+e9EVW8/7W52OnLmp
-KQcdISL8CfFI5xhx1BNH+nKW/usfubT+vt/GkcydtDcfLr2jqrurb9SPVCZ1
-OhCTUs61W3wxoa89mFqbwTPu9sQJO6w13a7MtUrb90tD8VOJdqbkG6ZEdOFi
-+H5ptYRf/cJ/IBK2h3B3OlEUCTmyrpQxvp1P1d3hFOvD8+HbDZEqZznwMT+3
-wiJWQsl4KoybqlJkylo5UVY4wEhMgKpE2wK4UgnME6WyhUF0E+EMtipsoWIt
-UzGXC9sTtIbQVsx1otKFmFkel8hFF7fcFFHOFK8O8+emvLSY728zXQLVfr3a
-qllRABFCO1rElAksw4KxyXMVO7qEsVlPnE+xGrw1I6SIiYHd5gpj2RDEjt63
-S3YAgfSuyIx1DDGTV3sWDgi2tCBe6Hn3ZjpJUtXpPBLIstIks9gB6t7ZsSmV
-uCX5xDq2uCGKyvWwI1E2LvUIZmD29+8/Od0fEpQ/fGB7/A1CNW6YHJ6byisl
-pLBwTKrInCow7CmY6TeSGJEbRytdweN4AWEQY4Sp8iMcpa7jqcyxO8rBMpNk
-P2Jawo/pIoSsDjrgUb9bv/ibIHFGIVfXMitSCs5YTM28xkkTGPqG1wkOoJV6
-Dm+xo103cQI3YFS5CIit7KV9Z8pJUIX07pmqtIBF2mmwhxhruBK5ktuxKq0H
-5NIMPQrr7XgixIDpLPaOLbD586lG0mC4BxGCpmmP9KJK/Pr+YQGXj7A0L1gZ
-W4+lrTVo/WMbKiPsMCXkVwZ5C5W4VAuB9EmsWDu6ODtf6/pPcXzC16d7X18c
-nO7t0vXZm9eHh/VFNeLszcnF4W5z1bw5PDk62jve5Zcx6+vv1vxW1k7enh+c
-HL8+XKMQuyU3SaQBYjciiCEZilLBA3egfqvfB+qxD2TUUUi7swV49tpv7e3p
-wTdHZ1/xmjDqYLjXwI/WCYjxccyQ3uy7cQmGBdjOQRGlomDLJWB3xcLMkE1w
-+gIYA3ZjxTEdmWQh1nVP9firU9cubAW86DYo2LK26XFlEUeSxo9Nmpo51eRO
-5+eff5ajfAzaBvfpDOT9UvzherPfwR2CCO3opeh/uk53t6LNF5gPV19Gm0N/
-tRf19/lqqx/t74sNLgDtf5/DK4BE7IBCJKcqnDi+OOz69bpieNoVh/shXGKN
-1i0kHGPFfev+2tVopcN9Woj9yFv2m682/L04e/saHguG/IgbfsCP5K/O+wGC
-ypUgkqme5C/XYkqfcq2+TaXz5ZplhKx98BgZ6xzU8I4neicCgkPIPPuFpNMp
-SjTiLa3JrTfXmrGbE5A4YWTM+9I53qBErKHmkxswuURShjJDkJ8x0onCuJTV
-s9EMpafUJrVtXVjAlppZDMBnXBJ/6QBpNpshFYDmLSWYrg7xCOyh7AiZQDiA
-zLtiaUoeS7US5J2rFBOkxMTg7VyVlBpFqa/oMywAk94orMFZPDdLXL1sa2OU
-hzviPkiu6/Q4kyNVXvxZDH4A6r/ZOz0DX9AlDauehQTCW+1R4iyXlxy5IxmD
-Q4ydiqe9/hOxh/Kn7fSHkEaDzNWrPYJMunrip3l7cPwVpOFnT55tPfnsxbZ4
-0X/+ZGuzWvtPBtiouMTd+wZtrM1OJGttCFuND+/MFNF28lJRbYKmJY+BFWwQ
-EgQb+rKsLsjNiQKEFdWnUvG2W6UZyC5mZWEsxq4jjExaegwxhRJbsoIGjjY8
-RjBZ/u+//zPUy7H2BTnRY1Q4qi3S+TJCXFXLEe2sSseERI+QyIsBjKQ9AkBT
-M0sTSDQqfLEE42ItocqSaz0YlNn7kdi7dorLflOkQwGlndbwacr8R6s7ES3p
-nOhKWy6XwW3kRUkqrkszsFq9faBXJ8F4RLzRKLU/EK5xaTLYMZmlsqV1I6F6
-kx6VLOxUxj6rJLEATC27fDfPzSyPObHhgFs2H9xX5yvNVsGVsUA8YSHYBDoX
-Q9GOg3ayyitabZfA0m0ULKk8GVRP3orDx81Q14UPrC9pHAZU4oYZQHQqZYE6
-giBXKq+lkHhj5gSArsioDMDfVySaam4TpghohawCY7MuxSqpAWV6C9orrUtU
-AOe9/3pISmKjJ75UHl2cNpoJGgGauRmb7jcWrWwsg1gcEXuh79HV7ipOqyLq
-hRLmXk7bW2PDmVSzY25azmUmbJGdzKNbCchvScxL7VgmQ1hUOLeftFmFaMUr
-VPE1BfOehKmEPdKe0NJW8HJkZs6LFllOatne9c0CF0HulTC20rU8O/GVDeKl
-zHzeeVwxoTSIXF/xkefQLg+hma/Q4yGMu01RHHGKEE6oiiORfNHKZqnT8GSF
-ri6tj1BQKKmOOo0IUVDrgZUV3BSEAoRt1M6ralIle0Mf6UUd2EwXOpTBBrGM
-Y/KmAh3EqM7rI7UwpAkUc2p4lySip8iNz4Ue31CSnhDt8kRgWEhd6JcupWtD
-QeH8Q//k5TCxaJWv3uU6t07J5Fas/XcKKz3mnnTrs96zZSTW3PFLkJgsoMhu
-QJEL2JVBHfTUaX2ekzt9wH9fAHY6X9+QPrIingdonxXHtzQGK4ffT2GwO4LM
-sMFF1qesgOyh9n1qVjjMS1NisrrxtMTc/tjCd9N3VIZ6jhhQ5CMG1uVo10rk
-5Ah8Eg4Uan9RzlR0uJJ8YbA/q8DAm5P58sMhpaRiKmjGUEb4jAvxprnbht+i
-O5kxbhge1IinYB9FfxKJf/Vc+41EecutCB4H0t6hpu+VDwqHQN3tOcrteTgH
-eedffHer5GDooqiVSQQBYU2lKihXVGac+pzLY0WH2kHFtVUljb5i9Vb3mlVL
-9Tijs6lgPGVorqk082utEwh22xWlVQ0TyuVeOCIM1Nmwo6sTtBJeq7lxKueD
-qj2kYvgJ1ZovpnSSdm9VrDR8iIRKMNOndLAZnje8NDw82Ds+PzjeP1mO5o3K
-eUqgwv1mOEIJEspfva8uPrSimrXRS6CGzMgpSpRpQbnfyDQOM/vFB6o6lfSQ
-bNo8ktKNEc3xZysajdtDu/rLHM879q5veQcBCbmz7Ibg993hsH2XCen84GhP
-hOLQeBwj70oc7+s6Z2jOHaoRr8QOZAef/+CSIIAPck7IJBq4Ti7d5eZi9WC6
-akc22lXGIioFexfqxZVoVhoVUx0/mvrw8qZoBessCmltVcvpoNkL16aDh+06
-5lzhNan5GitJkjPMXwkJAIN0lZAZNI0HSCnHY5S+G6tSSoeTpTl6VVbBbIY/
-NOT1g6AAgIi67fJRpD/J9W5C3fLdBXhE57QRcmSwiZoBLDfPq3YvlqFT8WeN
-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
+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
 
 -->
 
