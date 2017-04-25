@@ -2,7 +2,10 @@
 
 I'm trying to write an update to the outdated [RFC1459](https://tools.ietf.org/html/rfc1459) and [RFC2812](https://tools.ietf.org/html/rfc2812).
 
-Newest builds are available here: [HTML](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/id-oakley-irc-client-latest.html) / [Text](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/id-oakley-irc-client-latest.txt)
+Newest builds are available here:
+
+- IRC Client: [HTML](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/id-oakley-irc-client-latest.html) / [Text](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/id-oakley-irc-client-latest.txt)
+- IRC CTCP: [HTML](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/id-oakley-irc-ctcp-latest.html) / [Text](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/id-oakley-irc-ctcp-latest.txt)
 
 The 'drafts' in this repo are based off my [Modern docs](https://modern.ircdocs.horse/). This repo can be considered 'on hold' until the relevant Modern documents are stable and complete enough for me to be happy with. Recent updates in this repo are just an attempt to prove that the tech works, not to actually start work in this repo.
 

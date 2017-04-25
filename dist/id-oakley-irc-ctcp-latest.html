@@ -1,0 +1,633 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+  <title>Internet Relay Chat: Client-to-Client Protocol</title>
+
+  
+<style type="text/css">/*<![CDATA[*/
+@viewport {
+  zoom: 1.0;
+  width: extend-to-zoom;
+}
+@-ms-viewport {
+  width: extend-to-zoom;
+  zoom: 1.0;
+}
+
+@media screen and (min-width: 1024px) {
+  ul.toc, #rfc\.toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 500px);
+    width: 300px;
+    padding: 0 1em;
+    z-index: 1;
+  }
+  #rfc\.toc {
+    top: 16px;
+  }
+  ul.toc {
+    top: 80px;
+    overflow: auto;
+  }
+
+  body {
+    padding-left: 1.5em;
+    padding-right: 29em;
+  }
+}
+
+body {
+  font: 15px "Helvetica Neue",Helvetica,Arial,sans-serif;
+  color: #333;
+  font-size-adjust: 0.5;
+  line-height: 130%;
+  margin: 2.5em auto;
+  max-width: 724px;
+}
+
+.title, .filename, h1, h2, h3, h4 {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size-adjust: 0.5;
+  font-weight: 500;
+  color: #333;
+  line-height: 100%;
+  margin: 0.8em 0 0.3em;
+}
+.title { font-size: 36px; }
+h1 { font-size: 30px; }
+h2 { font-size: 24px; }
+h3, h4 { font-size: 18px; }
+h1 a[href], h2 a[href], h3 a[href], h4 a[href] {
+  color: #333;
+}
+
+ul.toc li {
+  list-style: none;
+  text-indent: -2.5em;
+  padding-left: 2.5em;
+  padding-bottom: 5px;
+  margin: 0;
+}
+ul.toc ul {
+  margin: 0;
+}
+/* xml2rfc nests ul directly inside ul which messes with the style badly */
+ul.toc, ul.toc>ul, ul.toc ul>ul {
+  margin: 0 0 0 1.5em;
+}
+
+table {
+  margin-left: 0em;
+  border-collapse: collapse;
+}
+th {
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+}
+td {
+  border-top: 1px solid #ddd;
+  vertical-align: top;
+}
+tr:nth-child(2n+1) > td,
+tr:nth-child(2n+1) > th {
+  background-color: #f9f9f9;
+}
+td.reference {
+  max-width: 200px;
+  border-top: none;
+  padding-right: 1em;
+}
+.right {
+  text-align: right;
+}
+
+
+table.header {
+  width: 100%;
+}
+table.header td {
+  border: none;
+  background-color: transparent;
+  color: black;
+}
+.filename {
+  color: rgb(119, 119, 119);
+  font-size: 23px;
+  font-weight: normal;
+  height: auto;
+  line-height: 100%;
+}
+#rfc\.abstract+p {
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 130%;
+}
+
+samp, tt, code, pre {
+  font: 11pt consolas, monospace;
+  font-size-adjust: none;
+}
+pre {
+  background-color: #eee;
+  border: 1px solid #ddd;
+  overflow-x: auto;
+  padding: 5px;
+  margin: 5px;
+}
+.figure {
+  font-style: italic;
+  margin: 0 1.5em;
+}
+
+address {
+  margin: 10px 0 0;
+}
+.vcard {
+  font-style: normal;
+}
+.vcardline {
+  display: block;
+}
+.vcardline .fn {
+  font-weight: bold;
+}
+.vcardline .hidden {
+  display: none;
+}
+
+dl {
+  margin-left: 1em;
+}
+dl.dl-horizontal: {
+  margin-left: 0;
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.nohang > dt {
+  float: none;
+}
+dl > dd {
+  margin-bottom: .5em;
+}
+dl.compact > dd {
+  margin-bottom: 0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+ul.empty {
+  list-style-type: none;
+}
+ul.empty li {
+  margin-top: .5em;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #eee;
+}
+
+a {
+  text-decoration: none;
+}
+a[href] {
+  color: #2a6496;
+}
+a[href]:hover {
+  background-color: #eee;
+}
+
+ol, ul, li, p {
+  padding: 0;
+  margin: 0.5em 0 0.5em 2em;
+}
+li, p {
+  margin-left: 0;
+}
+address {
+  font-style: normal;
+}
+
+.github-fork-ribbon-wrapper {
+  display: none;
+}
+@media screen and (min-width: 800px) {
+  /* "Fork me on GitHub" CSS ribbon based on
+   * https://github.com/simonwhitaker/github-fork-ribbon-css
+   */
+  .github-fork-ribbon {
+    position: absolute;
+    padding: 2px 0;
+    background-color: #a00;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
+    font: 700 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    pointer-events: auto;
+
+    top: 38px;
+    right: -45px;
+
+    transform: rotate(45deg);
+  }
+
+  .github-fork-ribbon a[href],
+  .github-fork-ribbon a[href]:hover {
+    color: #fff;
+    background-color: transparent;
+    text-decoration: none;
+    text-shadow: 0 -1px rgba(0, 0, 0, 0.5);
+    text-align: center;
+
+    width: 190px;
+    line-height: 18px;
+
+    display: inline-block;
+    padding: 2px 0;
+
+    border: 1.5px dotted #fff;
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+
+  .github-fork-ribbon-wrapper {
+    display: block;
+    width: 130px;
+    height: 130px;
+    position: absolute;
+    overflow: hidden;
+    top: 0; right: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+}
+@media screen and (min-width: 1000px) {
+  .github-fork-ribbon-wrapper {
+    position: fixed;
+  }
+
+/*]]>*/</style>
+
+
+  <link href="#rfc.toc" rel="Contents"/>
+<link href="#rfc.section.1" rel="Chapter" title="1 Introduction"/>
+<link href="#rfc.section.2" rel="Chapter" title="2 Message Syntax"/>
+<link href="#rfc.section.3" rel="Chapter" title="3 Message Types"/>
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Extended formatting"/>
+<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Metadata Query"/>
+<link href="#rfc.section.3.3" rel="Chapter" title="3.3 Extended Query"/>
+<link href="#rfc.section.4" rel="Chapter" title="4 CTCP Messages"/>
+<link href="#rfc.section.4.1" rel="Chapter" title="4.1 ACTION"/>
+<link href="#rfc.section.4.2" rel="Chapter" title="4.2 CLIENTINFO"/>
+<link href="#rfc.section.4.3" rel="Chapter" title="4.3 DCC"/>
+<link href="#rfc.section.4.4" rel="Chapter" title="4.4 FINGER"/>
+<link href="#rfc.section.4.5" rel="Chapter" title="4.5 PING"/>
+<link href="#rfc.section.4.6" rel="Chapter" title="4.6 SOURCE"/>
+<link href="#rfc.section.4.7" rel="Chapter" title="4.7 TIME"/>
+<link href="#rfc.section.4.8" rel="Chapter" title="4.8 VERSION"/>
+<link href="#rfc.section.4.9" rel="Chapter" title="4.9 USERINFO"/>
+<link href="#rfc.references" rel="Chapter" title="5 Normative References"/>
+<link href="#rfc.authors" rel="Chapter"/>
+
+
+  <meta name="generator" content="xml2rfc version 2.5.2 - http://tools.ietf.org/tools/xml2rfc" />
+  <link rel="schema.dct" href="http://purl.org/dc/terms/" />
+
+  <meta name="dct.creator" content="Mikulenas, M. and D. Oakley, Ed." />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-oakley-irc-ctcp-latest" />
+  <meta name="dct.issued" scheme="ISO8601" content="2017-4-20" />
+  <meta name="dct.abstract" content="The Client-to-Client Protocol (CTCP) lets IRC clients send each other messages that get displayed or responded to in special ways. CTCP is widely used today, with some IRC networks requiring that clients support it in order to connect to them. This document goes over CTCP as it is used today, and the most common message types in use." />
+  <meta name="description" content="The Client-to-Client Protocol (CTCP) lets IRC clients send each other messages that get displayed or responded to in special ways. CTCP is widely used today, with some IRC networks requiring that clients support it in order to connect to them. This document goes over CTCP as it is used today, and the most common message types in use." />
+
+</head>
+
+<body>
+
+  <table class="header">
+    <tbody>
+    
+    	<tr>
+  <td class="left">Network Working Group</td>
+  <td class="right">M. Mikulenas</td>
+</tr>
+<tr>
+  <td class="left">Internet-Draft</td>
+  <td class="right"></td>
+</tr>
+<tr>
+  <td class="left">Updates: 1459, 2812 (if approved)</td>
+  <td class="right">D. Oakley, Ed.</td>
+</tr>
+<tr>
+  <td class="left">Intended status: Informational</td>
+  <td class="right">ircdocs</td>
+</tr>
+<tr>
+  <td class="left">Expires: October 22, 2017</td>
+  <td class="right">April 20, 2017</td>
+</tr>
+
+    	
+    </tbody>
+  </table>
+
+  <p class="title">Internet Relay Chat: Client-to-Client Protocol<br />
+  <span class="filename">draft-oakley-irc-ctcp-latest</span></p>
+  
+  <h1 id="rfc.abstract">
+  <a href="#rfc.abstract">Abstract</a>
+</h1>
+<p>The Client-to-Client Protocol (CTCP) lets IRC clients send each other messages that get displayed or responded to in special ways. CTCP is widely used today, with some IRC networks requiring that clients support it in order to connect to them. This document goes over CTCP as it is used today, and the most common message types in use.</p>
+<h1 id="rfc.status">
+  <a href="#rfc.status">Status of This Memo</a>
+</h1>
+<p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
+<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
+<p>This Internet-Draft will expire on October 22, 2017.</p>
+<h1 id="rfc.copyrightnotice">
+  <a href="#rfc.copyrightnotice">Copyright Notice</a>
+</h1>
+<p>Copyright (c) 2017 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (http://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.</p>
+
+  
+  <hr class="noprint" />
+  <h1 class="np" id="rfc.toc"><a href="#rfc.toc">Table of Contents</a></h1>
+  <ul class="toc">
+
+  	<li>1.   <a href="#rfc.section.1">Introduction</a></li>
+<li>2.   <a href="#rfc.section.2">Message Syntax</a></li>
+<li>3.   <a href="#rfc.section.3">Message Types</a></li>
+<ul><li>3.1.   <a href="#rfc.section.3.1">Extended formatting</a></li>
+<li>3.2.   <a href="#rfc.section.3.2">Metadata Query</a></li>
+<li>3.3.   <a href="#rfc.section.3.3">Extended Query</a></li>
+</ul><li>4.   <a href="#rfc.section.4">CTCP Messages</a></li>
+<ul><li>4.1.   <a href="#rfc.section.4.1">ACTION</a></li>
+<li>4.2.   <a href="#rfc.section.4.2">CLIENTINFO</a></li>
+<li>4.3.   <a href="#rfc.section.4.3">DCC</a></li>
+<li>4.4.   <a href="#rfc.section.4.4">FINGER</a></li>
+<li>4.5.   <a href="#rfc.section.4.5">PING</a></li>
+<li>4.6.   <a href="#rfc.section.4.6">SOURCE</a></li>
+<li>4.7.   <a href="#rfc.section.4.7">TIME</a></li>
+<li>4.8.   <a href="#rfc.section.4.8">VERSION</a></li>
+<li>4.9.   <a href="#rfc.section.4.9">USERINFO</a></li>
+</ul><li>5.   <a href="#rfc.references">Normative References</a></li>
+<li><a href="#rfc.authors">Authors' Addresses</a></li>
+
+
+  </ul>
+
+  <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a></h1>
+<p id="rfc.section.1.p.1">The core Internet Relay Chat (IRC) protocol as described in <a href="#RFC1459">[RFC1459]</a> and <a href="#RFC2812">[RFC2812]</a> only have a single user messaging type, and do not provide a way for clients to exchange information directly. CTCP messages let clients exchange messages that get displayed or responded to in special ways. Some examples of how CTCP is used today is to request special formatting on messages, query other clients for metadata, and help initiate file transfers with other clients.</p>
+<p id="rfc.section.1.p.2">This document goes over the subset of CTCP which is commonly implemented, and is compatible with clients implementing CTCP as it&#8217;s described by older documents.</p>
+<p id="rfc.section.1.p.3">The key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;,  &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.</p>
+<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#message-syntax" id="message-syntax">Message Syntax</a></h1>
+<p id="rfc.section.2.p.1">The PRIVMSG and NOTICE messages are used to transmit CTCP frames. To create a CTCP message, you simply replace the body (i.e. the text to be sent) of a PRIVMSG / NOTICE with the following:</p>
+<pre>
+  delim   = %x01
+
+  command = 1*( %x02-09 / %x0B-0C / %x0E-1F / %x21-FF )
+                ; any octet except NUL, delim, CR, LF, and " "
+
+  params  = 1*( %x02-09 / %x0B-0C / %x0E-FF )
+                ; any octet except NUL, delim, CR, and LF
+
+  body    = delim command [ SPACE params ] [ delim ]
+</pre>
+<p id="rfc.section.2.p.2">The final <samp>delim</samp> SHOULD be sent for compatibility reasons, and software MUST accept incoming messages which lack it. This is due to how some software incorrectly implements message splitting.</p>
+<p id="rfc.section.2.p.3">CTCP queries are sent with PRIVMSG, and replies are sent with NOTICE. In addition, CTCP queries sent to channels always generate private replies.</p>
+<p id="rfc.section.2.p.4">Here are two examples of CTCP queries and replies:</p>
+<pre>
+  :dx PRIVMSG SaberUK :\x01VERSION\x01
+  :SaberUK NOTICE dx :\x01VERSION Snak for Macintosh 4.13 English\x01
+
+  :mt PRIVMSG #ircv3 :\x01PING 1473523796 918320\x01
+  :Jobe NOTICE mt :\x01PING 1473523796 918320\x01
+</pre>
+<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#message-types" id="message-types">Message Types</a></h1>
+<p id="rfc.section.3.p.1">CTCP messages generally take on one of these types. These message types are defined here for informational purposes (to simplify understanding), and aren&#8217;t specified or differentiated by the protocol itself.</p>
+<p id="rfc.section.3.p.2">Channel-directed CTCPs should never cause an error reply.</p>
+<h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#extended-formatting" id="extended-formatting">Extended formatting</a></h1>
+<p id="rfc.section.3.1.p.1">This type of CTCP is used to request special formatting of a user-visible message. That is, to send a user-visible message that should be displayed differently from regular messages - e.g. as an action, a whisper, an announcement.</p>
+<p id="rfc.section.3.1.p.2">Extended formatting CTCPs are sent as a PRIVMSG. There is no automatic response to this message type, as it is not a query nor reply.</p>
+<p id="rfc.section.3.1.p.3">Extended formatting CTCPs are expected to be used in channels as well as between clients. However, many servers implement optional filtering to block CTCPs in channels (apart from ACTION). Because of this, any future extended-formatting CTCPs may be restricted to private messages.</p>
+<p id="rfc.section.3.1.p.4">These CTCP messages are sent as a PRIVMSG and generate no reply.</p>
+<p id="rfc.section.3.1.p.5">Example:</p>
+<pre>
+  :dan- PRIVMSG #ircv3 :\x01ACTION writes the best specs!\x01
+</pre>
+<h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#metadata-query" id="metadata-query">Metadata Query</a></h1>
+<p id="rfc.section.3.2.p.1">This type of CTCP is used to provide static information about the target client, user or connection.</p>
+<p id="rfc.section.3.2.p.2">This CTCP takes the form of a query and a response (as a PRIVMSG and NOTICE, respectively). Due to how bouncers interact with multiple clients, there may sometimes be multiple responses to queries.</p>
+<p id="rfc.section.3.2.p.3">Metadata queries MUST NOT require the recipient to implement any side effects (beyond sending the reply itself); if a CTCP message causes side effects by design, it should be categorized as an extended query instead.</p>
+<p id="rfc.section.3.2.p.4">Example:</p>
+<pre>
+  :dx PRIVMSG SaberUK :\x01VERSION\x01
+  :SaberUK NOTICE dx :\x01VERSION SaberChat 27.5\x01
+</pre>
+<h1 id="rfc.section.3.3"><a href="#rfc.section.3.3">3.3.</a> <a href="#extended-query" id="extended-query">Extended Query</a></h1>
+<p id="rfc.section.3.3.p.1">This type of CTCP is used to provide dynamic information or invoke actions from the client.</p>
+<p id="rfc.section.3.3.p.2">This CTCP takes the form of a query and a response (as a PRIVMSG and NOTICE, respectively).</p>
+<p id="rfc.section.3.3.p.3">Queries sent to a channel always generate private replies.</p>
+<p id="rfc.section.3.3.p.4">Example:</p>
+<pre>
+  :mt PRIVMSG Jobe :\x01PING 1473523796 918320\x01
+  :Jobe NOTICE mt :\x01PING 1473523796 918320\x01
+</pre>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#ctcp-messages" id="ctcp-messages">CTCP Messages</a></h1>
+<p id="rfc.section.4.p.1">This section lists those CTCP messages which are commonly seen in use today.</p>
+<p id="rfc.section.4.p.2">Extended formatting messages can have parameters, but do not generate any reply.</p>
+<p id="rfc.section.4.p.3">Metadata queries do not have any parameters, but expect a reply with parameters as the response data.</p>
+<p id="rfc.section.4.p.4">Extended queries and replies may have parameters.</p>
+<h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> <a href="#action" id="action">ACTION</a></h1>
+<pre>
+Type:    Extended Formatting
+Params:  ACTION &lt;text&gt;
+</pre>
+<p id="rfc.section.4.1.p.1">This extended formatting message shows that <samp>&lt;text&gt;</samp> should be displayed as a third-person action or emote; in clients, it&#8217;s generally activated with the command /me.</p>
+<p id="rfc.section.4.1.p.2">ACTION is universally implemented and very commonly used. Clients MUST implement this CTCP message.</p>
+<p id="rfc.section.4.1.p.3">Example:</p>
+<pre>
+  Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION writes\x01
+
+  Formatted:  * dan writes
+</pre>
+<h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> <a href="#clientinfo" id="clientinfo">CLIENTINFO</a></h1>
+<pre>
+Type:   Metadata Query
+Reply:  CLIENTINFO &lt;token&gt;{ &lt;token&gt;}
+</pre>
+<p id="rfc.section.4.2.p.1">This metadata query returns a list of the CTCP messages that this client supports and implements.</p>
+<p id="rfc.section.4.2.p.2">CLIENTINFO is widely implemented. Clients SHOULD implement this CTCP message.</p>
+<p id="rfc.section.4.2.p.3">Example:</p>
+<pre>
+  Query:     CLIENTINFO
+  Response:  CLIENTINFO ACTION DCC CLIENTINFO PING TIME VERSION
+</pre>
+<h1 id="rfc.section.4.3"><a href="#rfc.section.4.3">4.3.</a> <a href="#dcc" id="dcc">DCC</a></h1>
+<pre>
+Type:    Extended Query
+Params:  DCC &lt;type&gt; &lt;argument&gt; &lt;host&gt; &lt;port&gt;
+</pre>
+<p id="rfc.section.4.3.p.1">DCC (the Direct Client-to-Client protocol) is used to setup and control connections that go directly between clients, bypassing the IRC server. This is typically used for features that require a large amount of traffic between clients or simply wish to bypass the server itself such as file transfer and direct chat.</p>
+<p id="rfc.section.4.3.p.2">Explaining DCC requires its own specification, and is not described here.</p>
+<p id="rfc.section.4.3.p.3">DCC is widely implemented. Clients MAY implement this CTCP message.</p>
+<h1 id="rfc.section.4.4"><a href="#rfc.section.4.4">4.4.</a> <a href="#finger" id="finger">FINGER</a></h1>
+<pre>
+Type:   Metadata Query
+Reply:  FINGER &lt;info&gt;
+</pre>
+<p id="rfc.section.4.4.p.1">This metadata query returns miscellaneous info about the user, typically the same information that&#8217;s held in their realname field.</p>
+<p id="rfc.section.4.4.p.2">However, some implementations return the client name and version instead.</p>
+<p id="rfc.section.4.4.p.3">FINGER is widely implemented, but largely obsolete. Clients MAY implement this CTCP message.</p>
+<p id="rfc.section.4.4.p.4">Example:</p>
+<pre>
+  Query:     FINGER
+  Response:  FINGER WeeChat 1.5
+</pre>
+<h1 id="rfc.section.4.5"><a href="#rfc.section.4.5">4.5.</a> <a href="#ping" id="ping">PING</a></h1>
+<pre>
+Type:    Extended Query
+Params:  PING &lt;info&gt;
+</pre>
+<p id="rfc.section.4.5.p.1">This extended query is used to confirm reachability with other clients and to check latency. When receiving a CTCP PING, the reply must contain exactly the same parameters as the original query.</p>
+<p id="rfc.section.4.5.p.2">PING is universally implemented. Clients MUST implement this CTCP message.</p>
+<p id="rfc.section.4.5.p.3">Example:</p>
+<pre>
+  Query:     PING 1473523721 662865
+  Response:  PING 1473523721 662865
+  
+  Query:     PING foo bar baz
+  Response:  PING foo bar baz
+</pre>
+<h1 id="rfc.section.4.6"><a href="#rfc.section.4.6">4.6.</a> <a href="#source" id="source">SOURCE</a></h1>
+<pre>
+Type:   Metadata Query
+Reply:  SOURCE &lt;info&gt;
+</pre>
+<p id="rfc.section.4.6.p.1">This metadata query is used to return the location of the source code for the client.</p>
+<p id="rfc.section.4.6.p.2">SOURCE is rarely implemented. Clients MAY implement this CTCP message.</p>
+<p id="rfc.section.4.6.p.3">Example:</p>
+<pre>
+  Query:     SOURCE
+  Response:  SOURCE https://weechat.org/download
+</pre>
+<h1 id="rfc.section.4.7"><a href="#rfc.section.4.7">4.7.</a> <a href="#time" id="time">TIME</a></h1>
+<pre>
+Type:    Extended Query
+Params:  TIME &lt;timestring&gt;
+</pre>
+<p id="rfc.section.4.7.p.1">This extended query is used to return the client&#8217;s local time in an unspecified human-readable format. We recommend ISO 8601 format, but raw ctime() output appears to be the most common in practice.</p>
+<p id="rfc.section.4.7.p.2">New implementations SHOULD default to UTC time for privacy reasons.</p>
+<p id="rfc.section.4.7.p.3">TIME is almost universally implemented. Clients SHOULD implement this CTCP message.</p>
+<p id="rfc.section.4.7.p.4">Example:</p>
+<pre>
+  Query:     TIME
+  Response:  TIME 2016-09-26T00:45:36Z
+</pre>
+<h1 id="rfc.section.4.8"><a href="#rfc.section.4.8">4.8.</a> <a href="#version" id="version">VERSION</a></h1>
+<pre>
+Type:   Metadata Query
+Reply:  VERSION &lt;verstring&gt;
+</pre>
+<p id="rfc.section.4.8.p.1">This metadata query is used to return the name and version of the client software in use. There is no specified format for the version string.</p>
+<p id="rfc.section.4.8.p.2">VERSION is universally implemented. Clients MUST implement this CTCP message.</p>
+<p id="rfc.section.4.8.p.3">Example:</p>
+<pre>
+  Query:     VERSION
+  Response:  VERSION WeeChat 1.5-rc2 (git: v1.5-rc2-1-gc1441b1)
+</pre>
+<h1 id="rfc.section.4.9"><a href="#rfc.section.4.9">4.9.</a> <a href="#userinfo" id="userinfo">USERINFO</a></h1>
+<pre>
+Type:   Metadata Query
+Reply:  USERINFO &lt;info&gt;
+</pre>
+<p id="rfc.section.4.9.p.1">This metadata query returns miscellaneous info about the user, typically the same information that&#8217;s held in their realname field.</p>
+<p id="rfc.section.4.9.p.2">However, some implementations return <samp>&lt;nickname&gt; (&lt;realname&gt;)</samp> instead.</p>
+<p id="rfc.section.4.9.p.3">USERINFO is widely implemented, but largely obsolete. Clients MAY implement this CTCP message.</p>
+<p id="rfc.section.4.9.p.4">Example:</p>
+<pre>
+  Query:     USERINFO
+  Response:  USERINFO fred (Fred Foobar)
+</pre>
+<h1 id="rfc.references"><a href="#rfc.references">5.</a> Normative References</h1>
+<table>
+  <tbody>
+    <tr>
+      <td class="reference">
+        <b id="RFC1459">[RFC1459]</b>
+      </td>
+      <td class="top"><a>Oikarinen, J.</a> and <a>D. Reed</a>, "<a href="http://tools.ietf.org/html/rfc1459">Internet Relay Chat Protocol</a>", RFC 1459, DOI 10.17487/RFC1459, May 1993.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC2119">[RFC2119]</b>
+      </td>
+      <td class="top"><a>Bradner, S.</a>, "<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC2812">[RFC2812]</b>
+      </td>
+      <td class="top"><a>Kalt, C.</a>, "<a href="http://tools.ietf.org/html/rfc2812">Internet Relay Chat: Client Protocol</a>", RFC 2812, DOI 10.17487/RFC2812, April 2000.</td>
+    </tr>
+  </tbody>
+</table>
+<h1 id="rfc.authors">
+  <a href="#rfc.authors">Authors' Addresses</a>
+</h1>
+<div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Mantas Mikulenas</span> 
+	  <span class="n hidden">
+		<span class="family-name">Mikulenas</span>
+	  </span>
+	</span>
+	<span class="org vcardline"></span>
+	<span class="adr">
+	  
+	  <span class="vcardline">
+		<span class="locality"></span> 
+		<span class="region"></span>
+		<span class="code"></span>
+	  </span>
+	  <span class="country-name vcardline"></span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:grawity@gmail.com">grawity@gmail.com</a></span>
+
+  </address>
+</div><div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Daniel Oakley</span> (editor)
+	  <span class="n hidden">
+		<span class="family-name">Oakley</span>
+	  </span>
+	</span>
+	<span class="org vcardline">ircdocs</span>
+	<span class="adr">
+	  
+	  <span class="vcardline">
+		<span class="locality"></span> 
+		<span class="region"></span>
+		<span class="code"></span>
+	  </span>
+	  <span class="country-name vcardline"></span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:daniel@danieloaks.net">daniel@danieloaks.net</a></span>
+
+  </address>
+</div>
+
+</body>
+</html>
