@@ -142,11 +142,11 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
    Here are two examples of CTCP queries and replies:
 
-     :dx PRIVMSG SaberUK :\x01VERSION\x01
-     :SaberUK NOTICE dx :\x01VERSION Snak for Macintosh 4.13 English\x01
+     :alice PRIVMSG bob :\x01VERSION\x01
+     :bob NOTICE alice :\x01VERSION Snak for Macintosh 4.13 English\x01
 
-     :mt PRIVMSG #ircv3 :\x01PING 1473523796 918320\x01
-     :Jobe NOTICE mt :\x01PING 1473523796 918320\x01
+     :alice PRIVMSG #ircv3 :\x01PING 1473523796 918320\x01
+     :bob NOTICE alice :\x01PING 1473523796 918320\x01
 
 3.  Message Types
 
@@ -180,7 +180,7 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
    Example:
 
-     :dan- PRIVMSG #ircv3 :\x01ACTION writes the best specs!\x01
+     :dan PRIVMSG #ircv3 :\x01ACTION writes some specs!\x01
 
 3.2.  Metadata Query
 
@@ -201,8 +201,8 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
    Example:
 
-     :dx PRIVMSG SaberUK :\x01VERSION\x01
-     :SaberUK NOTICE dx :\x01VERSION SaberChat 27.5\x01
+     :alice PRIVMSG bob :\x01VERSION\x01
+     :bob NOTICE alice :\x01VERSION SaberChat 27.5\x01
 
 3.3.  Extended Query
 
@@ -226,8 +226,8 @@ Mikulenas & Oakley      Expires October 27, 2017                [Page 4]
 Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
 
-     :mt PRIVMSG Jobe :\x01PING 1473523796 918320\x01
-     :Jobe NOTICE mt :\x01PING 1473523796 918320\x01
+     :alice PRIVMSG bob :\x01PING 1473523796 918320\x01
+     :bob NOTICE alice :\x01PING 1473523796 918320\x01
 
 4.  Messages
 
@@ -288,8 +288,8 @@ Appendix A.  Message List
    which are widely implemented across the IRC ecosystem.
 
    The reply and parameter lines below use a simplified syntax that uses
-   represents variables by surrounding them with angle-brackets, and
-   represents repeating segments by surrounding them with curly-
+   represents variables by surrounding them with angle brackets, and
+   represents repeating segments by surrounding them with curly
    brackets.
 
 A.1.  ACTION
@@ -306,9 +306,9 @@ A.1.  ACTION
 
    Example:
 
-     Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION writes\x01
+     Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION writes!\x01
 
-     Formatted:  * dan writes
+     Formatted:  * dan writes!
 
 A.2.  CLIENTINFO
 

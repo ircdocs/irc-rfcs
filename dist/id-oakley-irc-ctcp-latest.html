@@ -413,11 +413,11 @@ address {
 <p id="rfc.section.2.p.5">Queries MAY be sent to channels. When these queries are responded to, the responses are sent to the querying client rather than the channel which the query was originally sent to.</p>
 <p id="rfc.section.2.p.6">Here are two examples of CTCP queries and replies:</p>
 <pre>
-  :dx PRIVMSG SaberUK :\x01VERSION\x01
-  :SaberUK NOTICE dx :\x01VERSION Snak for Macintosh 4.13 English\x01
+  :alice PRIVMSG bob :\x01VERSION\x01
+  :bob NOTICE alice :\x01VERSION Snak for Macintosh 4.13 English\x01
 
-  :mt PRIVMSG #ircv3 :\x01PING 1473523796 918320\x01
-  :Jobe NOTICE mt :\x01PING 1473523796 918320\x01
+  :alice PRIVMSG #ircv3 :\x01PING 1473523796 918320\x01
+  :bob NOTICE alice :\x01PING 1473523796 918320\x01
 </pre>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#message-types" id="message-types">Message Types</a></h1>
 <p id="rfc.section.3.p.1">CTCP messages generally take on one of these types. These message types are defined here to simplify understanding, and aren&#8217;t differentiated by the protocol itself.</p>
@@ -427,7 +427,7 @@ address {
 <p id="rfc.section.3.1.p.3">These messages are sent as a PRIVMSG and can have parameters, but generate no reply.</p>
 <p id="rfc.section.3.1.p.4">Example:</p>
 <pre>
-  :dan- PRIVMSG #ircv3 :\x01ACTION writes the best specs!\x01
+  :dan PRIVMSG #ircv3 :\x01ACTION writes some specs!\x01
 </pre>
 <h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#metadata-query" id="metadata-query">Metadata Query</a></h1>
 <p id="rfc.section.3.2.p.1">This type of CTCP is used to provide static information about the target client, user or connection.</p>
@@ -436,8 +436,8 @@ address {
 <p id="rfc.section.3.2.p.4">Metadata queries do not have any parameters, but expect a reply with parameters as the response data.</p>
 <p id="rfc.section.3.2.p.5">Example:</p>
 <pre>
-  :dx PRIVMSG SaberUK :\x01VERSION\x01
-  :SaberUK NOTICE dx :\x01VERSION SaberChat 27.5\x01
+  :alice PRIVMSG bob :\x01VERSION\x01
+  :bob NOTICE alice :\x01VERSION SaberChat 27.5\x01
 </pre>
 <h1 id="rfc.section.3.3"><a href="#rfc.section.3.3">3.3.</a> <a href="#extended-query" id="extended-query">Extended Query</a></h1>
 <p id="rfc.section.3.3.p.1">This type of CTCP is used to provide dynamic information or invoke actions from the client.</p>
@@ -446,8 +446,8 @@ address {
 <p id="rfc.section.3.3.p.4">Extended queries and replies may have parameters.</p>
 <p id="rfc.section.3.3.p.5">Example:</p>
 <pre>
-  :mt PRIVMSG Jobe :\x01PING 1473523796 918320\x01
-  :Jobe NOTICE mt :\x01PING 1473523796 918320\x01
+  :alice PRIVMSG bob :\x01PING 1473523796 918320\x01
+  :bob NOTICE alice :\x01PING 1473523796 918320\x01
 </pre>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#messages" id="messages">Messages</a></h1>
 <p id="rfc.section.4.p.1">CTCP messages themselves are not standardised. Clients that receive either unexpected messages or known messages with unexpected values SHOULD ignore them and produce no response to the sending user.</p>
@@ -481,7 +481,7 @@ address {
 </table>
 <h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> <a href="#message-list" id="message-list">Message List</a></h1>
 <p id="rfc.section.A.p.1">This section is not exhaustive, and only lists those CTCP messages which are widely implemented across the IRC ecosystem.</p>
-<p id="rfc.section.A.p.2">The reply and parameter lines below use a simplified syntax that uses represents variables by surrounding them with angle-brackets, and represents repeating segments by surrounding them with curly-brackets.</p>
+<p id="rfc.section.A.p.2">The reply and parameter lines below use a simplified syntax that uses represents variables by surrounding them with angle brackets, and represents repeating segments by surrounding them with curly brackets.</p>
 <h1 id="rfc.appendix.A.1"><a href="#rfc.appendix.A.1">A.1.</a> <a href="#action" id="action">ACTION</a></h1>
 <pre>
 Type:    Extended Formatting
@@ -491,9 +491,9 @@ Params:  ACTION &lt;text&gt;
 <p id="rfc.section.A.1.p.2">ACTION is universally implemented and very commonly used. Clients MUST implement this CTCP message.</p>
 <p id="rfc.section.A.1.p.3">Example:</p>
 <pre>
-  Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION writes\x01
+  Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION writes!\x01
 
-  Formatted:  * dan writes
+  Formatted:  * dan writes!
 </pre>
 <h1 id="rfc.appendix.A.2"><a href="#rfc.appendix.A.2">A.2.</a> <a href="#clientinfo" id="clientinfo">CLIENTINFO</a></h1>
 <pre>

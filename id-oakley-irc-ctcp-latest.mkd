@@ -70,11 +70,11 @@ Queries MAY be sent to channels. When these queries are responded to, the respon
 Here are two examples of CTCP queries and replies:
 
 ~~~
-  :dx PRIVMSG SaberUK :\x01VERSION\x01
-  :SaberUK NOTICE dx :\x01VERSION Snak for Macintosh 4.13 English\x01
+  :alice PRIVMSG bob :\x01VERSION\x01
+  :bob NOTICE alice :\x01VERSION Snak for Macintosh 4.13 English\x01
 
-  :mt PRIVMSG #ircv3 :\x01PING 1473523796 918320\x01
-  :Jobe NOTICE mt :\x01PING 1473523796 918320\x01
+  :alice PRIVMSG #ircv3 :\x01PING 1473523796 918320\x01
+  :bob NOTICE alice :\x01PING 1473523796 918320\x01
 ~~~
 
 
@@ -94,7 +94,7 @@ These messages are sent as a PRIVMSG and can have parameters, but generate no re
 Example:
 
 ~~~
-  :dan- PRIVMSG #ircv3 :\x01ACTION writes the best specs!\x01
+  :dan PRIVMSG #ircv3 :\x01ACTION writes some specs!\x01
 ~~~
 
 
@@ -111,8 +111,8 @@ Metadata queries do not have any parameters, but expect a reply with parameters 
 Example:
 
 ~~~
-  :dx PRIVMSG SaberUK :\x01VERSION\x01
-  :SaberUK NOTICE dx :\x01VERSION SaberChat 27.5\x01
+  :alice PRIVMSG bob :\x01VERSION\x01
+  :bob NOTICE alice :\x01VERSION SaberChat 27.5\x01
 ~~~
 
 
@@ -129,8 +129,8 @@ Extended queries and replies may have parameters.
 Example:
 
 ~~~
-  :mt PRIVMSG Jobe :\x01PING 1473523796 918320\x01
-  :Jobe NOTICE mt :\x01PING 1473523796 918320\x01
+  :alice PRIVMSG bob :\x01PING 1473523796 918320\x01
+  :bob NOTICE alice :\x01PING 1473523796 918320\x01
 ~~~
 
 
@@ -157,7 +157,7 @@ Many servers implement optional filtering to prevent any CTCP messages apart fro
 
 This section is not exhaustive, and only lists those CTCP messages which are widely implemented across the IRC ecosystem.
 
-The reply and parameter lines below use a simplified syntax that uses represents variables by surrounding them with angle-brackets, and represents repeating segments by surrounding them with curly-brackets.
+The reply and parameter lines below use a simplified syntax that uses represents variables by surrounding them with angle brackets, and represents repeating segments by surrounding them with curly brackets.
 
 
 ## ACTION
@@ -174,9 +174,9 @@ ACTION is universally implemented and very commonly used. Clients MUST implement
 Example:
 
 ~~~
-  Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION writes\x01
+  Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION writes!\x01
 
-  Formatted:  * dan writes
+  Formatted:  * dan writes!
 ~~~
 
 
