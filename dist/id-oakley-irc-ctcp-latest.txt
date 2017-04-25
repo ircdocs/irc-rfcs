@@ -84,7 +84,7 @@ Table of Contents
 1.  Introduction
 
    The core Internet Relay Chat (IRC) protocol as described in [RFC1459]
-   and [RFC2812] only has a single user messaging type, and do not
+   and [RFC2812] only has a single user messaging type, and does not
    provide a way for clients to exchange information directly.  Client-
    to-Client Protocol (CTCP) messages let clients exchange messages that
    get displayed or responded to in special ways.  Some examples of how
