@@ -16,10 +16,10 @@ Abstract
 
    This document describes the Client-to-Client Protocol (CTCP) which
    lets IRC clients send each other messages that get displayed or
-   responded to in special ways.  CTCP is widely used today, with some
-   IRC networks requiring that clients support it in order to connect to
-   them.  This document details how CTCP is used and lists the common
-   messages in use.
+   responded to in special ways.  CTCP is widely used, with some IRC
+   networks requiring that clients support it in order to connect to
+   them.  This document details how to implement CTCP and lists the most
+   common messages.
 
 Status of This Memo
 
@@ -93,8 +93,8 @@ Table of Contents
    with other clients.
 
    This document goes over the subset of CTCP which is commonly
-   implemented, and is compatible with clients implementing CTCP as it's
-   described by older documents.
+   implemented today, and is compatible with clients implementing CTCP
+   as described by older documents.
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this

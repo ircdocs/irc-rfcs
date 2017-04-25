@@ -29,7 +29,7 @@ author:
 
 --- abstract
 
-This document describes the Client-to-Client Protocol (CTCP) which lets IRC clients send each other messages that get displayed or responded to in special ways. CTCP is widely used today, with some IRC networks requiring that clients support it in order to connect to them. This document details how CTCP is used and lists the common messages in use.
+This document describes the Client-to-Client Protocol (CTCP) which lets IRC clients send each other messages that get displayed or responded to in special ways. CTCP is widely used, with some IRC networks requiring that clients support it in order to connect to them. This document details how to implement CTCP and lists the most common messages.
 
 --- middle
 
@@ -37,7 +37,7 @@ This document describes the Client-to-Client Protocol (CTCP) which lets IRC clie
 
 The core Internet Relay Chat (IRC) protocol as described in {{!RFC1459}} and {{!RFC2812}} only have a single user messaging type, and do not provide a way for clients to exchange information directly. Client-to-Client Protocol (CTCP) messages let clients exchange messages that get displayed or responded to in special ways. Some examples of how CTCP is used today is to request special formatting on messages, query other clients for metadata, and help initiate file transfers with other clients.
 
-This document goes over the subset of CTCP which is commonly implemented, and is compatible with clients implementing CTCP as it's described by older documents.
+This document goes over the subset of CTCP which is commonly implemented today, and is compatible with clients implementing CTCP as described by older documents.
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in {{!RFC2119}}.
 
