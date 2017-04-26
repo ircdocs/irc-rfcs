@@ -61,7 +61,7 @@ The PRIVMSG and NOTICE messages are used to transmit CTCP frames. To create a CT
 
 Commands are case-insensitive. When creating new CTCP commands, authors SHOULD use only alphanumeric characters for ease of implementation.
 
-The final `delim` SHOULD be sent on outgoing messages for compatibility reasons, and software MUST accept incoming messages which lack it. This is due to how certain clients implement message splitting.
+The final `delim` SHOULD be sent on outgoing messages for compatibility reasons, and software MUST accept incoming messages which lack it. This is due to how certain clients implement message splitting and truncation.
 
 CTCP queries are sent with the PRIVMSG IRC command, and CTCP replies are sent with NOTICE command.
 
@@ -167,9 +167,9 @@ Type:    Extended Formatting
 Params:  ACTION <text>
 ~~~
 
-This extended formatting message shows that \<text\> should be displayed as a third-person action or emote; in clients, it’s generally activated with the command /me.
+This extended formatting message shows that \<text\> should be displayed as a third-person action or emote; in clients, it’s generally activated with the command `/me`.
 
-ACTION is universally implemented and very commonly used. Clients MUST implement this CTCP message.
+ACTION is universally implemented and very commonly used. Clients MUST implement this CTCP message in order to effectively use IRC today.
 
 Example:
 
@@ -224,7 +224,7 @@ This metadata query returns miscellaneous info about the user, typically the sam
 
 However, some implementations return the client name and version instead.
 
-FINGER is widely implemented, but largely obsolete. Clients MAY implement this CTCP message.
+FINGER is largely obsolete. Clients MAY implement this CTCP message.
 
 Example:
 
@@ -243,7 +243,7 @@ Params:  PING <info>
 
 This extended query is used to confirm reachability with other clients and to check latency. When receiving a CTCP PING, the reply MUST contain exactly the same parameters as the original query.
 
-PING is universally implemented. Clients MUST implement this CTCP message.
+PING is universally implemented. Clients SHOULD implement this CTCP message.
 
 Example:
 
@@ -305,7 +305,9 @@ Reply:  VERSION <verstring>
 
 This metadata query is used to return the name and version of the client software in use. There is no specified format for the version string.
 
-VERSION is universally implemented. Clients MUST implement this CTCP message.
+Clients may allow users to customise the response value for this query.
+
+VERSION is universally implemented. Clients SHOULD implement this CTCP message.
 
 Example:
 
@@ -326,7 +328,7 @@ This metadata query returns miscellaneous info about the user, typically the sam
 
 However, some implementations return `<nickname> (<realname>)` instead.
 
-USERINFO is widely implemented, but largely obsolete. Clients MAY implement this CTCP message.
+USERINFO is largely obsolete. Clients MAY implement this CTCP message.
 
 Example:
 

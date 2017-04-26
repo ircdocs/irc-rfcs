@@ -6,7 +6,7 @@ Network Working Group                                       M. Mikulenas
 Internet-Draft                                               Independent
 Updates: 1459, 2812 (if approved)                              D. Oakley
 Intended status: Informational                                   ircdocs
-Expires: October 27, 2017                                 April 25, 2017
+Expires: October 28, 2017                                 April 26, 2017
 
 
          Internet Relay Chat: Client-to-Client Protocol (CTCP)
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 27, 2017.
+   This Internet-Draft will expire on October 28, 2017.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Mikulenas & Oakley      Expires October 27, 2017                [Page 1]
+Mikulenas & Oakley      Expires October 28, 2017                [Page 1]
 
 Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Mikulenas & Oakley      Expires October 27, 2017                [Page 2]
+Mikulenas & Oakley      Expires October 28, 2017                [Page 2]
 
 Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
@@ -131,7 +131,7 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2017
    The final "delim" SHOULD be sent on outgoing messages for
    compatibility reasons, and software MUST accept incoming messages
    which lack it.  This is due to how certain clients implement message
-   splitting.
+   splitting and truncation.
 
    CTCP queries are sent with the PRIVMSG IRC command, and CTCP replies
    are sent with NOTICE command.
@@ -165,7 +165,7 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
 
 
-Mikulenas & Oakley      Expires October 27, 2017                [Page 3]
+Mikulenas & Oakley      Expires October 28, 2017                [Page 3]
 
 Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
@@ -221,7 +221,7 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
 
 
-Mikulenas & Oakley      Expires October 27, 2017                [Page 4]
+Mikulenas & Oakley      Expires October 28, 2017                [Page 4]
 
 Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
@@ -277,7 +277,7 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
 
 
-Mikulenas & Oakley      Expires October 27, 2017                [Page 5]
+Mikulenas & Oakley      Expires October 28, 2017                [Page 5]
 
 Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
@@ -299,10 +299,11 @@ A.1.  ACTION
 
    This extended formatting message shows that <text> should be
    displayed as a third-person action or emote; in clients, it's
-   generally activated with the command /me.
+   generally activated with the command "/me".
 
    ACTION is universally implemented and very commonly used.  Clients
-   MUST implement this CTCP message.
+   MUST implement this CTCP message in order to effectively use IRC
+   today.
 
    Example:
 
@@ -332,8 +333,7 @@ A.2.  CLIENTINFO
 
 
 
-
-Mikulenas & Oakley      Expires October 27, 2017                [Page 6]
+Mikulenas & Oakley      Expires October 28, 2017                [Page 6]
 
 Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
@@ -365,8 +365,7 @@ A.4.  FINGER
    However, some implementations return the client name and version
    instead.
 
-   FINGER is widely implemented, but largely obsolete.  Clients MAY
-   implement this CTCP message.
+   FINGER is largely obsolete.  Clients MAY implement this CTCP message.
 
    Example:
 
@@ -382,14 +381,15 @@ A.5.  PING
    clients and to check latency.  When receiving a CTCP PING, the reply
    MUST contain exactly the same parameters as the original query.
 
-   PING is universally implemented.  Clients MUST implement this CTCP
+   PING is universally implemented.  Clients SHOULD implement this CTCP
    message.
 
    Example:
 
 
 
-Mikulenas & Oakley      Expires October 27, 2017                [Page 7]
+
+Mikulenas & Oakley      Expires October 28, 2017                [Page 7]
 
 Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
@@ -445,7 +445,7 @@ A.8.  VERSION
 
 
 
-Mikulenas & Oakley      Expires October 27, 2017                [Page 8]
+Mikulenas & Oakley      Expires October 28, 2017                [Page 8]
 
 Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
@@ -454,8 +454,11 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2017
    client software in use.  There is no specified format for the version
    string.
 
-   VERSION is universally implemented.  Clients MUST implement this CTCP
-   message.
+   Clients may allow users to customise the response value for this
+   query.
+
+   VERSION is universally implemented.  Clients SHOULD implement this
+   CTCP message.
 
    Example:
 
@@ -473,8 +476,8 @@ A.9.  USERINFO
    However, some implementations return "<nickname> (<realname>)"
    instead.
 
-   USERINFO is widely implemented, but largely obsolete.  Clients MAY
-   implement this CTCP message.
+   USERINFO is largely obsolete.  Clients MAY implement this CTCP
+   message.
 
    Example:
 
@@ -498,7 +501,4 @@ Authors' Addresses
 
 
 
-
-
-
-Mikulenas & Oakley      Expires October 27, 2017                [Page 9]
+Mikulenas & Oakley      Expires October 28, 2017                [Page 9]

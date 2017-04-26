@@ -305,7 +305,7 @@ address {
 
   <meta name="dct.creator" content="Mikulenas, M. and D. Oakley" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-oakley-irc-ctcp-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-4-25" />
+  <meta name="dct.issued" scheme="ISO8601" content="2017-4-26" />
   <meta name="dct.abstract" content="This document describes the Client-to-Client Protocol (CTCP), which lets IRC clients send each other messages that get displayed or responded to in special ways. CTCP is widely used, with some IRC networks requiring that clients support it in order to connect to them. This document details how to implement CTCP and lists the most common messages." />
   <meta name="description" content="This document describes the Client-to-Client Protocol (CTCP), which lets IRC clients send each other messages that get displayed or responded to in special ways. CTCP is widely used, with some IRC networks requiring that clients support it in order to connect to them. This document details how to implement CTCP and lists the most common messages." />
 
@@ -333,8 +333,8 @@ address {
   <td class="right">ircdocs</td>
 </tr>
 <tr>
-  <td class="left">Expires: October 27, 2017</td>
-  <td class="right">April 25, 2017</td>
+  <td class="left">Expires: October 28, 2017</td>
+  <td class="right">April 26, 2017</td>
 </tr>
 
     	
@@ -354,7 +354,7 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on October 27, 2017.</p>
+<p>This Internet-Draft will expire on October 28, 2017.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -408,7 +408,7 @@ address {
   body    = delim command [ SPACE params ] [ delim ]
 </pre>
 <p id="rfc.section.2.p.2">Commands are case-insensitive. When creating new CTCP commands, authors SHOULD use only alphanumeric characters for ease of implementation.</p>
-<p id="rfc.section.2.p.3">The final <samp>delim</samp> SHOULD be sent on outgoing messages for compatibility reasons, and software MUST accept incoming messages which lack it. This is due to how certain clients implement message splitting.</p>
+<p id="rfc.section.2.p.3">The final <samp>delim</samp> SHOULD be sent on outgoing messages for compatibility reasons, and software MUST accept incoming messages which lack it. This is due to how certain clients implement message splitting and truncation.</p>
 <p id="rfc.section.2.p.4">CTCP queries are sent with the PRIVMSG IRC command, and CTCP replies are sent with NOTICE command.</p>
 <p id="rfc.section.2.p.5">Queries MAY be sent to channels. When these queries are responded to, the responses are sent to the querying client rather than the channel which the query was originally sent to.</p>
 <p id="rfc.section.2.p.6">Here are two examples of CTCP queries and replies:</p>
@@ -487,8 +487,8 @@ address {
 Type:    Extended Formatting
 Params:  ACTION &lt;text&gt;
 </pre>
-<p id="rfc.section.A.1.p.1">This extended formatting message shows that &lt;text&gt; should be displayed as a third-person action or emote; in clients, it&#8217;s generally activated with the command /me.</p>
-<p id="rfc.section.A.1.p.2">ACTION is universally implemented and very commonly used. Clients MUST implement this CTCP message.</p>
+<p id="rfc.section.A.1.p.1">This extended formatting message shows that &lt;text&gt; should be displayed as a third-person action or emote; in clients, it&#8217;s generally activated with the command <samp>/me</samp>.</p>
+<p id="rfc.section.A.1.p.2">ACTION is universally implemented and very commonly used. Clients MUST implement this CTCP message in order to effectively use IRC today.</p>
 <p id="rfc.section.A.1.p.3">Example:</p>
 <pre>
   Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION does it!\x01
@@ -522,7 +522,7 @@ Reply:  FINGER &lt;info&gt;
 </pre>
 <p id="rfc.section.A.4.p.1">This metadata query returns miscellaneous info about the user, typically the same information that&#8217;s held in their realname field.</p>
 <p id="rfc.section.A.4.p.2">However, some implementations return the client name and version instead.</p>
-<p id="rfc.section.A.4.p.3">FINGER is widely implemented, but largely obsolete. Clients MAY implement this CTCP message.</p>
+<p id="rfc.section.A.4.p.3">FINGER is largely obsolete. Clients MAY implement this CTCP message.</p>
 <p id="rfc.section.A.4.p.4">Example:</p>
 <pre>
   Query:     FINGER
@@ -534,7 +534,7 @@ Type:    Extended Query
 Params:  PING &lt;info&gt;
 </pre>
 <p id="rfc.section.A.5.p.1">This extended query is used to confirm reachability with other clients and to check latency. When receiving a CTCP PING, the reply MUST contain exactly the same parameters as the original query.</p>
-<p id="rfc.section.A.5.p.2">PING is universally implemented. Clients MUST implement this CTCP message.</p>
+<p id="rfc.section.A.5.p.2">PING is universally implemented. Clients SHOULD implement this CTCP message.</p>
 <p id="rfc.section.A.5.p.3">Example:</p>
 <pre>
   Query:     PING 1473523721 662865
@@ -574,8 +574,9 @@ Type:   Metadata Query
 Reply:  VERSION &lt;verstring&gt;
 </pre>
 <p id="rfc.section.A.8.p.1">This metadata query is used to return the name and version of the client software in use. There is no specified format for the version string.</p>
-<p id="rfc.section.A.8.p.2">VERSION is universally implemented. Clients MUST implement this CTCP message.</p>
-<p id="rfc.section.A.8.p.3">Example:</p>
+<p id="rfc.section.A.8.p.2">Clients may allow users to customise the response value for this query.</p>
+<p id="rfc.section.A.8.p.3">VERSION is universally implemented. Clients SHOULD implement this CTCP message.</p>
+<p id="rfc.section.A.8.p.4">Example:</p>
 <pre>
   Query:     VERSION
   Response:  VERSION WeeChat 1.5-rc2 (git: v1.5-rc2-1-gc1441b1)
@@ -587,7 +588,7 @@ Reply:  USERINFO &lt;info&gt;
 </pre>
 <p id="rfc.section.A.9.p.1">This metadata query returns miscellaneous info about the user, typically the same information that&#8217;s held in their realname field.</p>
 <p id="rfc.section.A.9.p.2">However, some implementations return <samp>&lt;nickname&gt; (&lt;realname&gt;)</samp> instead.</p>
-<p id="rfc.section.A.9.p.3">USERINFO is widely implemented, but largely obsolete. Clients MAY implement this CTCP message.</p>
+<p id="rfc.section.A.9.p.3">USERINFO is largely obsolete. Clients MAY implement this CTCP message.</p>
 <p id="rfc.section.A.9.p.4">Example:</p>
 <pre>
   Query:     USERINFO
