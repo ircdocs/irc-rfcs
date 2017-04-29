@@ -136,7 +136,7 @@ Example:
 
 # Messages
 
-CTCP messages themselves are not standardised. Clients that receive either unexpected messages or known messages with unexpected values SHOULD ignore them and produce no response to the sending user.
+CTCP messages themselves are not standardised. Clients that receive either unexpected messages or known messages with unexpected values SHOULD ignore them and produce no response to the sending user. Clients MAY receive more than one response per user for a query they send, due to multiple clients being connected behind an IRC bouncer.
 
 
 # Security Considerations
