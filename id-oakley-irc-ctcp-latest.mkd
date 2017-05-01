@@ -35,7 +35,7 @@ This document describes the Client-to-Client Protocol (CTCP), which lets IRC cli
 
 # Introduction
 
-The core Internet Relay Chat (IRC) protocol as described in {{!RFC1459}} and {{!RFC2812}} only has a single user messaging type, and does not provide a way for clients to exchange information directly. Client-to-Client Protocol (CTCP) messages let clients exchange messages that get displayed or responded to in special ways. Some examples of how CTCP is used is to request special formatting on messages, query other clients for metadata, and help initiate file transfers with other clients.
+The core Internet Relay Chat (IRC) protocol as described in {{!RFC1459}} and {{!RFC2812}} only has a single command for regular user messages, and does not provide a way for clients to exchange information directly. Client-to-Client Protocol (CTCP) messages let clients exchange messages that get displayed or responded to in special ways. Some examples of how CTCP is used is to request special formatting on messages, query other clients for metadata, and help initiate file transfers with other clients.
 
 This document goes over the subset of CTCP which is commonly implemented, and is compatible with clients implementing CTCP as described by older documents.
 
@@ -145,7 +145,7 @@ CTCP messages are completely untrusted data, and clients MUST NOT assume that th
 
 Older CTCP specifications describe quoting which is complex and not widely implemented. Implementations SHOULD NOT implement low-level quoting or CTCP-level quoting when parsing messages.
 
-Older CTCP specifications describe including more than one CTCP message inside a PRIVMSG or a NOTICE. Implementations SHOULD NOT implement this form of CTCP parsing as it is not widely-implemented and may result in an implementation can be attacked or spammed more easily.
+Older CTCP specifications describe including more than one CTCP message inside a PRIVMSG or a NOTICE. Implementations SHOULD NOT implement this form of CTCP parsing as it is not widely-implemented and may result in an implementation that can be attacked or spammed more easily.
 
 Many servers implement optional filtering to prevent any CTCP messages apart from ACTION from being sent to channels. When this is done, it can typically be enabled or disabled by channel operators with a channel mode.
 
