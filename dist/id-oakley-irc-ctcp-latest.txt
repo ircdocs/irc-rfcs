@@ -67,8 +67,9 @@ Table of Contents
      3.2.  Metadata Query  . . . . . . . . . . . . . . . . . . . . .   4
      3.3.  Extended Query  . . . . . . . . . . . . . . . . . . . . .   4
    4.  Messages  . . . . . . . . . . . . . . . . . . . . . . . . . .   5
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
-   6.  Normative References  . . . . . . . . . . . . . . . . . . . .   5
+   5.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   5
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
+   7.  Normative References  . . . . . . . . . . . . . . . . . . . .   5
    Appendix A.  Message List . . . . . . . . . . . . . . . . . . . .   6
      A.1.  ACTION  . . . . . . . . . . . . . . . . . . . . . . . . .   6
      A.2.  CLIENTINFO  . . . . . . . . . . . . . . . . . . . . . . .   6
@@ -77,7 +78,7 @@ Table of Contents
      A.5.  PING  . . . . . . . . . . . . . . . . . . . . . . . . . .   7
      A.6.  SOURCE  . . . . . . . . . . . . . . . . . . . . . . . . .   8
      A.7.  TIME  . . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     A.8.  VERSION . . . . . . . . . . . . . . . . . . . . . . . . .   8
+     A.8.  VERSION . . . . . . . . . . . . . . . . . . . . . . . . .   9
      A.9.  USERINFO  . . . . . . . . . . . . . . . . . . . . . . . .   9
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
 
@@ -105,7 +106,6 @@ Table of Contents
    The PRIVMSG and NOTICE messages are used to transmit CTCP frames.  To
    create a CTCP message, you simply replace the body (i.e. the text to
    be sent) of a PRIVMSG / NOTICE with the following:
-
 
 
 
@@ -237,7 +237,16 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
    Clients MAY receive more than one response per user for a query they
    send, due to multiple clients being connected behind an IRC bouncer.
 
-5.  Security Considerations
+5.  Acknowledgements
+
+   Thanks to the IRCv3 group for giving feedback on this specification.
+   Thanks to Khaled for advice on client flood protection.
+
+   Thanks to Michael Sandrof for creating CTCP, Troy Rollo for creating
+   the related DCC protocol, as well as Klaus Zeuge and Ben Mesander who
+   wrote and revised related specifications many years ago.
+
+6.  Security Considerations
 
    CTCP messages are completely untrusted data, and clients MUST NOT
    assume that they are well-formed or complete.
@@ -260,11 +269,18 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
    done, it can typically be enabled or disabled by channel operators
    with a channel mode.
 
-6.  Normative References
+7.  Normative References
 
    [RFC1459]  Oikarinen, J. and D. Reed, "Internet Relay Chat Protocol",
               RFC 1459, DOI 10.17487/RFC1459, May 1993,
               <http://www.rfc-editor.org/info/rfc1459>.
+
+
+
+Mikulenas & Oakley      Expires November 3, 2017                [Page 5]
+
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
+
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -274,13 +290,6 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
    [RFC2812]  Kalt, C., "Internet Relay Chat: Client Protocol",
               RFC 2812, DOI 10.17487/RFC2812, April 2000,
               <http://www.rfc-editor.org/info/rfc2812>.
-
-
-
-Mikulenas & Oakley      Expires November 3, 2017                [Page 5]
-
-Internet-Draft        IRC Client-to-Client Protocol             May 2017
-
 
 Appendix A.  Message List
 
@@ -302,7 +311,7 @@ A.1.  ACTION
    generally activated with the command "/me".
 
    ACTION is universally implemented and very commonly used.  Clients
-   MUST implement this CTCP message in order to effectively use IRC.
+   MUST implement this CTCP message to effectively use IRC.
 
    Example:
 
@@ -321,15 +330,6 @@ A.2.  CLIENTINFO
    CLIENTINFO is widely implemented.  Clients SHOULD implement this CTCP
    message.
 
-   Example:
-
-     Query:     CLIENTINFO
-     Response:  CLIENTINFO ACTION DCC CLIENTINFO PING TIME VERSION
-
-
-
-
-
 
 
 
@@ -337,6 +337,11 @@ Mikulenas & Oakley      Expires November 3, 2017                [Page 6]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
+
+   Example:
+
+     Query:     CLIENTINFO
+     Response:  CLIENTINFO ACTION DCC CLIENTINFO PING TIME VERSION
 
 A.3.  DCC
 
@@ -349,7 +354,7 @@ A.3.  DCC
    amount of traffic between clients or simply wish to bypass the server
    itself such as file transfer and direct chat.
 
-   Explaining DCC requires its own specification, and is not described
+   DCC requires its own specification, and is not described in-depth
    here.
 
    DCC is widely implemented.  Clients MAY implement this CTCP message.
@@ -381,11 +386,6 @@ A.5.  PING
    clients and to check latency.  When receiving a CTCP PING, the reply
    MUST contain exactly the same parameters as the original query.
 
-   PING is universally implemented.  Clients SHOULD implement this CTCP
-   message.
-
-   Example:
-
 
 
 
@@ -393,6 +393,11 @@ Mikulenas & Oakley      Expires November 3, 2017                [Page 7]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
+
+   PING is universally implemented.  Clients SHOULD implement this CTCP
+   message.
+
+   Example:
 
      Query:     PING 1473523721 662865
      Response:  PING 1473523721 662865
@@ -435,11 +440,6 @@ A.7.  TIME
      Query:     TIME
      Response:  TIME 2016-09-26T00:45:36Z
 
-A.8.  VERSION
-
-   Type:   Metadata Query
-   Reply:  VERSION <verstring>
-
 
 
 
@@ -449,6 +449,11 @@ Mikulenas & Oakley      Expires November 3, 2017                [Page 8]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
+
+A.8.  VERSION
+
+   Type:   Metadata Query
+   Reply:  VERSION <verstring>
 
    This metadata query is used to return the name and version of the
    client software in use.  There is no specified format for the version
@@ -492,6 +497,15 @@ Authors' Addresses
    Email: grawity@gmail.com
 
 
+
+
+
+
+Mikulenas & Oakley      Expires November 3, 2017                [Page 9]
+
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
+
+
    Daniel Oakley
    ircdocs
 
@@ -501,4 +515,46 @@ Authors' Addresses
 
 
 
-Mikulenas & Oakley      Expires November 3, 2017                [Page 9]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mikulenas & Oakley      Expires November 3, 2017               [Page 10]

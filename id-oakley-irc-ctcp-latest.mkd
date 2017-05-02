@@ -139,6 +139,13 @@ Example:
 CTCP messages themselves are not standardised. Clients that receive either unexpected messages or known messages with unexpected values SHOULD ignore them and produce no response to the sending user. Clients MAY receive more than one response per user for a query they send, due to multiple clients being connected behind an IRC bouncer.
 
 
+# Acknowledgements
+
+Thanks to the IRCv3 group for giving feedback on this specification. Thanks to Khaled for advice on client flood protection.
+
+Thanks to Michael Sandrof for creating CTCP, Troy Rollo for creating the related DCC protocol, as well as Klaus Zeuge and Ben Mesander who wrote and revised related specifications many years ago.
+
+
 # Security Considerations
 
 CTCP messages are completely untrusted data, and clients MUST NOT assume that they are well-formed or complete.
@@ -171,7 +178,7 @@ Params:  ACTION <text>
 
 This extended formatting message shows that \<text\> should be displayed as a third-person action or emote; in clients, it’s generally activated with the command `/me`.
 
-ACTION is universally implemented and very commonly used. Clients MUST implement this CTCP message in order to effectively use IRC.
+ACTION is universally implemented and very commonly used. Clients MUST implement this CTCP message to effectively use IRC.
 
 Example:
 
@@ -210,7 +217,7 @@ Params:  DCC <type> <argument> <host> <port>
 
 DCC (the Direct Client-to-Client protocol) is used to setup and control connections that go directly between clients, bypassing the IRC server. This is typically used for features that require a large amount of traffic between clients or simply wish to bypass the server itself such as file transfer and direct chat.
 
-Explaining DCC requires its own specification, and is not described here.
+DCC requires its own specification, and is not described in-depth here.
 
 DCC is widely implemented. Clients MAY implement this CTCP message.
 

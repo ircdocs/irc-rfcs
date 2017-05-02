@@ -285,8 +285,9 @@ address {
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 Metadata Query"/>
 <link href="#rfc.section.3.3" rel="Chapter" title="3.3 Extended Query"/>
 <link href="#rfc.section.4" rel="Chapter" title="4 Messages"/>
-<link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations"/>
-<link href="#rfc.references" rel="Chapter" title="6 Normative References"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 Acknowledgements"/>
+<link href="#rfc.section.6" rel="Chapter" title="6 Security Considerations"/>
+<link href="#rfc.references" rel="Chapter" title="7 Normative References"/>
 <link href="#rfc.appendix.A" rel="Chapter" title="A Message List"/>
 <link href="#rfc.appendix.A.1" rel="Chapter" title="A.1 ACTION"/>
 <link href="#rfc.appendix.A.2" rel="Chapter" title="A.2 CLIENTINFO"/>
@@ -373,8 +374,9 @@ address {
 <li>3.2.   <a href="#rfc.section.3.2">Metadata Query</a></li>
 <li>3.3.   <a href="#rfc.section.3.3">Extended Query</a></li>
 </ul><li>4.   <a href="#rfc.section.4">Messages</a></li>
-<li>5.   <a href="#rfc.section.5">Security Considerations</a></li>
-<li>6.   <a href="#rfc.references">Normative References</a></li>
+<li>5.   <a href="#rfc.section.5">Acknowledgements</a></li>
+<li>6.   <a href="#rfc.section.6">Security Considerations</a></li>
+<li>7.   <a href="#rfc.references">Normative References</a></li>
 <li>Appendix A.   <a href="#rfc.appendix.A">Message List</a></li>
 <ul><li>A.1.   <a href="#rfc.appendix.A.1">ACTION</a></li>
 <li>A.2.   <a href="#rfc.appendix.A.2">CLIENTINFO</a></li>
@@ -451,13 +453,16 @@ address {
 </pre>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#messages" id="messages">Messages</a></h1>
 <p id="rfc.section.4.p.1">CTCP messages themselves are not standardised. Clients that receive either unexpected messages or known messages with unexpected values SHOULD ignore them and produce no response to the sending user. Clients MAY receive more than one response per user for a query they send, due to multiple clients being connected behind an IRC bouncer.</p>
-<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
-<p id="rfc.section.5.p.1">CTCP messages are completely untrusted data, and clients MUST NOT assume that they are well-formed or complete.</p>
-<p id="rfc.section.5.p.2">Older CTCP specifications describe quoting which is complex and not widely implemented. Implementations SHOULD NOT implement low-level quoting or CTCP-level quoting when parsing messages.</p>
-<p id="rfc.section.5.p.3">Older CTCP specifications describe including more than one CTCP message inside a single PRIVMSG or NOTICE command. Implementations SHOULD NOT implement this form of CTCP parsing as it is not widely-implemented and may result in an implementation that can be attacked or spammed more easily.</p>
-<p id="rfc.section.5.p.4">CTCP requests can be abused to flood clients off a server. Clients may ignore excessive incoming requests to protect against this.</p>
-<p id="rfc.section.5.p.5">Many servers implement optional filtering to prevent any CTCP messages apart from ACTION from being sent to channels. When this is done, it can typically be enabled or disabled by channel operators with a channel mode.</p>
-<h1 id="rfc.references"><a href="#rfc.references">6.</a> Normative References</h1>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#acknowledgements" id="acknowledgements">Acknowledgements</a></h1>
+<p id="rfc.section.5.p.1">Thanks to the IRCv3 group for giving feedback on this specification. Thanks to Khaled for advice on client flood protection.</p>
+<p id="rfc.section.5.p.2">Thanks to Michael Sandrof for creating CTCP, Troy Rollo for creating the related DCC protocol, as well as Klaus Zeuge and Ben Mesander who wrote and revised related specifications many years ago.</p>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
+<p id="rfc.section.6.p.1">CTCP messages are completely untrusted data, and clients MUST NOT assume that they are well-formed or complete.</p>
+<p id="rfc.section.6.p.2">Older CTCP specifications describe quoting which is complex and not widely implemented. Implementations SHOULD NOT implement low-level quoting or CTCP-level quoting when parsing messages.</p>
+<p id="rfc.section.6.p.3">Older CTCP specifications describe including more than one CTCP message inside a single PRIVMSG or NOTICE command. Implementations SHOULD NOT implement this form of CTCP parsing as it is not widely-implemented and may result in an implementation that can be attacked or spammed more easily.</p>
+<p id="rfc.section.6.p.4">CTCP requests can be abused to flood clients off a server. Clients may ignore excessive incoming requests to protect against this.</p>
+<p id="rfc.section.6.p.5">Many servers implement optional filtering to prevent any CTCP messages apart from ACTION from being sent to channels. When this is done, it can typically be enabled or disabled by channel operators with a channel mode.</p>
+<h1 id="rfc.references"><a href="#rfc.references">7.</a> Normative References</h1>
 <table>
   <tbody>
     <tr>
@@ -489,7 +494,7 @@ Type:    Extended Formatting
 Params:  ACTION &lt;text&gt;
 </pre>
 <p id="rfc.section.A.1.p.1">This extended formatting message shows that &lt;text&gt; should be displayed as a third-person action or emote; in clients, it&#8217;s generally activated with the command <samp>/me</samp>.</p>
-<p id="rfc.section.A.1.p.2">ACTION is universally implemented and very commonly used. Clients MUST implement this CTCP message in order to effectively use IRC.</p>
+<p id="rfc.section.A.1.p.2">ACTION is universally implemented and very commonly used. Clients MUST implement this CTCP message to effectively use IRC.</p>
 <p id="rfc.section.A.1.p.3">Example:</p>
 <pre>
   Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION does it!\x01
@@ -514,7 +519,7 @@ Type:    Extended Query
 Params:  DCC &lt;type&gt; &lt;argument&gt; &lt;host&gt; &lt;port&gt;
 </pre>
 <p id="rfc.section.A.3.p.1">DCC (the Direct Client-to-Client protocol) is used to setup and control connections that go directly between clients, bypassing the IRC server. This is typically used for features that require a large amount of traffic between clients or simply wish to bypass the server itself such as file transfer and direct chat.</p>
-<p id="rfc.section.A.3.p.2">Explaining DCC requires its own specification, and is not described here.</p>
+<p id="rfc.section.A.3.p.2">DCC requires its own specification, and is not described in-depth here.</p>
 <p id="rfc.section.A.3.p.3">DCC is widely implemented. Clients MAY implement this CTCP message.</p>
 <h1 id="rfc.appendix.A.4"><a href="#rfc.appendix.A.4">A.4.</a> <a href="#finger" id="finger">FINGER</a></h1>
 <pre>
