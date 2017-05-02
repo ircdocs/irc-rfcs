@@ -6,7 +6,7 @@ Network Working Group                                       M. Mikulenas
 Internet-Draft                                               Independent
 Updates: 1459, 2812 (if approved)                              D. Oakley
 Intended status: Informational                                   ircdocs
-Expires: November 1, 2017                                 April 30, 2017
+Expires: November 3, 2017                                   May 02, 2017
 
 
          Internet Relay Chat: Client-to-Client Protocol (CTCP)
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 1, 2017.
+   This Internet-Draft will expire on November 3, 2017.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Mikulenas & Oakley      Expires November 1, 2017                [Page 1]
+Mikulenas & Oakley      Expires November 3, 2017                [Page 1]
 
-Internet-Draft        IRC Client-to-Client Protocol           April 2017
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
 Table of Contents
@@ -84,13 +84,13 @@ Table of Contents
 1.  Introduction
 
    The core Internet Relay Chat (IRC) protocol as described in [RFC1459]
-   and [RFC2812] only has a single user messaging type, and does not
-   provide a way for clients to exchange information directly.  Client-
-   to-Client Protocol (CTCP) messages let clients exchange messages that
-   get displayed or responded to in special ways.  Some examples of how
-   CTCP is used is to request special formatting on messages, query
-   other clients for metadata, and help initiate file transfers with
-   other clients.
+   and [RFC2812] only has a single command for regular user messages,
+   and does not provide a way for clients to exchange information
+   directly.  Client-to-Client Protocol (CTCP) messages let clients
+   exchange messages that get displayed or responded to in special ways.
+   Some examples of how CTCP is used is to request special formatting on
+   messages, query other clients for metadata, and help initiate file
+   transfers with other clients.
 
    This document goes over the subset of CTCP which is commonly
    implemented, and is compatible with clients implementing CTCP as
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Mikulenas & Oakley      Expires November 1, 2017                [Page 2]
+Mikulenas & Oakley      Expires November 3, 2017                [Page 2]
 
-Internet-Draft        IRC Client-to-Client Protocol           April 2017
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
         delim   = %x01
@@ -165,9 +165,9 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
 
 
-Mikulenas & Oakley      Expires November 1, 2017                [Page 3]
+Mikulenas & Oakley      Expires November 3, 2017                [Page 3]
 
-Internet-Draft        IRC Client-to-Client Protocol           April 2017
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
    Extended formatting messages are sent as a PRIVMSG, and are expected
@@ -221,9 +221,9 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
 
 
-Mikulenas & Oakley      Expires November 1, 2017                [Page 4]
+Mikulenas & Oakley      Expires November 3, 2017                [Page 4]
 
-Internet-Draft        IRC Client-to-Client Protocol           April 2017
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
      :alice PRIVMSG bob :\x01PING 1473523796 918320\x01
@@ -247,10 +247,13 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2017
    quoting or CTCP-level quoting when parsing messages.
 
    Older CTCP specifications describe including more than one CTCP
-   message inside a PRIVMSG or a NOTICE.  Implementations SHOULD NOT
-   implement this form of CTCP parsing as it is not widely-implemented
-   and may result in an implementation can be attacked or spammed more
-   easily.
+   message inside a single PRIVMSG or NOTICE command.  Implementations
+   SHOULD NOT implement this form of CTCP parsing as it is not widely-
+   implemented and may result in an implementation that can be attacked
+   or spammed more easily.
+
+   CTCP requests can be abused to flood clients off a server.  Clients
+   may ignore excessive incoming requests to protect against this.
 
    Many servers implement optional filtering to prevent any CTCP
    messages apart from ACTION from being sent to channels.  When this is
@@ -274,12 +277,9 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2017
 
 
 
-
-
-
-Mikulenas & Oakley      Expires November 1, 2017                [Page 5]
+Mikulenas & Oakley      Expires November 3, 2017                [Page 5]
 
-Internet-Draft        IRC Client-to-Client Protocol           April 2017
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
 Appendix A.  Message List
@@ -333,9 +333,9 @@ A.2.  CLIENTINFO
 
 
 
-Mikulenas & Oakley      Expires November 1, 2017                [Page 6]
+Mikulenas & Oakley      Expires November 3, 2017                [Page 6]
 
-Internet-Draft        IRC Client-to-Client Protocol           April 2017
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
 A.3.  DCC
@@ -389,9 +389,9 @@ A.5.  PING
 
 
 
-Mikulenas & Oakley      Expires November 1, 2017                [Page 7]
+Mikulenas & Oakley      Expires November 3, 2017                [Page 7]
 
-Internet-Draft        IRC Client-to-Client Protocol           April 2017
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
      Query:     PING 1473523721 662865
@@ -445,9 +445,9 @@ A.8.  VERSION
 
 
 
-Mikulenas & Oakley      Expires November 1, 2017                [Page 8]
+Mikulenas & Oakley      Expires November 3, 2017                [Page 8]
 
-Internet-Draft        IRC Client-to-Client Protocol           April 2017
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
    This metadata query is used to return the name and version of the
@@ -501,4 +501,4 @@ Authors' Addresses
 
 
 
-Mikulenas & Oakley      Expires November 1, 2017                [Page 9]
+Mikulenas & Oakley      Expires November 3, 2017                [Page 9]
