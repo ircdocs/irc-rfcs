@@ -15,11 +15,10 @@ Expires: November 9, 2017                                   May 08, 2017
 Abstract
 
    This document describes the Client-to-Client Protocol (CTCP), which
-   lets IRC clients send each other messages that get displayed or
-   responded to in special ways.  CTCP is widely used, with some IRC
-   networks requiring that clients support it in order to connect to
-   them.  This document details how to implement CTCP and lists the most
-   common messages.
+   lets Internet Relay Chat (IRC) clients send each other messages that
+   get displayed or responded to in special ways.  CTCP has been widely
+   implemented, with most clients supporting it natively.  This document
+   outlines how to implement CTCP and the most common messages used.
 
 Status of This Memo
 
@@ -49,6 +48,7 @@ Copyright Notice
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.
+
 
 
 
