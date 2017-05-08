@@ -143,7 +143,7 @@ CTCP messages themselves are not standardised. Clients that receive either unexp
 
 Thanks to the IRCv3 group for giving feedback on this specification. Thanks to Khaled for advice on client flood protection.
 
-Thanks to Michael Sandrof for creating CTCP, Troy Rollo for creating the related DCC protocol, as well as Klaus Zeuge and Ben Mesander who wrote and revised related specifications many years ago.
+Thanks to Michael Sandrof for creating CTCP, Troy Rollo for creating the related DCC protocol, as well as Klaus Zeuge and Ben Mesander who wrote and revised related specifications.
 
 
 # Security Considerations
@@ -154,7 +154,7 @@ Older CTCP specifications describe quoting which is complex and not widely imple
 
 Older CTCP specifications describe including more than one CTCP message inside a single PRIVMSG or NOTICE command. Implementations SHOULD NOT implement this form of CTCP parsing as it is not widely-implemented and may result in an implementation that can be attacked or spammed more easily.
 
-CTCP requests can be abused to flood clients off a server. Clients may ignore excessive incoming requests to protect against this.
+CTCP requests can be abused to flood clients off a server. Clients may ignore or throttle excessive incoming requests to protect against this.
 
 Many servers implement optional filtering to prevent any CTCP messages apart from ACTION from being sent to channels. When this is done, it can typically be enabled or disabled by channel operators with a channel mode.
 
@@ -166,7 +166,7 @@ Many servers implement optional filtering to prevent any CTCP messages apart fro
 
 This section is not exhaustive, and only lists those CTCP messages which are widely implemented across the IRC ecosystem.
 
-The reply and parameter lines below use a simplified syntax that uses represents variables by surrounding them with angle brackets, and represents repeating segments by surrounding them with curly brackets.
+The reply and parameter lines below use a simplified syntax that represents variables by surrounding them with angle brackets, and represents repeating segments by surrounding them with curly brackets.
 
 
 ## ACTION
@@ -239,7 +239,7 @@ Example:
 
 ~~~
   Query:     FINGER
-  Response:  FINGER WeeChat 1.5
+  Response:  FINGER WeeChat 1.8-dev
 ~~~
 
 
@@ -291,7 +291,7 @@ Type:    Extended Query
 Params:  TIME <timestring>
 ~~~
 
-This extended query is used to return the client’s local time in an unspecified human-readable format. We recommend ISO 8601 format, but raw ctime() output appears to be the most common in practice.
+This extended query is used to return the client’s local time in an unspecified human-readable format. In practice, both the format output by ctime() and the format described in Section 3.3 of {{!RFC5322}} are common.
 
 New implementations MAY default to UTC time for privacy reasons.
 
@@ -301,7 +301,7 @@ Example:
 
 ~~~
   Query:     TIME
-  Response:  TIME 2016-09-26T00:45:36Z
+  Response:  TIME Mon, 08 May 2017 09:15:29 GMT
 ~~~
 
 
@@ -322,7 +322,7 @@ Example:
 
 ~~~
   Query:     VERSION
-  Response:  VERSION WeeChat 1.5-rc2 (git: v1.5-rc2-1-gc1441b1)
+  Response:  VERSION WeeChat 1.8-dev (git: v1.7-329-g22f2fd03a)
 ~~~
 
 

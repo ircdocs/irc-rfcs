@@ -6,7 +6,7 @@ Network Working Group                                       M. Mikulenas
 Internet-Draft                                               Independent
 Updates: 1459, 2812 (if approved)                              D. Oakley
 Intended status: Informational                                   ircdocs
-Expires: November 3, 2017                                   May 02, 2017
+Expires: November 9, 2017                                   May 08, 2017
 
 
          Internet Relay Chat: Client-to-Client Protocol (CTCP)
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 3, 2017.
+   This Internet-Draft will expire on November 9, 2017.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Mikulenas & Oakley      Expires November 3, 2017                [Page 1]
+Mikulenas & Oakley      Expires November 9, 2017                [Page 1]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -69,18 +69,18 @@ Table of Contents
    4.  Messages  . . . . . . . . . . . . . . . . . . . . . . . . . .   5
    5.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   5
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
-   7.  Normative References  . . . . . . . . . . . . . . . . . . . .   5
+   7.  Normative References  . . . . . . . . . . . . . . . . . . . .   6
    Appendix A.  Message List . . . . . . . . . . . . . . . . . . . .   6
      A.1.  ACTION  . . . . . . . . . . . . . . . . . . . . . . . . .   6
-     A.2.  CLIENTINFO  . . . . . . . . . . . . . . . . . . . . . . .   6
+     A.2.  CLIENTINFO  . . . . . . . . . . . . . . . . . . . . . . .   7
      A.3.  DCC . . . . . . . . . . . . . . . . . . . . . . . . . . .   7
      A.4.  FINGER  . . . . . . . . . . . . . . . . . . . . . . . . .   7
-     A.5.  PING  . . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     A.5.  PING  . . . . . . . . . . . . . . . . . . . . . . . . . .   8
      A.6.  SOURCE  . . . . . . . . . . . . . . . . . . . . . . . . .   8
      A.7.  TIME  . . . . . . . . . . . . . . . . . . . . . . . . . .   8
      A.8.  VERSION . . . . . . . . . . . . . . . . . . . . . . . . .   9
      A.9.  USERINFO  . . . . . . . . . . . . . . . . . . . . . . . .   9
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  10
 
 1.  Introduction
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Mikulenas & Oakley      Expires November 3, 2017                [Page 2]
+Mikulenas & Oakley      Expires November 9, 2017                [Page 2]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -165,7 +165,7 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
 
-Mikulenas & Oakley      Expires November 3, 2017                [Page 3]
+Mikulenas & Oakley      Expires November 9, 2017                [Page 3]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -221,7 +221,7 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
 
-Mikulenas & Oakley      Expires November 3, 2017                [Page 4]
+Mikulenas & Oakley      Expires November 9, 2017                [Page 4]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -244,7 +244,7 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
    Thanks to Michael Sandrof for creating CTCP, Troy Rollo for creating
    the related DCC protocol, as well as Klaus Zeuge and Ben Mesander who
-   wrote and revised related specifications many years ago.
+   wrote and revised related specifications.
 
 6.  Security Considerations
 
@@ -262,25 +262,31 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
    or spammed more easily.
 
    CTCP requests can be abused to flood clients off a server.  Clients
-   may ignore excessive incoming requests to protect against this.
+   may ignore or throttle excessive incoming requests to protect against
+   this.
 
    Many servers implement optional filtering to prevent any CTCP
    messages apart from ACTION from being sent to channels.  When this is
    done, it can typically be enabled or disabled by channel operators
    with a channel mode.
 
+
+
+
+
+
+
+
+Mikulenas & Oakley      Expires November 9, 2017                [Page 5]
+
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
+
+
 7.  Normative References
 
    [RFC1459]  Oikarinen, J. and D. Reed, "Internet Relay Chat Protocol",
               RFC 1459, DOI 10.17487/RFC1459, May 1993,
               <http://www.rfc-editor.org/info/rfc1459>.
-
-
-
-Mikulenas & Oakley      Expires November 3, 2017                [Page 5]
-
-Internet-Draft        IRC Client-to-Client Protocol             May 2017
-
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -291,12 +297,16 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
               RFC 2812, DOI 10.17487/RFC2812, April 2000,
               <http://www.rfc-editor.org/info/rfc2812>.
 
+   [RFC5322]  Resnick, P., Ed., "Internet Message Format", RFC 5322,
+              DOI 10.17487/RFC5322, October 2008,
+              <http://www.rfc-editor.org/info/rfc5322>.
+
 Appendix A.  Message List
 
    This section is not exhaustive, and only lists those CTCP messages
    which are widely implemented across the IRC ecosystem.
 
-   The reply and parameter lines below use a simplified syntax that uses
+   The reply and parameter lines below use a simplified syntax that
    represents variables by surrounding them with angle brackets, and
    represents repeating segments by surrounding them with curly
    brackets.
@@ -319,6 +329,15 @@ A.1.  ACTION
 
      Formatted:  * dan does it!
 
+
+
+
+
+Mikulenas & Oakley      Expires November 9, 2017                [Page 6]
+
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
+
+
 A.2.  CLIENTINFO
 
    Type:   Metadata Query
@@ -329,14 +348,6 @@ A.2.  CLIENTINFO
 
    CLIENTINFO is widely implemented.  Clients SHOULD implement this CTCP
    message.
-
-
-
-
-Mikulenas & Oakley      Expires November 3, 2017                [Page 6]
-
-Internet-Draft        IRC Client-to-Client Protocol             May 2017
-
 
    Example:
 
@@ -374,8 +385,17 @@ A.4.  FINGER
 
    Example:
 
+
+
+
+
+Mikulenas & Oakley      Expires November 9, 2017                [Page 7]
+
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
+
+
      Query:     FINGER
-     Response:  FINGER WeeChat 1.5
+     Response:  FINGER WeeChat 1.8-dev
 
 A.5.  PING
 
@@ -385,14 +405,6 @@ A.5.  PING
    This extended query is used to confirm reachability with other
    clients and to check latency.  When receiving a CTCP PING, the reply
    MUST contain exactly the same parameters as the original query.
-
-
-
-
-Mikulenas & Oakley      Expires November 3, 2017                [Page 7]
-
-Internet-Draft        IRC Client-to-Client Protocol             May 2017
-
 
    PING is universally implemented.  Clients SHOULD implement this CTCP
    message.
@@ -427,8 +439,16 @@ A.7.  TIME
    Params:  TIME <timestring>
 
    This extended query is used to return the client's local time in an
-   unspecified human-readable format.  We recommend ISO 8601 format, but
-   raw ctime() output appears to be the most common in practice.
+   unspecified human-readable format.  In practice, both the format
+   output by ctime() and the format described in Section 3.3 of
+   [RFC5322] are common.
+
+
+
+Mikulenas & Oakley      Expires November 9, 2017                [Page 8]
+
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
+
 
    New implementations MAY default to UTC time for privacy reasons.
 
@@ -438,17 +458,7 @@ A.7.  TIME
    Example:
 
      Query:     TIME
-     Response:  TIME 2016-09-26T00:45:36Z
-
-
-
-
-
-
-Mikulenas & Oakley      Expires November 3, 2017                [Page 8]
-
-Internet-Draft        IRC Client-to-Client Protocol             May 2017
-
+     Response:  TIME Mon, 08 May 2017 09:15:29 GMT
 
 A.8.  VERSION
 
@@ -468,7 +478,7 @@ A.8.  VERSION
    Example:
 
      Query:     VERSION
-     Response:  VERSION WeeChat 1.5-rc2 (git: v1.5-rc2-1-gc1441b1)
+     Response:  VERSION WeeChat 1.8-dev (git: v1.7-329-g22f2fd03a)
 
 A.9.  USERINFO
 
@@ -489,21 +499,19 @@ A.9.  USERINFO
      Query:     USERINFO
      Response:  USERINFO fred (Fred Foobar)
 
+
+
+Mikulenas & Oakley      Expires November 9, 2017                [Page 9]
+
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
+
+
 Authors' Addresses
 
    Mantas Mikulenas
    Independent
 
    Email: grawity@gmail.com
-
-
-
-
-
-
-Mikulenas & Oakley      Expires November 3, 2017                [Page 9]
-
-Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
    Daniel Oakley
@@ -549,12 +557,4 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
 
-
-
-
-
-
-
-
-
-Mikulenas & Oakley      Expires November 3, 2017               [Page 10]
+Mikulenas & Oakley      Expires November 9, 2017               [Page 10]

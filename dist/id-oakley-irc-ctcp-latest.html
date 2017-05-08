@@ -274,7 +274,7 @@ address {
     position: fixed;
   }
 
-/*]]>*/</style>
+  /*]]>*/</style>
 
 
   <link href="#rfc.toc" rel="Contents"/>
@@ -306,7 +306,7 @@ address {
 
   <meta name="dct.creator" content="Mikulenas, M. and D. Oakley" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-oakley-irc-ctcp-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-5-02" />
+  <meta name="dct.issued" scheme="ISO8601" content="2017-5-08" />
   <meta name="dct.abstract" content="This document describes the Client-to-Client Protocol (CTCP), which lets IRC clients send each other messages that get displayed or responded to in special ways. CTCP is widely used, with some IRC networks requiring that clients support it in order to connect to them. This document details how to implement CTCP and lists the most common messages." />
   <meta name="description" content="This document describes the Client-to-Client Protocol (CTCP), which lets IRC clients send each other messages that get displayed or responded to in special ways. CTCP is widely used, with some IRC networks requiring that clients support it in order to connect to them. This document details how to implement CTCP and lists the most common messages." />
 
@@ -334,8 +334,8 @@ address {
   <td class="right">ircdocs</td>
 </tr>
 <tr>
-  <td class="left">Expires: November 3, 2017</td>
-  <td class="right">May 02, 2017</td>
+  <td class="left">Expires: November 9, 2017</td>
+  <td class="right">May 08, 2017</td>
 </tr>
 
     	
@@ -355,7 +355,7 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 3, 2017.</p>
+<p>This Internet-Draft will expire on November 9, 2017.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -455,12 +455,12 @@ address {
 <p id="rfc.section.4.p.1">CTCP messages themselves are not standardised. Clients that receive either unexpected messages or known messages with unexpected values SHOULD ignore them and produce no response to the sending user. Clients MAY receive more than one response per user for a query they send, due to multiple clients being connected behind an IRC bouncer.</p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#acknowledgements" id="acknowledgements">Acknowledgements</a></h1>
 <p id="rfc.section.5.p.1">Thanks to the IRCv3 group for giving feedback on this specification. Thanks to Khaled for advice on client flood protection.</p>
-<p id="rfc.section.5.p.2">Thanks to Michael Sandrof for creating CTCP, Troy Rollo for creating the related DCC protocol, as well as Klaus Zeuge and Ben Mesander who wrote and revised related specifications many years ago.</p>
+<p id="rfc.section.5.p.2">Thanks to Michael Sandrof for creating CTCP, Troy Rollo for creating the related DCC protocol, as well as Klaus Zeuge and Ben Mesander who wrote and revised related specifications.</p>
 <h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
 <p id="rfc.section.6.p.1">CTCP messages are completely untrusted data, and clients MUST NOT assume that they are well-formed or complete.</p>
 <p id="rfc.section.6.p.2">Older CTCP specifications describe quoting which is complex and not widely implemented. Implementations SHOULD NOT implement low-level quoting or CTCP-level quoting when parsing messages.</p>
 <p id="rfc.section.6.p.3">Older CTCP specifications describe including more than one CTCP message inside a single PRIVMSG or NOTICE command. Implementations SHOULD NOT implement this form of CTCP parsing as it is not widely-implemented and may result in an implementation that can be attacked or spammed more easily.</p>
-<p id="rfc.section.6.p.4">CTCP requests can be abused to flood clients off a server. Clients may ignore excessive incoming requests to protect against this.</p>
+<p id="rfc.section.6.p.4">CTCP requests can be abused to flood clients off a server. Clients may ignore or throttle excessive incoming requests to protect against this.</p>
 <p id="rfc.section.6.p.5">Many servers implement optional filtering to prevent any CTCP messages apart from ACTION from being sent to channels. When this is done, it can typically be enabled or disabled by channel operators with a channel mode.</p>
 <h1 id="rfc.references"><a href="#rfc.references">7.</a> Normative References</h1>
 <table>
@@ -483,11 +483,17 @@ address {
       </td>
       <td class="top"><a>Kalt, C.</a>, "<a href="http://tools.ietf.org/html/rfc2812">Internet Relay Chat: Client Protocol</a>", RFC 2812, DOI 10.17487/RFC2812, April 2000.</td>
     </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC5322">[RFC5322]</b>
+      </td>
+      <td class="top"><a>Resnick, P.</a>, "<a href="http://tools.ietf.org/html/rfc5322">Internet Message Format</a>", RFC 5322, DOI 10.17487/RFC5322, October 2008.</td>
+    </tr>
   </tbody>
 </table>
 <h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> <a href="#message-list" id="message-list">Message List</a></h1>
 <p id="rfc.section.A.p.1">This section is not exhaustive, and only lists those CTCP messages which are widely implemented across the IRC ecosystem.</p>
-<p id="rfc.section.A.p.2">The reply and parameter lines below use a simplified syntax that uses represents variables by surrounding them with angle brackets, and represents repeating segments by surrounding them with curly brackets.</p>
+<p id="rfc.section.A.p.2">The reply and parameter lines below use a simplified syntax that represents variables by surrounding them with angle brackets, and represents repeating segments by surrounding them with curly brackets.</p>
 <h1 id="rfc.appendix.A.1"><a href="#rfc.appendix.A.1">A.1.</a> <a href="#action" id="action">ACTION</a></h1>
 <pre>
 Type:    Extended Formatting
@@ -532,7 +538,7 @@ Reply:  FINGER &lt;info&gt;
 <p id="rfc.section.A.4.p.4">Example:</p>
 <pre>
   Query:     FINGER
-  Response:  FINGER WeeChat 1.5
+  Response:  FINGER WeeChat 1.8-dev
 </pre>
 <h1 id="rfc.appendix.A.5"><a href="#rfc.appendix.A.5">A.5.</a> <a href="#ping" id="ping">PING</a></h1>
 <pre>
@@ -566,13 +572,13 @@ Reply:  SOURCE &lt;info&gt;
 Type:    Extended Query
 Params:  TIME &lt;timestring&gt;
 </pre>
-<p id="rfc.section.A.7.p.1">This extended query is used to return the client&#8217;s local time in an unspecified human-readable format. We recommend ISO 8601 format, but raw ctime() output appears to be the most common in practice.</p>
+<p id="rfc.section.A.7.p.1">This extended query is used to return the client&#8217;s local time in an unspecified human-readable format. In practice, both the format output by ctime() and the format described in Section 3.3 of <a href="#RFC5322">[RFC5322]</a> are common.</p>
 <p id="rfc.section.A.7.p.2">New implementations MAY default to UTC time for privacy reasons.</p>
 <p id="rfc.section.A.7.p.3">TIME is almost universally implemented. Clients SHOULD implement this CTCP message.</p>
 <p id="rfc.section.A.7.p.4">Example:</p>
 <pre>
   Query:     TIME
-  Response:  TIME 2016-09-26T00:45:36Z
+  Response:  TIME Mon, 08 May 2017 09:15:29 GMT
 </pre>
 <h1 id="rfc.appendix.A.8"><a href="#rfc.appendix.A.8">A.8.</a> <a href="#version" id="version">VERSION</a></h1>
 <pre>
@@ -585,7 +591,7 @@ Reply:  VERSION &lt;verstring&gt;
 <p id="rfc.section.A.8.p.4">Example:</p>
 <pre>
   Query:     VERSION
-  Response:  VERSION WeeChat 1.5-rc2 (git: v1.5-rc2-1-gc1441b1)
+  Response:  VERSION WeeChat 1.8-dev (git: v1.7-329-g22f2fd03a)
 </pre>
 <h1 id="rfc.appendix.A.9"><a href="#rfc.appendix.A.9">A.9.</a> <a href="#userinfo" id="userinfo">USERINFO</a></h1>
 <pre>
