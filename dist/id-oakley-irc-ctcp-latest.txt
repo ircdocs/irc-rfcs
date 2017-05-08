@@ -246,6 +246,9 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
    the related DCC protocol, as well as Klaus Zeuge and Ben Mesander who
    wrote and revised related specifications.
 
+   Special thanks to dequis, Peter Powell and James Wheare for help with
+   this and other work.
+
 6.  Security Considerations
 
    CTCP messages are completely untrusted data, and clients MUST NOT
@@ -269,9 +272,6 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
    messages apart from ACTION from being sent to channels.  When this is
    done, it can typically be enabled or disabled by channel operators
    with a channel mode.
-
-
-
 
 
 
