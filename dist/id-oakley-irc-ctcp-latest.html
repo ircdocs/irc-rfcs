@@ -274,7 +274,7 @@ address {
     position: fixed;
   }
 
-  /*]]>*/</style>
+/*]]>*/</style>
 
 
   <link href="#rfc.toc" rel="Contents"/>
@@ -306,7 +306,7 @@ address {
 
   <meta name="dct.creator" content="Mikulenas, M. and D. Oakley" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-oakley-irc-ctcp-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-5-08" />
+  <meta name="dct.issued" scheme="ISO8601" content="2017-5-26" />
   <meta name="dct.abstract" content="This document describes the Client-to-Client Protocol (CTCP), which lets Internet Relay Chat (IRC) clients send each other messages that get displayed or responded to in special ways. CTCP has been widely implemented, with most clients supporting it natively. This document outlines how to implement CTCP and the most common messages used." />
   <meta name="description" content="This document describes the Client-to-Client Protocol (CTCP), which lets Internet Relay Chat (IRC) clients send each other messages that get displayed or responded to in special ways. CTCP has been widely implemented, with most clients supporting it natively. This document outlines how to implement CTCP and the most common messages used." />
 
@@ -334,8 +334,8 @@ address {
   <td class="right">ircdocs</td>
 </tr>
 <tr>
-  <td class="left">Expires: November 9, 2017</td>
-  <td class="right">May 08, 2017</td>
+  <td class="left">Expires: November 27, 2017</td>
+  <td class="right">May 26, 2017</td>
 </tr>
 
     	
@@ -355,7 +355,7 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 9, 2017.</p>
+<p>This Internet-Draft will expire on November 27, 2017.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -454,9 +454,9 @@ address {
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#messages" id="messages">Messages</a></h1>
 <p id="rfc.section.4.p.1">CTCP messages themselves are not standardised. Clients that receive either unexpected messages or known messages with unexpected values SHOULD ignore them and produce no response to the sending user. Clients MAY receive more than one response per user for a query they send, due to multiple clients being connected behind an IRC bouncer.</p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#acknowledgements" id="acknowledgements">Acknowledgements</a></h1>
-<p id="rfc.section.5.p.1">Thanks to the IRCv3 group for giving feedback on this specification. Thanks to Khaled for advice on client flood protection.</p>
+<p id="rfc.section.5.p.1">Thanks to the IRCv3 group for giving feedback on this specification, and to Khaled for advice on client flood protection.</p>
 <p id="rfc.section.5.p.2">Thanks to Michael Sandrof for creating CTCP, Troy Rollo for creating the related DCC protocol, as well as Klaus Zeuge and Ben Mesander who wrote and revised related specifications.</p>
-<p id="rfc.section.5.p.3">Special thanks to dequis, Peter Powell and James Wheare for help with this and other work.</p>
+<p id="rfc.section.5.p.3">Special thanks to dequis, Peter Powell and James Wheare for help with this and other related work.</p>
 <h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
 <p id="rfc.section.6.p.1">CTCP messages are completely untrusted data, and clients MUST NOT assume that they are well-formed or complete.</p>
 <p id="rfc.section.6.p.2">Older CTCP specifications describe quoting which is complex and not widely implemented. Implementations SHOULD NOT implement low-level quoting or CTCP-level quoting when parsing messages.</p>

@@ -6,7 +6,7 @@ Network Working Group                                       M. Mikulenas
 Internet-Draft                                               Independent
 Updates: 1459, 2812 (if approved)                              D. Oakley
 Intended status: Informational                                   ircdocs
-Expires: November 9, 2017                                   May 08, 2017
+Expires: November 27, 2017                                  May 26, 2017
 
 
          Internet Relay Chat: Client-to-Client Protocol (CTCP)
@@ -35,7 +35,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 9, 2017.
+   This Internet-Draft will expire on November 27, 2017.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Mikulenas & Oakley      Expires November 9, 2017                [Page 1]
+Mikulenas & Oakley      Expires November 27, 2017               [Page 1]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Mikulenas & Oakley      Expires November 9, 2017                [Page 2]
+Mikulenas & Oakley      Expires November 27, 2017               [Page 2]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -165,7 +165,7 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
 
-Mikulenas & Oakley      Expires November 9, 2017                [Page 3]
+Mikulenas & Oakley      Expires November 27, 2017               [Page 3]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -221,7 +221,7 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
 
-Mikulenas & Oakley      Expires November 9, 2017                [Page 4]
+Mikulenas & Oakley      Expires November 27, 2017               [Page 4]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -239,15 +239,15 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 5.  Acknowledgements
 
-   Thanks to the IRCv3 group for giving feedback on this specification.
-   Thanks to Khaled for advice on client flood protection.
+   Thanks to the IRCv3 group for giving feedback on this specification,
+   and to Khaled for advice on client flood protection.
 
    Thanks to Michael Sandrof for creating CTCP, Troy Rollo for creating
    the related DCC protocol, as well as Klaus Zeuge and Ben Mesander who
    wrote and revised related specifications.
 
    Special thanks to dequis, Peter Powell and James Wheare for help with
-   this and other work.
+   this and other related work.
 
 6.  Security Considerations
 
@@ -277,7 +277,7 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
 
-Mikulenas & Oakley      Expires November 9, 2017                [Page 5]
+Mikulenas & Oakley      Expires November 27, 2017               [Page 5]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -333,7 +333,7 @@ A.1.  ACTION
 
 
 
-Mikulenas & Oakley      Expires November 9, 2017                [Page 6]
+Mikulenas & Oakley      Expires November 27, 2017               [Page 6]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -389,7 +389,7 @@ A.4.  FINGER
 
 
 
-Mikulenas & Oakley      Expires November 9, 2017                [Page 7]
+Mikulenas & Oakley      Expires November 27, 2017               [Page 7]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -445,7 +445,7 @@ A.7.  TIME
 
 
 
-Mikulenas & Oakley      Expires November 9, 2017                [Page 8]
+Mikulenas & Oakley      Expires November 27, 2017               [Page 8]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -501,7 +501,7 @@ A.9.  USERINFO
 
 
 
-Mikulenas & Oakley      Expires November 9, 2017                [Page 9]
+Mikulenas & Oakley      Expires November 27, 2017               [Page 9]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -557,4 +557,4 @@ Authors' Addresses
 
 
 
-Mikulenas & Oakley      Expires November 9, 2017               [Page 10]
+Mikulenas & Oakley      Expires November 27, 2017              [Page 10]

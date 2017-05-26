@@ -141,11 +141,11 @@ CTCP messages themselves are not standardised. Clients that receive either unexp
 
 # Acknowledgements
 
-Thanks to the IRCv3 group for giving feedback on this specification. Thanks to Khaled for advice on client flood protection.
+Thanks to the IRCv3 group for giving feedback on this specification, and to Khaled for advice on client flood protection.
 
 Thanks to Michael Sandrof for creating CTCP, Troy Rollo for creating the related DCC protocol, as well as Klaus Zeuge and Ben Mesander who wrote and revised related specifications.
 
-Special thanks to dequis, Peter Powell and James Wheare for help with this and other work.
+Special thanks to dequis, Peter Powell and James Wheare for help with this and other related work.
 
 
 # Security Considerations
