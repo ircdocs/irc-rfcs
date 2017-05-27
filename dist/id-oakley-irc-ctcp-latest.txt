@@ -247,7 +247,7 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
    wrote and revised related specifications.
 
    Special thanks to dequis, Peter Powell and James Wheare for help with
-   this and other related work.
+   this and related work.
 
 6.  Security Considerations
 
