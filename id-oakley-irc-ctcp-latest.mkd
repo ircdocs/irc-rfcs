@@ -168,7 +168,7 @@ Many servers implement optional filtering to prevent any CTCP messages apart fro
 
 This section is not exhaustive, and only lists those CTCP messages which are widely implemented across the IRC ecosystem.
 
-The reply and parameter lines below use a simplified syntax that represents variables by surrounding them with angle brackets, and represents repeating segments by surrounding them with curly brackets.
+The reply and parameter lines below use a simplified syntax that represents variables by surrounding them with angle brackets,.
 
 
 ## ACTION
@@ -195,7 +195,7 @@ Example:
 
 ~~~
 Type:   Extended Query
-Reply:  CLIENTINFO <token>{ <token>}
+Reply:  CLIENTINFO <tokens>
 ~~~
 
 This extended query returns a list of the CTCP messages that this client supports and implements, delimited by a single ASCII space.
