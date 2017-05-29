@@ -306,7 +306,7 @@ address {
 
   <meta name="dct.creator" content="Mikulenas, M. and D. Oakley" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-oakley-irc-ctcp-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-5-26" />
+  <meta name="dct.issued" scheme="ISO8601" content="2017-5-28" />
   <meta name="dct.abstract" content="This document describes the Client-to-Client Protocol (CTCP), which lets Internet Relay Chat (IRC) clients send each other messages that get displayed or responded to in special ways. CTCP has been widely implemented, with most clients supporting it natively. This document outlines how to implement CTCP and the most common messages used." />
   <meta name="description" content="This document describes the Client-to-Client Protocol (CTCP), which lets Internet Relay Chat (IRC) clients send each other messages that get displayed or responded to in special ways. CTCP has been widely implemented, with most clients supporting it natively. This document outlines how to implement CTCP and the most common messages used." />
 
@@ -334,8 +334,8 @@ address {
   <td class="right">ircdocs</td>
 </tr>
 <tr>
-  <td class="left">Expires: November 27, 2017</td>
-  <td class="right">May 26, 2017</td>
+  <td class="left">Expires: November 29, 2017</td>
+  <td class="right">May 28, 2017</td>
 </tr>
 
     	
@@ -355,7 +355,7 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 27, 2017.</p>
+<p>This Internet-Draft will expire on November 29, 2017.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -432,7 +432,7 @@ address {
   :dan PRIVMSG #ircv3 :\x01ACTION writes some specs!\x01
 </pre>
 <h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#metadata-query" id="metadata-query">Metadata Query</a></h1>
-<p id="rfc.section.3.2.p.1">This type of CTCP is used to provide static information about the target client, user or connection.</p>
+<p id="rfc.section.3.2.p.1">This type of CTCP is used to provide relatively static information about the target client, user or connection.</p>
 <p id="rfc.section.3.2.p.2">This CTCP takes the form of a query and a response (as a PRIVMSG and NOTICE, respectively). Due to how bouncers interact with multiple clients, there may sometimes be multiple responses to queries.</p>
 <p id="rfc.section.3.2.p.3">Metadata queries MUST NOT require the recipient to implement any side effects (beyond sending the reply itself); if a CTCP message causes side effects by design, it should be categorized as an extended query instead.</p>
 <p id="rfc.section.3.2.p.4">Metadata queries do not have any parameters, but expect a reply with parameters as the response data.</p>
@@ -494,7 +494,7 @@ address {
 </table>
 <h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> <a href="#message-list" id="message-list">Message List</a></h1>
 <p id="rfc.section.A.p.1">This section is not exhaustive, and only lists those CTCP messages which are widely implemented across the IRC ecosystem.</p>
-<p id="rfc.section.A.p.2">The reply and parameter lines below use a simplified syntax that represents variables by surrounding them with angle brackets, and represents repeating segments by surrounding them with curly brackets.</p>
+<p id="rfc.section.A.p.2">The reply and parameter lines below use a simplified syntax that represents variables by surrounding them with angle brackets,.</p>
 <h1 id="rfc.appendix.A.1"><a href="#rfc.appendix.A.1">A.1.</a> <a href="#action" id="action">ACTION</a></h1>
 <pre>
 Type:    Extended Formatting
@@ -510,10 +510,10 @@ Params:  ACTION &lt;text&gt;
 </pre>
 <h1 id="rfc.appendix.A.2"><a href="#rfc.appendix.A.2">A.2.</a> <a href="#clientinfo" id="clientinfo">CLIENTINFO</a></h1>
 <pre>
-Type:   Metadata Query
-Reply:  CLIENTINFO &lt;token&gt;{ &lt;token&gt;}
+Type:   Extended Query
+Reply:  CLIENTINFO &lt;tokens&gt;
 </pre>
-<p id="rfc.section.A.2.p.1">This metadata query returns a list of the CTCP messages that this client supports and implements, delimited by a single ASCII space.</p>
+<p id="rfc.section.A.2.p.1">This extended query returns a list of the CTCP messages that this client supports and implements, delimited by a single ASCII space.</p>
 <p id="rfc.section.A.2.p.2">CLIENTINFO is widely implemented. Clients SHOULD implement this CTCP message.</p>
 <p id="rfc.section.A.2.p.3">Example:</p>
 <pre>
@@ -525,8 +525,8 @@ Reply:  CLIENTINFO &lt;token&gt;{ &lt;token&gt;}
 Type:    Extended Query
 Params:  DCC &lt;type&gt; &lt;argument&gt; &lt;host&gt; &lt;port&gt;
 </pre>
-<p id="rfc.section.A.3.p.1">DCC (the Direct Client-to-Client protocol) is used to setup and control connections that go directly between clients, bypassing the IRC server. This is typically used for features that require a large amount of traffic between clients or simply wish to bypass the server itself such as file transfer and direct chat.</p>
-<p id="rfc.section.A.3.p.2">DCC requires its own specification, and is not described in-depth here.</p>
+<p id="rfc.section.A.3.p.1">This extended query is used to setup and control connections that go directly between clients, bypassing the IRC server. This is typically used for features that require a large amount of traffic between clients or simply wish to bypass the server itself such as file transfer and direct chat.</p>
+<p id="rfc.section.A.3.p.2">The Direct Client-to-Client (DCC) Protocol requires its own specification, and is not described in-depth here.</p>
 <p id="rfc.section.A.3.p.3">DCC is widely implemented. Clients MAY implement this CTCP message.</p>
 <h1 id="rfc.appendix.A.4"><a href="#rfc.appendix.A.4">A.4.</a> <a href="#finger" id="finger">FINGER</a></h1>
 <pre>
