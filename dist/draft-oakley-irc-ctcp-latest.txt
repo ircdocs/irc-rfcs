@@ -6,7 +6,7 @@ Network Working Group                                       M. Mikulenas
 Internet-Draft                                               Independent
 Updates: 1459, 2812 (if approved)                              D. Oakley
 Intended status: Informational                                   ircdocs
-Expires: November 29, 2017                                  May 28, 2017
+Expires: November 30, 2017                                  May 29, 2017
 
 
          Internet Relay Chat: Client-to-Client Protocol (CTCP)
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 29, 2017.
+   This Internet-Draft will expire on November 30, 2017.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Mikulenas & Oakley      Expires November 29, 2017               [Page 1]
+Mikulenas & Oakley      Expires November 30, 2017               [Page 1]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -75,12 +75,12 @@ Table of Contents
      A.1.  ACTION  . . . . . . . . . . . . . . . . . . . . . . . . .   6
      A.2.  CLIENTINFO  . . . . . . . . . . . . . . . . . . . . . . .   7
      A.3.  DCC . . . . . . . . . . . . . . . . . . . . . . . . . . .   7
-     A.4.  FINGER  . . . . . . . . . . . . . . . . . . . . . . . . .   8
+     A.4.  FINGER  . . . . . . . . . . . . . . . . . . . . . . . . .   7
      A.5.  PING  . . . . . . . . . . . . . . . . . . . . . . . . . .   8
      A.6.  SOURCE  . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     A.7.  TIME  . . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     A.7.  TIME  . . . . . . . . . . . . . . . . . . . . . . . . . .   8
      A.8.  VERSION . . . . . . . . . . . . . . . . . . . . . . . . .   9
-     A.9.  USERINFO  . . . . . . . . . . . . . . . . . . . . . . . .  10
+     A.9.  USERINFO  . . . . . . . . . . . . . . . . . . . . . . . .   9
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  10
 
 1.  Introduction
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Mikulenas & Oakley      Expires November 29, 2017               [Page 2]
+Mikulenas & Oakley      Expires November 30, 2017               [Page 2]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -144,6 +144,11 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
    to, the responses are sent to the querying client rather than the
    channel which the query was originally sent to.
 
+   Many servers implement optional filtering so that only the ACTION
+   CTCP message can be sent to channels.  When this is done, it can
+   typically be enabled or disabled by channel operators with a channel
+   mode.
+
    Here are two examples of CTCP queries and replies:
 
      :alice PRIVMSG bob :\x01VERSION\x01
@@ -160,12 +165,7 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
 
-
-
-
-
-
-Mikulenas & Oakley      Expires November 29, 2017               [Page 3]
+Mikulenas & Oakley      Expires November 30, 2017               [Page 3]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -221,7 +221,7 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
 
-Mikulenas & Oakley      Expires November 29, 2017               [Page 4]
+Mikulenas & Oakley      Expires November 30, 2017               [Page 4]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -260,32 +260,27 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
    CTCP messages are completely untrusted data, and clients MUST NOT
    assume that they are well-formed or complete.
 
-   Older CTCP specifications describe quoting which is complex and not
-   widely implemented.  Implementations SHOULD NOT implement low-level
-   quoting or CTCP-level quoting when parsing messages.
+   Older CTCP specifications describe quoting methods which are complex
+   and not widely implemented.  Implementations SHOULD NOT implement
+   "low-level quoting" or "CTCP-level quoting" when parsing messages.
 
    Older CTCP specifications describe including more than one CTCP
    message inside a single PRIVMSG or NOTICE command.  Implementations
    SHOULD NOT implement this form of CTCP parsing as it is not widely-
-   implemented and may result in an implementation that can be attacked
-   or spammed more easily.
+   implemented and may result in an implementation that can be more
+   easily flooded off the server they are connected to.
 
-   CTCP requests can be abused to flood clients off a server.  Clients
-   may ignore or throttle excessive incoming requests to protect against
-   this.
-
-
+   CTCP requests can be abused to flood clients off the server they are
+   connected to.  Clients may ignore or delay excessive incoming
+   requests to protect against this.
 
 
-Mikulenas & Oakley      Expires November 29, 2017               [Page 5]
+
+
+Mikulenas & Oakley      Expires November 30, 2017               [Page 5]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
-
-   Many servers implement optional filtering to prevent any CTCP
-   messages apart from ACTION from being sent to channels.  When this is
-   done, it can typically be enabled or disabled by channel operators
-   with a channel mode.
 
 7.  IANA Considerations
 
@@ -328,22 +323,20 @@ A.1.  ACTION
    Type:    Extended Formatting
    Params:  ACTION <text>
 
-
-
-
-
-
-Mikulenas & Oakley      Expires November 29, 2017               [Page 6]
-
-Internet-Draft        IRC Client-to-Client Protocol             May 2017
-
-
    This extended formatting message shows that <text> should be
    displayed as a third-person action or emote; in clients, it's
    generally activated with the command "/me".
 
    ACTION is universally implemented and very commonly used.  Clients
    MUST implement this CTCP message to effectively use IRC.
+
+
+
+
+Mikulenas & Oakley      Expires November 30, 2017               [Page 6]
+
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
+
 
    Example:
 
@@ -383,17 +376,6 @@ A.3.  DCC
 
    DCC is widely implemented.  Clients MAY implement this CTCP message.
 
-
-
-
-
-
-
-Mikulenas & Oakley      Expires November 29, 2017               [Page 7]
-
-Internet-Draft        IRC Client-to-Client Protocol             May 2017
-
-
 A.4.  FINGER
 
    Type:   Metadata Query
@@ -404,6 +386,13 @@ A.4.  FINGER
 
    However, some implementations return the client name and version
    instead.
+
+
+
+Mikulenas & Oakley      Expires November 30, 2017               [Page 7]
+
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
+
 
    FINGER is largely obsolete.  Clients MAY implement this CTCP message.
 
@@ -443,13 +432,6 @@ A.6.  SOURCE
    SOURCE is rarely implemented.  Clients MAY implement this CTCP
    message.
 
-
-
-Mikulenas & Oakley      Expires November 29, 2017               [Page 8]
-
-Internet-Draft        IRC Client-to-Client Protocol             May 2017
-
-
    Example:
 
      Query:     SOURCE
@@ -459,6 +441,14 @@ A.7.  TIME
 
    Type:    Extended Query
    Params:  TIME <timestring>
+
+
+
+
+Mikulenas & Oakley      Expires November 30, 2017               [Page 8]
+
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
+
 
    This extended query is used to return the client's local time in an
    unspecified human-readable format.  In practice, both the format
@@ -495,17 +485,6 @@ A.8.  VERSION
      Query:     VERSION
      Response:  VERSION WeeChat 1.8-dev (git: v1.7-329-g22f2fd03a)
 
-
-
-
-
-
-
-Mikulenas & Oakley      Expires November 29, 2017               [Page 9]
-
-Internet-Draft        IRC Client-to-Client Protocol             May 2017
-
-
 A.9.  USERINFO
 
    Type:   Metadata Query
@@ -519,6 +498,13 @@ A.9.  USERINFO
 
    USERINFO is largely obsolete.  Clients MAY implement this CTCP
    message.
+
+
+
+Mikulenas & Oakley      Expires November 30, 2017               [Page 9]
+
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
+
 
    Example:
 
@@ -557,4 +543,18 @@ Authors' Addresses
 
 
 
-Mikulenas & Oakley      Expires November 29, 2017              [Page 10]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mikulenas & Oakley      Expires November 30, 2017              [Page 10]

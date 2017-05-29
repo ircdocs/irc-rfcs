@@ -67,6 +67,8 @@ The final CTCP delimiter SHOULD be sent on outgoing messages for compatibility r
 
 Queries MAY be sent to channels. When these queries are responded to, the responses are sent to the querying client rather than the channel which the query was originally sent to.
 
+Many servers implement optional filtering so that only the ACTION CTCP message can be sent to channels. When this is done, it can typically be enabled or disabled by channel operators with a channel mode.
+
 Here are two examples of CTCP queries and replies:
 
 ~~~
@@ -152,13 +154,11 @@ Special thanks to dequis, Peter Powell and James Wheare for help with this and r
 
 CTCP messages are completely untrusted data, and clients MUST NOT assume that they are well-formed or complete.
 
-Older CTCP specifications describe quoting which is complex and not widely implemented. Implementations SHOULD NOT implement low-level quoting or CTCP-level quoting when parsing messages.
+Older CTCP specifications describe quoting methods which are complex and not widely implemented. Implementations SHOULD NOT implement "low-level quoting" or "CTCP-level quoting" when parsing messages.
 
-Older CTCP specifications describe including more than one CTCP message inside a single PRIVMSG or NOTICE command. Implementations SHOULD NOT implement this form of CTCP parsing as it is not widely-implemented and may result in an implementation that can be attacked or spammed more easily.
+Older CTCP specifications describe including more than one CTCP message inside a single PRIVMSG or NOTICE command. Implementations SHOULD NOT implement this form of CTCP parsing as it is not widely-implemented and may result in an implementation that can be more easily flooded off the server they are connected to.
 
-CTCP requests can be abused to flood clients off a server. Clients may ignore or throttle excessive incoming requests to protect against this.
-
-Many servers implement optional filtering to prevent any CTCP messages apart from ACTION from being sent to channels. When this is done, it can typically be enabled or disabled by channel operators with a channel mode.
+CTCP requests can be abused to flood clients off the server they are connected to. Clients may ignore or delay excessive incoming requests to protect against this.
 
 
 # IANA Considerations
