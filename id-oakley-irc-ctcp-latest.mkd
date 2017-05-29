@@ -100,7 +100,7 @@ Example:
 
 ## Metadata Query
 
-This type of CTCP is used to provide static information about the target client, user or connection.
+This type of CTCP is used to provide relatively static information about the target client, user or connection.
 
 This CTCP takes the form of a query and a response (as a PRIVMSG and NOTICE, respectively). Due to how bouncers interact with multiple clients, there may sometimes be multiple responses to queries.
 
@@ -194,11 +194,11 @@ Example:
 ## CLIENTINFO
 
 ~~~
-Type:   Metadata Query
+Type:   Extended Query
 Reply:  CLIENTINFO <token>{ <token>}
 ~~~
 
-This metadata query returns a list of the CTCP messages that this client supports and implements, delimited by a single ASCII space.
+This extended query returns a list of the CTCP messages that this client supports and implements, delimited by a single ASCII space.
 
 CLIENTINFO is widely implemented. Clients SHOULD implement this CTCP message.
 
@@ -217,9 +217,9 @@ Type:    Extended Query
 Params:  DCC <type> <argument> <host> <port>
 ~~~
 
-DCC (the Direct Client-to-Client protocol) is used to setup and control connections that go directly between clients, bypassing the IRC server. This is typically used for features that require a large amount of traffic between clients or simply wish to bypass the server itself such as file transfer and direct chat.
+This extended query is used to setup and control connections that go directly between clients, bypassing the IRC server. This is typically used for features that require a large amount of traffic between clients or simply wish to bypass the server itself such as file transfer and direct chat.
 
-DCC requires its own specification, and is not described in-depth here.
+The Direct Client-to-Client (DCC) Protocol requires its own specification, and is not described in-depth here.
 
 DCC is widely implemented. Clients MAY implement this CTCP message.
 
