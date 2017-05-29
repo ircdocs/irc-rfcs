@@ -115,7 +115,7 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
    body of the message (the second parameter) begins with the CTCP
-   delimiter.  The ABNF [RFC5234] for this message body is as follows::
+   delimiter.  The ABNF [RFC5234] for this message body is as follows:
 
         delim    = %x01
 
