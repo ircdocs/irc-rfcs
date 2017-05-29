@@ -4,8 +4,8 @@ I'm trying to write an update to the outdated [RFC 1459](https://tools.ietf.org/
 
 Newest builds are available here:
 
-- IRC Client: [HTML](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/id-oakley-irc-client-latest.html) / [Text](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/id-oakley-irc-client-latest.txt)
-- IRC CTCP: [HTML](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/id-oakley-irc-ctcp-latest.html) / [Text](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/id-oakley-irc-ctcp-latest.txt)
+- IRC Client: [HTML](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-client-latest.html) / [Text](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-client-latest.txt)
+- IRC CTCP: [HTML](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-ctcp-latest.html) / [Text](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-ctcp-latest.txt)
 
 The 'drafts' in this repo are based off my [Modern docs](https://modern.ircdocs.horse/). This repo can pretty much be considered 'on hold' until the relevant Modern documents are stable and complete enough for me to be happy with. Recent updates in this repo are just an attempt to prove that the tech works, not to actually start work in this repo.
 
@@ -42,7 +42,7 @@ This is the big one, the replacement for RFC 1459 and RFC 2812 on the whole. It'
 
 This document is being actively worked on as the main [Modern Client Protocol Doc](https://modern.ircdocs.horse/). I'm **not working on the client protocol spec here** until that linked Modern document is at a point where I'm relatively happy removing the WIP tag from it.
 
-[HTML](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/id-oakley-irc-client-latest.html) / [Text](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/id-oakley-irc-client-latest.txt)
+[HTML](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-client-latest.html) / [Text](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-client-latest.txt)
 
 ### Client-to-Client Protocol (CTCP)
 
@@ -53,7 +53,7 @@ This describes how CTCP works today, ignoring a lot of the quoting that was spec
 
 I'm **working on this document currently**, most of that work being copyediting and editing in general. I'm thinking about using this as a 'test bed' for seeing how I can go getting clients to look over and validate it, and for seeing how the IETF responds to IRC specifications.
 
-[HTML](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/id-oakley-irc-ctcp-latest.html) / [Text](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/id-oakley-irc-ctcp-latest.txt)
+[HTML](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-ctcp-latest.html) / [Text](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-ctcp-latest.txt)
 
 
 ## S2S Note
