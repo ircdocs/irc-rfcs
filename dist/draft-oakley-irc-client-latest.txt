@@ -6,8 +6,8 @@ Network Working Group                                     D. Oakley, Ed.
 Internet-Draft                                                   ircdocs
 Obsoletes: 1459, 2810, 2811, 2812 (if                         J. Allnutt
            approved)                                            Kiwi IRC
-Intended status: Informational                            April 20, 2017
-Expires: October 22, 2017
+Intended status: Informational                              May 28, 2017
+Expires: November 29, 2017
 
 
                   Internet Relay Chat Client Protocol
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 22, 2017.
+   This Internet-Draft will expire on November 29, 2017.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Oakley & Allnutt        Expires October 22, 2017                [Page 1]
+Oakley & Allnutt        Expires November 29, 2017               [Page 1]
 
-Internet-Draft                 irc-client                     April 2017
+Internet-Draft                 irc-client                       May 2017
 
 
    (http://trustee.ietf.org/license-info) in effect on the date of
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Oakley & Allnutt        Expires October 22, 2017                [Page 2]
+Oakley & Allnutt        Expires November 29, 2017               [Page 2]
 
-Internet-Draft                 irc-client                     April 2017
+Internet-Draft                 irc-client                       May 2017
 
 
 2.1.1.  Servers
@@ -165,9 +165,9 @@ Internet-Draft                 irc-client                     April 2017
 
 
 
-Oakley & Allnutt        Expires October 22, 2017                [Page 3]
+Oakley & Allnutt        Expires November 29, 2017               [Page 3]
 
-Internet-Draft                 irc-client                     April 2017
+Internet-Draft                 irc-client                       May 2017
 
 
    o  *Leaf*: A leaf is a server that is only connected to a single
@@ -221,9 +221,9 @@ Authors' Addresses
 
 
 
-Oakley & Allnutt        Expires October 22, 2017                [Page 4]
+Oakley & Allnutt        Expires November 29, 2017               [Page 4]
 
-Internet-Draft                 irc-client                     April 2017
+Internet-Draft                 irc-client                       May 2017
 
 
    Jack Allnutt
@@ -277,4 +277,4 @@ Internet-Draft                 irc-client                     April 2017
 
 
 
-Oakley & Allnutt        Expires October 22, 2017                [Page 5]
+Oakley & Allnutt        Expires November 29, 2017               [Page 5]

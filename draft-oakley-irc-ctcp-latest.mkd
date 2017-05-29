@@ -31,6 +31,8 @@ author:
 
 This document describes the Client-to-Client Protocol (CTCP), which lets Internet Relay Chat (IRC) clients send each other messages that get displayed or responded to in special ways. CTCP has been widely implemented, with most clients supporting it natively. This document outlines how to implement CTCP and the most common messages used.
 
+It updates RFC 1459 and RFC 2812.
+
 --- middle
 
 # Introduction
@@ -157,6 +159,11 @@ Older CTCP specifications describe including more than one CTCP message inside a
 CTCP requests can be abused to flood clients off a server. Clients may ignore or throttle excessive incoming requests to protect against this.
 
 Many servers implement optional filtering to prevent any CTCP messages apart from ACTION from being sent to channels. When this is done, it can typically be enabled or disabled by channel operators with a channel mode.
+
+
+# IANA Considerations
+
+This document has no actions for IANA.
 
 
 --- back

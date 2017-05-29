@@ -287,7 +287,8 @@ address {
 <link href="#rfc.section.4" rel="Chapter" title="4 Messages"/>
 <link href="#rfc.section.5" rel="Chapter" title="5 Acknowledgements"/>
 <link href="#rfc.section.6" rel="Chapter" title="6 Security Considerations"/>
-<link href="#rfc.references" rel="Chapter" title="7 Normative References"/>
+<link href="#rfc.section.7" rel="Chapter" title="7 IANA Considerations"/>
+<link href="#rfc.references" rel="Chapter" title="8 Normative References"/>
 <link href="#rfc.appendix.A" rel="Chapter" title="A Message List"/>
 <link href="#rfc.appendix.A.1" rel="Chapter" title="A.1 ACTION"/>
 <link href="#rfc.appendix.A.2" rel="Chapter" title="A.2 CLIENTINFO"/>
@@ -349,6 +350,7 @@ address {
   <a href="#rfc.abstract">Abstract</a>
 </h1>
 <p>This document describes the Client-to-Client Protocol (CTCP), which lets Internet Relay Chat (IRC) clients send each other messages that get displayed or responded to in special ways. CTCP has been widely implemented, with most clients supporting it natively. This document outlines how to implement CTCP and the most common messages used.</p>
+<p>It updates RFC 1459 and RFC 2812.</p>
 <h1 id="rfc.status">
   <a href="#rfc.status">Status of This Memo</a>
 </h1>
@@ -376,7 +378,8 @@ address {
 </ul><li>4.   <a href="#rfc.section.4">Messages</a></li>
 <li>5.   <a href="#rfc.section.5">Acknowledgements</a></li>
 <li>6.   <a href="#rfc.section.6">Security Considerations</a></li>
-<li>7.   <a href="#rfc.references">Normative References</a></li>
+<li>7.   <a href="#rfc.section.7">IANA Considerations</a></li>
+<li>8.   <a href="#rfc.references">Normative References</a></li>
 <li>Appendix A.   <a href="#rfc.appendix.A">Message List</a></li>
 <ul><li>A.1.   <a href="#rfc.appendix.A.1">ACTION</a></li>
 <li>A.2.   <a href="#rfc.appendix.A.2">CLIENTINFO</a></li>
@@ -462,7 +465,9 @@ address {
 <p id="rfc.section.6.p.3">Older CTCP specifications describe including more than one CTCP message inside a single PRIVMSG or NOTICE command. Implementations SHOULD NOT implement this form of CTCP parsing as it is not widely-implemented and may result in an implementation that can be attacked or spammed more easily.</p>
 <p id="rfc.section.6.p.4">CTCP requests can be abused to flood clients off a server. Clients may ignore or throttle excessive incoming requests to protect against this.</p>
 <p id="rfc.section.6.p.5">Many servers implement optional filtering to prevent any CTCP messages apart from ACTION from being sent to channels. When this is done, it can typically be enabled or disabled by channel operators with a channel mode.</p>
-<h1 id="rfc.references"><a href="#rfc.references">7.</a> Normative References</h1>
+<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
+<p id="rfc.section.7.p.1">This document has no actions for IANA.</p>
+<h1 id="rfc.references"><a href="#rfc.references">8.</a> Normative References</h1>
 <table>
   <tbody>
     <tr>

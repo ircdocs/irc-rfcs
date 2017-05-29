@@ -20,6 +20,8 @@ Abstract
    implemented, with most clients supporting it natively.  This document
    outlines how to implement CTCP and the most common messages used.
 
+   It updates RFC 1459 and RFC 2812.
+
 Status of This Memo
 
    This Internet-Draft is submitted in full conformance with the
@@ -51,8 +53,6 @@ Copyright Notice
 
 
 
-
-
 Mikulenas & Oakley      Expires November 29, 2017               [Page 1]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
@@ -61,25 +61,26 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-   2.  Message Syntax  . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Message Syntax  . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  Message Types . . . . . . . . . . . . . . . . . . . . . . . .   3
-     3.1.  Extended formatting . . . . . . . . . . . . . . . . . . .   3
+     3.1.  Extended formatting . . . . . . . . . . . . . . . . . . .   4
      3.2.  Metadata Query  . . . . . . . . . . . . . . . . . . . . .   4
      3.3.  Extended Query  . . . . . . . . . . . . . . . . . . . . .   4
    4.  Messages  . . . . . . . . . . . . . . . . . . . . . . . . . .   5
    5.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   5
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
-   7.  Normative References  . . . . . . . . . . . . . . . . . . . .   6
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
+   8.  Normative References  . . . . . . . . . . . . . . . . . . . .   6
    Appendix A.  Message List . . . . . . . . . . . . . . . . . . . .   6
      A.1.  ACTION  . . . . . . . . . . . . . . . . . . . . . . . . .   6
      A.2.  CLIENTINFO  . . . . . . . . . . . . . . . . . . . . . . .   7
      A.3.  DCC . . . . . . . . . . . . . . . . . . . . . . . . . . .   7
-     A.4.  FINGER  . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     A.4.  FINGER  . . . . . . . . . . . . . . . . . . . . . . . . .   8
      A.5.  PING  . . . . . . . . . . . . . . . . . . . . . . . . . .   8
      A.6.  SOURCE  . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     A.7.  TIME  . . . . . . . . . . . . . . . . . . . . . . . . . .   8
+     A.7.  TIME  . . . . . . . . . . . . . . . . . . . . . . . . . .   9
      A.8.  VERSION . . . . . . . . . . . . . . . . . . . . . . . . .   9
-     A.9.  USERINFO  . . . . . . . . . . . . . . . . . . . . . . . .   9
+     A.9.  USERINFO  . . . . . . . . . . . . . . . . . . . . . . . .  10
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  10
 
 1.  Introduction
@@ -101,10 +102,9 @@ Table of Contents
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
    document are to be interpreted as described in [RFC2119].
 
-2.  Message Syntax
 
-   CTCP queries are sent with the PRIVMSG IRC command, and CTCP replies
-   are sent with NOTICE command.  To indicate a CTCP query or reply, the
+
+
 
 
 
@@ -114,6 +114,10 @@ Mikulenas & Oakley      Expires November 29, 2017               [Page 2]
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
+2.  Message Syntax
+
+   CTCP queries are sent with the PRIVMSG IRC command, and CTCP replies
+   are sent with NOTICE command.  To indicate a CTCP query or reply, the
    body of the message (the second parameter) begins with the CTCP
    delimiter.  The ABNF [RFC5234] for this message body is as follows:
 
@@ -154,12 +158,8 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
    types are defined here to simplify understanding, and aren't
    differentiated by the protocol itself.
 
-3.1.  Extended formatting
 
-   This type of CTCP is used to request special formatting of a user-
-   visible message.  That is, to send a user-visible message that should
-   be displayed differently from regular messages - e.g. as an action, a
-   whisper, an announcement.
+
 
 
 
@@ -169,6 +169,13 @@ Mikulenas & Oakley      Expires November 29, 2017               [Page 3]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
+
+3.1.  Extended formatting
+
+   This type of CTCP is used to request special formatting of a user-
+   visible message.  That is, to send a user-visible message that should
+   be displayed differently from regular messages - e.g. as an action, a
+   whisper, an announcement.
 
    Extended formatting messages are sent as a PRIVMSG, and are expected
    to be used in channels as well as between clients.  There is no
@@ -212,19 +219,18 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
    This CTCP takes the form of a query and a response (as a PRIVMSG and
    NOTICE, respectively).
 
-   Queries sent to a channel always generate private replies.
-
-   Extended queries and replies may have parameters.
-
-   Example:
-
-
 
 
 Mikulenas & Oakley      Expires November 29, 2017               [Page 4]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
+
+   Queries sent to a channel always generate private replies.
+
+   Extended queries and replies may have parameters.
+
+   Example:
 
      :alice PRIVMSG bob :\x01PING 1473523796 918320\x01
      :bob NOTICE alice :\x01PING 1473523796 918320\x01
@@ -268,12 +274,6 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
    may ignore or throttle excessive incoming requests to protect against
    this.
 
-   Many servers implement optional filtering to prevent any CTCP
-   messages apart from ACTION from being sent to channels.  When this is
-   done, it can typically be enabled or disabled by channel operators
-   with a channel mode.
-
-
 
 
 
@@ -282,7 +282,16 @@ Mikulenas & Oakley      Expires November 29, 2017               [Page 5]
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
-7.  Normative References
+   Many servers implement optional filtering to prevent any CTCP
+   messages apart from ACTION from being sent to channels.  When this is
+   done, it can typically be enabled or disabled by channel operators
+   with a channel mode.
+
+7.  IANA Considerations
+
+   This document has no actions for IANA.
+
+8.  Normative References
 
    [RFC1459]  Oikarinen, J. and D. Reed, "Internet Relay Chat Protocol",
               RFC 1459, DOI 10.17487/RFC1459, May 1993,
@@ -319,15 +328,6 @@ A.1.  ACTION
    Type:    Extended Formatting
    Params:  ACTION <text>
 
-   This extended formatting message shows that <text> should be
-   displayed as a third-person action or emote; in clients, it's
-   generally activated with the command "/me".
-
-   ACTION is universally implemented and very commonly used.  Clients
-   MUST implement this CTCP message to effectively use IRC.
-
-   Example:
-
 
 
 
@@ -337,6 +337,15 @@ Mikulenas & Oakley      Expires November 29, 2017               [Page 6]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
+
+   This extended formatting message shows that <text> should be
+   displayed as a third-person action or emote; in clients, it's
+   generally activated with the command "/me".
+
+   ACTION is universally implemented and very commonly used.  Clients
+   MUST implement this CTCP message to effectively use IRC.
+
+   Example:
 
      Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION does it!\x01
 
@@ -374,6 +383,17 @@ A.3.  DCC
 
    DCC is widely implemented.  Clients MAY implement this CTCP message.
 
+
+
+
+
+
+
+Mikulenas & Oakley      Expires November 29, 2017               [Page 7]
+
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
+
+
 A.4.  FINGER
 
    Type:   Metadata Query
@@ -386,13 +406,6 @@ A.4.  FINGER
    instead.
 
    FINGER is largely obsolete.  Clients MAY implement this CTCP message.
-
-
-
-Mikulenas & Oakley      Expires November 29, 2017               [Page 7]
-
-Internet-Draft        IRC Client-to-Client Protocol             May 2017
-
 
    Example:
 
@@ -430,6 +443,13 @@ A.6.  SOURCE
    SOURCE is rarely implemented.  Clients MAY implement this CTCP
    message.
 
+
+
+Mikulenas & Oakley      Expires November 29, 2017               [Page 8]
+
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
+
+
    Example:
 
      Query:     SOURCE
@@ -442,14 +462,6 @@ A.7.  TIME
 
    This extended query is used to return the client's local time in an
    unspecified human-readable format.  In practice, both the format
-
-
-
-Mikulenas & Oakley      Expires November 29, 2017               [Page 8]
-
-Internet-Draft        IRC Client-to-Client Protocol             May 2017
-
-
    output by ctime() and the format described in Section 3.3 of
    [RFC5322] are common.
 
@@ -483,6 +495,17 @@ A.8.  VERSION
      Query:     VERSION
      Response:  VERSION WeeChat 1.8-dev (git: v1.7-329-g22f2fd03a)
 
+
+
+
+
+
+
+Mikulenas & Oakley      Expires November 29, 2017               [Page 9]
+
+Internet-Draft        IRC Client-to-Client Protocol             May 2017
+
+
 A.9.  USERINFO
 
    Type:   Metadata Query
@@ -499,13 +522,6 @@ A.9.  USERINFO
 
    Example:
 
-
-
-Mikulenas & Oakley      Expires November 29, 2017               [Page 9]
-
-Internet-Draft        IRC Client-to-Client Protocol             May 2017
-
-
      Query:     USERINFO
      Response:  USERINFO fred (Fred Foobar)
 
@@ -521,22 +537,6 @@ Authors' Addresses
    ircdocs
 
    Email: daniel@danieloaks.net
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
