@@ -103,9 +103,9 @@ Table of Contents
 
 2.  Message Syntax
 
-   The PRIVMSG and NOTICE messages are used to transmit CTCP frames.  To
-   create a CTCP message, you simply replace the body (i.e. the text to
-   be sent) of a PRIVMSG / NOTICE with the following:
+   CTCP queries are sent with the PRIVMSG IRC command, and CTCP replies
+   are sent with NOTICE command.  To indicate a CTCP query or reply, the
+
 
 
 
@@ -114,27 +114,27 @@ Mikulenas & Oakley      Expires November 29, 2017               [Page 2]
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
-        delim   = %x01
+   body of the message (the second parameter) begins with the CTCP
+   delimiter.  The ABNF [RFC5234] for this message body is as follows::
 
-        command = 1*( %x02-09 / %x0B-0C / %x0E-1F / %x21-FF )
+        delim    = %x01
+
+        command  = 1*( %x02-09 / %x0B-0C / %x0E-1F / %x21-FF )
                       ; any octet except NUL, delim, CR, LF, and " "
 
-        params  = 1*( %x02-09 / %x0B-0C / %x0E-FF )
+        params   = 1*( %x02-09 / %x0B-0C / %x0E-FF )
                       ; any octet except NUL, delim, CR, and LF
 
-        body    = delim command [ SPACE params ] [ delim ]
+        body     = delim command [ SPACE params ] [ delim ]
 
    Commands are case-insensitive.  When creating new CTCP commands,
    authors SHOULD use only alphanumeric characters for ease of
    implementation.
 
-   The final "delim" SHOULD be sent on outgoing messages for
+   The final CTCP delimiter SHOULD be sent on outgoing messages for
    compatibility reasons, and software MUST accept incoming messages
    which lack it.  This is due to how certain clients implement message
    splitting and truncation.
-
-   CTCP queries are sent with the PRIVMSG IRC command, and CTCP replies
-   are sent with NOTICE command.
 
    Queries MAY be sent to channels.  When these queries are responded
    to, the responses are sent to the querying client rather than the
@@ -297,6 +297,11 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
               RFC 2812, DOI 10.17487/RFC2812, April 2000,
               <http://www.rfc-editor.org/info/rfc2812>.
 
+   [RFC5234]  Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
+              Specifications: ABNF", STD 68, RFC 5234,
+              DOI 10.17487/RFC5234, January 2008,
+              <http://www.rfc-editor.org/info/rfc5234>.
+
    [RFC5322]  Resnick, P., Ed., "Internet Message Format", RFC 5322,
               DOI 10.17487/RFC5322, October 2008,
               <http://www.rfc-editor.org/info/rfc5322>.
@@ -323,11 +328,6 @@ A.1.  ACTION
 
    Example:
 
-     Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION does it!\x01
-
-     Formatted:  * dan does it!
-
-
 
 
 
@@ -337,6 +337,10 @@ Mikulenas & Oakley      Expires November 29, 2017               [Page 6]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
+
+     Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION does it!\x01
+
+     Formatted:  * dan does it!
 
 A.2.  CLIENTINFO
 
@@ -383,16 +387,14 @@ A.4.  FINGER
 
    FINGER is largely obsolete.  Clients MAY implement this CTCP message.
 
-   Example:
-
-
-
 
 
 Mikulenas & Oakley      Expires November 29, 2017               [Page 7]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
+
+   Example:
 
      Query:     FINGER
      Response:  FINGER WeeChat 1.8-dev
@@ -440,8 +442,6 @@ A.7.  TIME
 
    This extended query is used to return the client's local time in an
    unspecified human-readable format.  In practice, both the format
-   output by ctime() and the format described in Section 3.3 of
-   [RFC5322] are common.
 
 
 
@@ -449,6 +449,9 @@ Mikulenas & Oakley      Expires November 29, 2017               [Page 8]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
+
+   output by ctime() and the format described in Section 3.3 of
+   [RFC5322] are common.
 
    New implementations MAY default to UTC time for privacy reasons.
 
@@ -496,15 +499,15 @@ A.9.  USERINFO
 
    Example:
 
-     Query:     USERINFO
-     Response:  USERINFO fred (Fred Foobar)
-
 
 
 Mikulenas & Oakley      Expires November 29, 2017               [Page 9]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
+
+     Query:     USERINFO
+     Response:  USERINFO fred (Fred Foobar)
 
 Authors' Addresses
 
@@ -518,9 +521,6 @@ Authors' Addresses
    ircdocs
 
    Email: daniel@danieloaks.net
-
-
-
 
 
 

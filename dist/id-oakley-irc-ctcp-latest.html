@@ -397,23 +397,22 @@ address {
 <p id="rfc.section.1.p.2">This document goes over the subset of CTCP which is commonly implemented, and is compatible with clients implementing CTCP as described by older documents.</p>
 <p id="rfc.section.1.p.3">The key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;,  &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.</p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#message-syntax" id="message-syntax">Message Syntax</a></h1>
-<p id="rfc.section.2.p.1">The PRIVMSG and NOTICE messages are used to transmit CTCP frames. To create a CTCP message, you simply replace the body (i.e. the text to be sent) of a PRIVMSG / NOTICE with the following:</p>
+<p id="rfc.section.2.p.1">CTCP queries are sent with the PRIVMSG IRC command, and CTCP replies are sent with NOTICE command. To indicate a CTCP query or reply, the body of the message (the second parameter) begins with the CTCP delimiter. The ABNF <a href="#RFC5234">[RFC5234]</a> for this message body is as follows::</p>
 <pre>
-  delim   = %x01
+  delim    = %x01
 
-  command = 1*( %x02-09 / %x0B-0C / %x0E-1F / %x21-FF )
+  command  = 1*( %x02-09 / %x0B-0C / %x0E-1F / %x21-FF )
                 ; any octet except NUL, delim, CR, LF, and " "
 
-  params  = 1*( %x02-09 / %x0B-0C / %x0E-FF )
+  params   = 1*( %x02-09 / %x0B-0C / %x0E-FF )
                 ; any octet except NUL, delim, CR, and LF
 
-  body    = delim command [ SPACE params ] [ delim ]
+  body     = delim command [ SPACE params ] [ delim ]
 </pre>
 <p id="rfc.section.2.p.2">Commands are case-insensitive. When creating new CTCP commands, authors SHOULD use only alphanumeric characters for ease of implementation.</p>
-<p id="rfc.section.2.p.3">The final <samp>delim</samp> SHOULD be sent on outgoing messages for compatibility reasons, and software MUST accept incoming messages which lack it. This is due to how certain clients implement message splitting and truncation.</p>
-<p id="rfc.section.2.p.4">CTCP queries are sent with the PRIVMSG IRC command, and CTCP replies are sent with NOTICE command.</p>
-<p id="rfc.section.2.p.5">Queries MAY be sent to channels. When these queries are responded to, the responses are sent to the querying client rather than the channel which the query was originally sent to.</p>
-<p id="rfc.section.2.p.6">Here are two examples of CTCP queries and replies:</p>
+<p id="rfc.section.2.p.3">The final CTCP delimiter SHOULD be sent on outgoing messages for compatibility reasons, and software MUST accept incoming messages which lack it. This is due to how certain clients implement message splitting and truncation.</p>
+<p id="rfc.section.2.p.4">Queries MAY be sent to channels. When these queries are responded to, the responses are sent to the querying client rather than the channel which the query was originally sent to.</p>
+<p id="rfc.section.2.p.5">Here are two examples of CTCP queries and replies:</p>
 <pre>
   :alice PRIVMSG bob :\x01VERSION\x01
   :bob NOTICE alice :\x01VERSION Snak for Macintosh 4.13 English\x01
@@ -483,6 +482,12 @@ address {
         <b id="RFC2812">[RFC2812]</b>
       </td>
       <td class="top"><a>Kalt, C.</a>, "<a href="http://tools.ietf.org/html/rfc2812">Internet Relay Chat: Client Protocol</a>", RFC 2812, DOI 10.17487/RFC2812, April 2000.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC5234">[RFC5234]</b>
+      </td>
+      <td class="top"><a>Crocker, D.</a> and <a>P. Overell</a>, "<a href="http://tools.ietf.org/html/rfc5234">Augmented BNF for Syntax Specifications: ABNF</a>", STD 68, RFC 5234, DOI 10.17487/RFC5234, January 2008.</td>
     </tr>
     <tr>
       <td class="reference">
