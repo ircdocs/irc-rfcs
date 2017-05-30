@@ -307,7 +307,7 @@ address {
 
   <meta name="dct.creator" content="Mikulenas, M. and D. Oakley" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-oakley-irc-ctcp-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-5-29" />
+  <meta name="dct.issued" scheme="ISO8601" content="2017-5-30" />
   <meta name="dct.abstract" content="This document describes the Client-to-Client Protocol (CTCP), which lets Internet Relay Chat (IRC) clients send each other messages that get displayed or responded to in special ways. CTCP has been widely implemented, with most clients supporting it natively. This document outlines how to implement CTCP and the most common messages used." />
   <meta name="description" content="This document describes the Client-to-Client Protocol (CTCP), which lets Internet Relay Chat (IRC) clients send each other messages that get displayed or responded to in special ways. CTCP has been widely implemented, with most clients supporting it natively. This document outlines how to implement CTCP and the most common messages used." />
 
@@ -335,8 +335,8 @@ address {
   <td class="right">ircdocs</td>
 </tr>
 <tr>
-  <td class="left">Expires: November 30, 2017</td>
-  <td class="right">May 29, 2017</td>
+  <td class="left">Expires: December 1, 2017</td>
+  <td class="right">May 30, 2017</td>
 </tr>
 
     	
@@ -357,7 +357,7 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 30, 2017.</p>
+<p>This Internet-Draft will expire on December 1, 2017.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -413,7 +413,7 @@ address {
   body     = delim command [ SPACE params ] [ delim ]
 </pre>
 <p id="rfc.section.2.p.2">Commands are case-insensitive. When creating new CTCP commands, authors SHOULD use only alphanumeric characters for ease of implementation.</p>
-<p id="rfc.section.2.p.3">The final CTCP delimiter SHOULD be sent on outgoing messages for compatibility reasons, and software MUST accept incoming messages which lack it. This is due to how certain clients implement message splitting and truncation.</p>
+<p id="rfc.section.2.p.3">The final CTCP delimiter SHOULD be sent on outgoing messages for compatibility reasons, and software MUST accept incoming messages which lack it. This is due to how servers implement message truncation and certain clients implement message splitting.</p>
 <p id="rfc.section.2.p.4">Queries MAY be sent to channels. When these queries are responded to, the responses are sent to the querying client rather than the channel which the query was originally sent to.</p>
 <p id="rfc.section.2.p.5">Many servers implement optional filtering so that only the ACTION CTCP message can be sent to channels. When this is done, it can typically be enabled or disabled by channel operators with a channel mode.</p>
 <p id="rfc.section.2.p.6">Here are two examples of CTCP queries and replies:</p>

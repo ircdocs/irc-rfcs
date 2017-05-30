@@ -6,7 +6,7 @@ Network Working Group                                       M. Mikulenas
 Internet-Draft                                               Independent
 Updates: 1459, 2812 (if approved)                              D. Oakley
 Intended status: Informational                                   ircdocs
-Expires: November 30, 2017                                  May 29, 2017
+Expires: December 1, 2017                                   May 30, 2017
 
 
          Internet Relay Chat: Client-to-Client Protocol (CTCP)
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 30, 2017.
+   This Internet-Draft will expire on December 1, 2017.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Mikulenas & Oakley      Expires November 30, 2017               [Page 1]
+Mikulenas & Oakley      Expires December 1, 2017                [Page 1]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Mikulenas & Oakley      Expires November 30, 2017               [Page 2]
+Mikulenas & Oakley      Expires December 1, 2017                [Page 2]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -137,8 +137,8 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
    The final CTCP delimiter SHOULD be sent on outgoing messages for
    compatibility reasons, and software MUST accept incoming messages
-   which lack it.  This is due to how certain clients implement message
-   splitting and truncation.
+   which lack it.  This is due to how servers implement message
+   truncation and certain clients implement message splitting.
 
    Queries MAY be sent to channels.  When these queries are responded
    to, the responses are sent to the querying client rather than the
@@ -165,7 +165,7 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
 
-Mikulenas & Oakley      Expires November 30, 2017               [Page 3]
+Mikulenas & Oakley      Expires December 1, 2017                [Page 3]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -221,7 +221,7 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
 
-Mikulenas & Oakley      Expires November 30, 2017               [Page 4]
+Mikulenas & Oakley      Expires December 1, 2017                [Page 4]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -277,7 +277,7 @@ Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
 
 
-Mikulenas & Oakley      Expires November 30, 2017               [Page 5]
+Mikulenas & Oakley      Expires December 1, 2017                [Page 5]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -333,7 +333,7 @@ A.1.  ACTION
 
 
 
-Mikulenas & Oakley      Expires November 30, 2017               [Page 6]
+Mikulenas & Oakley      Expires December 1, 2017                [Page 6]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -389,7 +389,7 @@ A.4.  FINGER
 
 
 
-Mikulenas & Oakley      Expires November 30, 2017               [Page 7]
+Mikulenas & Oakley      Expires December 1, 2017                [Page 7]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -445,7 +445,7 @@ A.7.  TIME
 
 
 
-Mikulenas & Oakley      Expires November 30, 2017               [Page 8]
+Mikulenas & Oakley      Expires December 1, 2017                [Page 8]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -501,7 +501,7 @@ A.9.  USERINFO
 
 
 
-Mikulenas & Oakley      Expires November 30, 2017               [Page 9]
+Mikulenas & Oakley      Expires December 1, 2017                [Page 9]
 
 Internet-Draft        IRC Client-to-Client Protocol             May 2017
 
@@ -557,4 +557,4 @@ Authors' Addresses
 
 
 
-Mikulenas & Oakley      Expires November 30, 2017              [Page 10]
+Mikulenas & Oakley      Expires December 1, 2017               [Page 10]
