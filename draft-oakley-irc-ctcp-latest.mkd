@@ -173,7 +173,7 @@ This document has no actions for IANA.
 
 This section is not exhaustive, and only lists those CTCP messages which are widely implemented across the IRC ecosystem.
 
-The reply and parameter lines below use a simplified syntax that represents variables by surrounding them with angle brackets,.
+The reply and parameter lines below use a simplified syntax that represents variables by surrounding them with angle brackets.
 
 
 ## ACTION
