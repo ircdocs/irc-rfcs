@@ -185,14 +185,28 @@ Params:  ACTION <text>
 
 This extended formatting message shows that \<text\> should be displayed as a third-person action or emote; in clients, it’s generally activated with the command `/me`.
 
+If \<text\> is empty, clients SHOULD still include a single space after `ACTION` (i.e. an empty params section) to help compatibility. Clients SHOULD correctly parse incoming ACTION messages with or without the params section.
+
 ACTION is universally implemented and very commonly used. Clients MUST implement this CTCP message to effectively use IRC.
 
-Example:
+Examples:
 
 ~~~
   Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION does it!\x01
 
   Formatted:  * dan does it!
+~~~
+
+~~~
+  Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION \x01
+
+  Formatted:  * dan
+~~~
+
+~~~
+  Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION\x01
+
+  Formatted:  * dan
 ~~~
 
 
