@@ -366,3 +366,11 @@ Example:
   Query:     USERINFO
   Response:  USERINFO fred (Fred Foobar)
 ~~~
+
+# Change History \[RFC Editor: Please remove this section\]
+
+Changes from draft 0 (May 29, 2017)
+
+- Added note about servers truncating CTCP messages (thanks Peter).
+- Fixed misspellings (thanks Patrick).
+- Mentioned how to parse/send empty ACTION messages (thanks dequis and the crew).
