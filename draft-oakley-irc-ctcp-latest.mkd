@@ -72,11 +72,11 @@ Many servers implement optional filtering so that only the ACTION CTCP message c
 Here are two examples of CTCP queries and replies:
 
 ~~~
-  :alice PRIVMSG bob :\x01VERSION\x01
-  :bob NOTICE alice :\x01VERSION Snak for Macintosh 4.13 English\x01
+  :alice!a@localhost PRIVMSG bob :\x01VERSION\x01
+  :bob!b@localhost NOTICE alice :\x01VERSION Snak for Mac 4.13\x01
 
-  :alice PRIVMSG #ircv3 :\x01PING 1473523796 918320\x01
-  :bob NOTICE alice :\x01PING 1473523796 918320\x01
+  :alice!a@localhost PRIVMSG #ircv3 :\x01PING 1473523796 918320\x01
+  :bob!b@localhost NOTICE alice :\x01PING 1473523796 918320\x01
 ~~~
 
 
@@ -96,7 +96,7 @@ These messages are sent as a PRIVMSG and can have parameters, but generate no re
 Example:
 
 ~~~
-  :dan PRIVMSG #ircv3 :\x01ACTION writes some specs!\x01
+  :dan!u@localhost PRIVMSG #ircv3 :\x01ACTION writes some specs!\x01
 ~~~
 
 
@@ -113,8 +113,8 @@ Metadata queries do not have any parameters, but expect a reply with parameters 
 Example:
 
 ~~~
-  :alice PRIVMSG bob :\x01VERSION\x01
-  :bob NOTICE alice :\x01VERSION SaberChat 27.5\x01
+  :alice!a@localhost PRIVMSG bob :\x01VERSION\x01
+  :bob!b@localhost NOTICE alice :\x01VERSION SaberChat 27.5\x01
 ~~~
 
 
@@ -131,8 +131,8 @@ Extended queries and replies may have parameters.
 Example:
 
 ~~~
-  :alice PRIVMSG bob :\x01PING 1473523796 918320\x01
-  :bob NOTICE alice :\x01PING 1473523796 918320\x01
+  :alice!a@localhost PRIVMSG bob :\x01PING 1473523796 918320\x01
+  :bob!b@localhost NOTICE alice :\x01PING 1473523796 918320\x01
 ~~~
 
 
@@ -312,7 +312,7 @@ Type:    Extended Query
 Params:  TIME <timestring>
 ~~~
 
-This extended query is used to return the client’s local time in an unspecified human-readable format. In practice, both the format output by ctime() and the format described in Section 3.3 of {{!RFC5322}} are common.
+This extended query is used to return the client’s local time in an unspecified human-readable format. In practice, both the format output by ctime() and the format described in Section 3.3 of {{!RFC5322}} are common. Earlier specifications recommended to prefix the time string with a colon, but this is no longer recommended.
 
 New implementations MAY default to UTC time for privacy reasons.
 
@@ -372,5 +372,5 @@ Example:
 Changes from draft 0 (May 29, 2017)
 
 - Added note about servers truncating CTCP messages (thanks Peter).
-- Fixed misspellings (thanks Patrick).
+- Fixed misspellings and added note to TIME about previously-recommended prefix (thanks Patrick).
 - Mentioned how to parse/send empty ACTION messages (thanks dequis and the crew).

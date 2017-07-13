@@ -6,7 +6,7 @@ Network Working Group                                       M. Mikulenas
 Internet-Draft                                               Independent
 Updates: 1459, 2812 (if approved)                              D. Oakley
 Intended status: Informational                                   ircdocs
-Expires: December 21, 2017                                 June 19, 2017
+Expires: January 15, 2018                                  July 14, 2017
 
 
          Internet Relay Chat: Client-to-Client Protocol (CTCP)
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 21, 2017.
+   This Internet-Draft will expire on January 15, 2018.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Mikulenas & Oakley      Expires December 21, 2017               [Page 1]
+Mikulenas & Oakley      Expires January 15, 2018                [Page 1]
 
-Internet-Draft        IRC Client-to-Client Protocol            June 2017
+Internet-Draft        IRC Client-to-Client Protocol            July 2017
 
 
 Table of Contents
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Mikulenas & Oakley      Expires December 21, 2017               [Page 2]
+Mikulenas & Oakley      Expires January 15, 2018                [Page 2]
 
-Internet-Draft        IRC Client-to-Client Protocol            June 2017
+Internet-Draft        IRC Client-to-Client Protocol            July 2017
 
 
 2.  Message Syntax
@@ -151,11 +151,11 @@ Internet-Draft        IRC Client-to-Client Protocol            June 2017
 
    Here are two examples of CTCP queries and replies:
 
-     :alice PRIVMSG bob :\x01VERSION\x01
-     :bob NOTICE alice :\x01VERSION Snak for Macintosh 4.13 English\x01
+     :alice!a@localhost PRIVMSG bob :\x01VERSION\x01
+     :bob!b@localhost NOTICE alice :\x01VERSION Snak for Mac 4.13\x01
 
-     :alice PRIVMSG #ircv3 :\x01PING 1473523796 918320\x01
-     :bob NOTICE alice :\x01PING 1473523796 918320\x01
+     :alice!a@localhost PRIVMSG #ircv3 :\x01PING 1473523796 918320\x01
+     :bob!b@localhost NOTICE alice :\x01PING 1473523796 918320\x01
 
 3.  Message Types
 
@@ -165,9 +165,9 @@ Internet-Draft        IRC Client-to-Client Protocol            June 2017
 
 
 
-Mikulenas & Oakley      Expires December 21, 2017               [Page 3]
+Mikulenas & Oakley      Expires January 15, 2018                [Page 3]
 
-Internet-Draft        IRC Client-to-Client Protocol            June 2017
+Internet-Draft        IRC Client-to-Client Protocol            July 2017
 
 
 3.1.  Extended formatting
@@ -187,7 +187,7 @@ Internet-Draft        IRC Client-to-Client Protocol            June 2017
 
    Example:
 
-     :dan PRIVMSG #ircv3 :\x01ACTION writes some specs!\x01
+     :dan!u@localhost PRIVMSG #ircv3 :\x01ACTION writes some specs!\x01
 
 3.2.  Metadata Query
 
@@ -208,8 +208,8 @@ Internet-Draft        IRC Client-to-Client Protocol            June 2017
 
    Example:
 
-     :alice PRIVMSG bob :\x01VERSION\x01
-     :bob NOTICE alice :\x01VERSION SaberChat 27.5\x01
+     :alice!a@localhost PRIVMSG bob :\x01VERSION\x01
+     :bob!b@localhost NOTICE alice :\x01VERSION SaberChat 27.5\x01
 
 3.3.  Extended Query
 
@@ -221,9 +221,9 @@ Internet-Draft        IRC Client-to-Client Protocol            June 2017
 
 
 
-Mikulenas & Oakley      Expires December 21, 2017               [Page 4]
+Mikulenas & Oakley      Expires January 15, 2018                [Page 4]
 
-Internet-Draft        IRC Client-to-Client Protocol            June 2017
+Internet-Draft        IRC Client-to-Client Protocol            July 2017
 
 
    Queries sent to a channel always generate private replies.
@@ -232,8 +232,8 @@ Internet-Draft        IRC Client-to-Client Protocol            June 2017
 
    Example:
 
-     :alice PRIVMSG bob :\x01PING 1473523796 918320\x01
-     :bob NOTICE alice :\x01PING 1473523796 918320\x01
+     :alice!a@localhost PRIVMSG bob :\x01PING 1473523796 918320\x01
+     :bob!b@localhost NOTICE alice :\x01PING 1473523796 918320\x01
 
 4.  Messages
 
@@ -277,9 +277,9 @@ Internet-Draft        IRC Client-to-Client Protocol            June 2017
 
 
 
-Mikulenas & Oakley      Expires December 21, 2017               [Page 5]
+Mikulenas & Oakley      Expires January 15, 2018                [Page 5]
 
-Internet-Draft        IRC Client-to-Client Protocol            June 2017
+Internet-Draft        IRC Client-to-Client Protocol            July 2017
 
 
 7.  IANA Considerations
@@ -333,9 +333,9 @@ A.1.  ACTION
 
 
 
-Mikulenas & Oakley      Expires December 21, 2017               [Page 6]
+Mikulenas & Oakley      Expires January 15, 2018                [Page 6]
 
-Internet-Draft        IRC Client-to-Client Protocol            June 2017
+Internet-Draft        IRC Client-to-Client Protocol            July 2017
 
 
    Clients SHOULD correctly parse incoming ACTION messages with or
@@ -389,9 +389,9 @@ A.3.  DCC
 
 
 
-Mikulenas & Oakley      Expires December 21, 2017               [Page 7]
+Mikulenas & Oakley      Expires January 15, 2018                [Page 7]
 
-Internet-Draft        IRC Client-to-Client Protocol            June 2017
+Internet-Draft        IRC Client-to-Client Protocol            July 2017
 
 
    The Direct Client-to-Client (DCC) Protocol requires its own
@@ -445,9 +445,9 @@ A.6.  SOURCE
 
 
 
-Mikulenas & Oakley      Expires December 21, 2017               [Page 8]
+Mikulenas & Oakley      Expires January 15, 2018                [Page 8]
 
-Internet-Draft        IRC Client-to-Client Protocol            June 2017
+Internet-Draft        IRC Client-to-Client Protocol            July 2017
 
 
    This metadata query is used to return the location of the source code
@@ -469,7 +469,8 @@ A.7.  TIME
    This extended query is used to return the client's local time in an
    unspecified human-readable format.  In practice, both the format
    output by ctime() and the format described in Section 3.3 of
-   [RFC5322] are common.
+   [RFC5322] are common.  Earlier specifications recommended to prefix
+   the time string with a colon, but this is no longer recommended.
 
    New implementations MAY default to UTC time for privacy reasons.
 
@@ -500,10 +501,9 @@ A.8.  VERSION
 
 
 
-
-Mikulenas & Oakley      Expires December 21, 2017               [Page 9]
+Mikulenas & Oakley      Expires January 15, 2018                [Page 9]
 
-Internet-Draft        IRC Client-to-Client Protocol            June 2017
+Internet-Draft        IRC Client-to-Client Protocol            July 2017
 
 
      Query:     VERSION
@@ -534,7 +534,8 @@ Appendix B.  Change History [RFC Editor: Please remove this section]
 
    o  Added note about servers truncating CTCP messages (thanks Peter).
 
-   o  Fixed misspellings (thanks Patrick).
+   o  Fixed misspellings and added note to TIME about previously-
+      recommended prefix (thanks Patrick).
 
    o  Mentioned how to parse/send empty ACTION messages (thanks dequis
       and the crew).
@@ -556,5 +557,4 @@ Authors' Addresses
 
 
 
-
-Mikulenas & Oakley      Expires December 21, 2017              [Page 10]
+Mikulenas & Oakley      Expires January 15, 2018               [Page 10]
