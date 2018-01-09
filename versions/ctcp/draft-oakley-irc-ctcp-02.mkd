@@ -147,7 +147,7 @@ Thanks to the IRCv3 group for giving feedback on this specification, and to Khal
 
 Thanks to Michael Sandrof for creating CTCP, Troy Rollo for creating the related DCC protocol, as well as Klaus Zeuge and Ben Mesander who wrote and revised related specifications.
 
-Special thanks to dequis, Peter Powell and James Wheare for help with this and related work.
+Special thanks to dequis, Sadie and James Wheare for help with this and related work.
 
 
 # Security Considerations
