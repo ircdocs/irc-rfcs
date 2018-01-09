@@ -6,7 +6,7 @@ Network Working Group                                       M. Mikulenas
 Internet-Draft                                               Independent
 Updates: 1459, 2812 (if approved)                              D. Oakley
 Intended status: Informational                                   ircdocs
-Expires: January 15, 2018                                  July 14, 2017
+Expires: July 13, 2018                                  January 09, 2018
 
 
          Internet Relay Chat: Client-to-Client Protocol (CTCP)
@@ -37,11 +37,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 15, 2018.
+   This Internet-Draft will expire on July 13, 2018.
 
 Copyright Notice
 
-   Copyright (c) 2017 IETF Trust and the persons identified as the
+   Copyright (c) 2018 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Mikulenas & Oakley      Expires January 15, 2018                [Page 1]
+Mikulenas & Oakley        Expires July 13, 2018                 [Page 1]
 
-Internet-Draft        IRC Client-to-Client Protocol            July 2017
+Internet-Draft        IRC Client-to-Client Protocol         January 2018
 
 
 Table of Contents
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Mikulenas & Oakley      Expires January 15, 2018                [Page 2]
+Mikulenas & Oakley        Expires July 13, 2018                 [Page 2]
 
-Internet-Draft        IRC Client-to-Client Protocol            July 2017
+Internet-Draft        IRC Client-to-Client Protocol         January 2018
 
 
 2.  Message Syntax
@@ -165,16 +165,16 @@ Internet-Draft        IRC Client-to-Client Protocol            July 2017
 
 
 
-Mikulenas & Oakley      Expires January 15, 2018                [Page 3]
+Mikulenas & Oakley        Expires July 13, 2018                 [Page 3]
 
-Internet-Draft        IRC Client-to-Client Protocol            July 2017
+Internet-Draft        IRC Client-to-Client Protocol         January 2018
 
 
 3.1.  Extended formatting
 
-   This type of CTCP is used to request special formatting of a user-
-   visible message.  That is, to send a user-visible message that should
-   be displayed differently from regular messages - e.g. as an action, a
+   This type of CTCP requests special formatting of a user-visible
+   message.  That is, to send a user-visible message that should be
+   displayed differently from regular messages - e.g. as an action, a
    whisper, an announcement.
 
    Extended formatting messages are sent as a PRIVMSG, and are expected
@@ -191,8 +191,8 @@ Internet-Draft        IRC Client-to-Client Protocol            July 2017
 
 3.2.  Metadata Query
 
-   This type of CTCP is used to provide relatively static information
-   about the target client, user or connection.
+   This type of CTCP provides relatively static information about the
+   target client, user or connection.
 
    This CTCP takes the form of a query and a response (as a PRIVMSG and
    NOTICE, respectively).  Due to how bouncers interact with multiple
@@ -213,17 +213,17 @@ Internet-Draft        IRC Client-to-Client Protocol            July 2017
 
 3.3.  Extended Query
 
-   This type of CTCP is used to provide dynamic information or invoke
-   actions from the client.
+   This type of CTCP provides dynamic information or invoke actions from
+   the client.
 
    This CTCP takes the form of a query and a response (as a PRIVMSG and
    NOTICE, respectively).
 
 
 
-Mikulenas & Oakley      Expires January 15, 2018                [Page 4]
+Mikulenas & Oakley        Expires July 13, 2018                 [Page 4]
 
-Internet-Draft        IRC Client-to-Client Protocol            July 2017
+Internet-Draft        IRC Client-to-Client Protocol         January 2018
 
 
    Queries sent to a channel always generate private replies.
@@ -277,9 +277,9 @@ Internet-Draft        IRC Client-to-Client Protocol            July 2017
 
 
 
-Mikulenas & Oakley      Expires January 15, 2018                [Page 5]
+Mikulenas & Oakley        Expires July 13, 2018                 [Page 5]
 
-Internet-Draft        IRC Client-to-Client Protocol            July 2017
+Internet-Draft        IRC Client-to-Client Protocol         January 2018
 
 
 7.  IANA Considerations
@@ -290,25 +290,25 @@ Internet-Draft        IRC Client-to-Client Protocol            July 2017
 
    [RFC1459]  Oikarinen, J. and D. Reed, "Internet Relay Chat Protocol",
               RFC 1459, DOI 10.17487/RFC1459, May 1993,
-              <http://www.rfc-editor.org/info/rfc1459>.
+              <https://www.rfc-editor.org/info/rfc1459>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <http://www.rfc-editor.org/info/rfc2119>.
+              DOI 10.17487/RFC2119, March 1997, <https://www.rfc-
+              editor.org/info/rfc2119>.
 
    [RFC2812]  Kalt, C., "Internet Relay Chat: Client Protocol",
               RFC 2812, DOI 10.17487/RFC2812, April 2000,
-              <http://www.rfc-editor.org/info/rfc2812>.
+              <https://www.rfc-editor.org/info/rfc2812>.
 
    [RFC5234]  Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
               Specifications: ABNF", STD 68, RFC 5234,
-              DOI 10.17487/RFC5234, January 2008,
-              <http://www.rfc-editor.org/info/rfc5234>.
+              DOI 10.17487/RFC5234, January 2008, <https://www.rfc-
+              editor.org/info/rfc5234>.
 
    [RFC5322]  Resnick, P., Ed., "Internet Message Format", RFC 5322,
-              DOI 10.17487/RFC5322, October 2008,
-              <http://www.rfc-editor.org/info/rfc5322>.
+              DOI 10.17487/RFC5322, October 2008, <https://www.rfc-
+              editor.org/info/rfc5322>.
 
 Appendix A.  Message List
 
@@ -333,9 +333,9 @@ A.1.  ACTION
 
 
 
-Mikulenas & Oakley      Expires January 15, 2018                [Page 6]
+Mikulenas & Oakley        Expires July 13, 2018                 [Page 6]
 
-Internet-Draft        IRC Client-to-Client Protocol            July 2017
+Internet-Draft        IRC Client-to-Client Protocol         January 2018
 
 
    Clients SHOULD correctly parse incoming ACTION messages with or
@@ -351,10 +351,8 @@ Internet-Draft        IRC Client-to-Client Protocol            July 2017
      Formatted:  * dan does it!
 
      Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION \x01
-
-     Formatted:  * dan
-
      Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION\x01
+     Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION
 
      Formatted:  * dan
 
@@ -379,23 +377,22 @@ A.3.  DCC
    Type:    Extended Query
    Params:  DCC <type> <argument> <host> <port>
 
-   This extended query is used to setup and control connections that go
-   directly between clients, bypassing the IRC server.  This is
-   typically used for features that require a large amount of traffic
-   between clients or simply wish to bypass the server itself such as
-   file transfer and direct chat.
-
-
-
-
-
-Mikulenas & Oakley      Expires January 15, 2018                [Page 7]
-
-Internet-Draft        IRC Client-to-Client Protocol            July 2017
-
+   This extended query sets up and controls connections that go directly
+   between clients, bypassing the IRC server.  This is typically used
+   for features that require a large amount of traffic between clients
+   or simply wish to bypass the server itself such as file transfer and
+   direct chat.
 
    The Direct Client-to-Client (DCC) Protocol requires its own
    specification, and is not described in-depth here.
+
+
+
+
+Mikulenas & Oakley        Expires July 13, 2018                 [Page 7]
+
+Internet-Draft        IRC Client-to-Client Protocol         January 2018
+
 
    DCC is widely implemented.  Clients MAY implement this CTCP message.
 
@@ -422,9 +419,9 @@ A.5.  PING
    Type:    Extended Query
    Params:  PING <info>
 
-   This extended query is used to confirm reachability with other
-   clients and to check latency.  When receiving a CTCP PING, the reply
-   MUST contain exactly the same parameters as the original query.
+   This extended query confirms reachability and latency to the target
+   client.  When receiving a CTCP PING, the reply MUST contain exactly
+   the same parameters as the original query.
 
    PING is universally implemented.  Clients SHOULD implement this CTCP
    message.
@@ -442,16 +439,16 @@ A.6.  SOURCE
    Type:   Metadata Query
    Reply:  SOURCE <info>
 
+   This metadata query returns the location of the source code for the
+   client.
 
 
 
-Mikulenas & Oakley      Expires January 15, 2018                [Page 8]
+
+Mikulenas & Oakley        Expires July 13, 2018                 [Page 8]
 
-Internet-Draft        IRC Client-to-Client Protocol            July 2017
+Internet-Draft        IRC Client-to-Client Protocol         January 2018
 
-
-   This metadata query is used to return the location of the source code
-   for the client.
 
    SOURCE is rarely implemented.  Clients MAY implement this CTCP
    message.
@@ -466,16 +463,16 @@ A.7.  TIME
    Type:    Extended Query
    Params:  TIME <timestring>
 
-   This extended query is used to return the client's local time in an
-   unspecified human-readable format.  In practice, both the format
-   output by ctime() and the format described in Section 3.3 of
-   [RFC5322] are common.  Earlier specifications recommended to prefix
-   the time string with a colon, but this is no longer recommended.
+   This extended query returns the client's local time in an unspecified
+   human-readable format.  In practice, both the format output by
+   ctime() and the format described in Section 3.3 of [RFC5322] are
+   common.  Earlier specifications recommended prefixing the time string
+   with a colon, but this is no longer recommended.
 
    New implementations MAY default to UTC time for privacy reasons.
 
-   TIME is almost universally implemented.  Clients SHOULD implement
-   this CTCP message.
+   TIME is almost universally implemented.  Clients MAY implement this
+   CTCP message.
 
    Example:
 
@@ -487,8 +484,8 @@ A.8.  VERSION
    Type:   Metadata Query
    Reply:  VERSION <verstring>
 
-   This metadata query is used to return the name and version of the
-   client software in use.  There is no specified format for the version
+   This metadata query returns the name and version of the client
+   software in use.  There is no specified format for the version
    string.
 
    Clients may allow users to customise the response value for this
@@ -499,15 +496,15 @@ A.8.  VERSION
 
    Example:
 
-
-
-Mikulenas & Oakley      Expires January 15, 2018                [Page 9]
-
-Internet-Draft        IRC Client-to-Client Protocol            July 2017
-
-
      Query:     VERSION
      Response:  VERSION WeeChat 1.8-dev (git: v1.7-329-g22f2fd03a)
+
+
+
+Mikulenas & Oakley        Expires July 13, 2018                 [Page 9]
+
+Internet-Draft        IRC Client-to-Client Protocol         January 2018
+
 
 A.9.  USERINFO
 
@@ -530,6 +527,12 @@ A.9.  USERINFO
 
 Appendix B.  Change History [RFC Editor: Please remove this section]
 
+   Changes from draft 1 (July 18, 2017)
+
+   o  General editing, fixed mistypes.
+
+   o  Simplified some of the examples.
+
    Changes from draft 0 (May 29, 2017)
 
    o  Added note about servers truncating CTCP messages (thanks Peter).
@@ -548,6 +551,17 @@ Authors' Addresses
    Email: grawity@gmail.com
 
 
+
+
+
+
+
+
+Mikulenas & Oakley        Expires July 13, 2018                [Page 10]
+
+Internet-Draft        IRC Client-to-Client Protocol         January 2018
+
+
    Daniel Oakley
    ircdocs
 
@@ -557,4 +571,46 @@ Authors' Addresses
 
 
 
-Mikulenas & Oakley      Expires January 15, 2018               [Page 10]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mikulenas & Oakley        Expires July 13, 2018                [Page 11]

@@ -87,7 +87,7 @@ CTCP messages generally take on one of these types. These message types are defi
 
 ## Extended formatting
 
-This type of CTCP is used to request special formatting of a user-visible message. That is, to send a user-visible message that should be displayed differently from regular messages - e.g. as an action, a whisper, an announcement.
+This type of CTCP requests special formatting of a user-visible message. That is, to send a user-visible message that should be displayed differently from regular messages - e.g. as an action, a whisper, an announcement.
 
 Extended formatting messages are sent as a PRIVMSG, and are expected to be used in channels as well as between clients. There is no automatic response to this message type, as it is not a query nor reply.
 
@@ -102,7 +102,7 @@ Example:
 
 ## Metadata Query
 
-This type of CTCP is used to provide relatively static information about the target client, user or connection.
+This type of CTCP provides relatively static information about the target client, user or connection.
 
 This CTCP takes the form of a query and a response (as a PRIVMSG and NOTICE, respectively). Due to how bouncers interact with multiple clients, there may sometimes be multiple responses to queries.
 
@@ -120,7 +120,7 @@ Example:
 
 ## Extended Query
 
-This type of CTCP is used to provide dynamic information or invoke actions from the client.
+This type of CTCP provides dynamic information or invoke actions from the client.
 
 This CTCP takes the form of a query and a response (as a PRIVMSG and NOTICE, respectively).
 
@@ -199,12 +199,8 @@ Examples:
 
 ~~~
   Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION \x01
-
-  Formatted:  * dan
-~~~
-
-~~~
   Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION\x01
+  Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION
 
   Formatted:  * dan
 ~~~
@@ -236,7 +232,7 @@ Type:    Extended Query
 Params:  DCC <type> <argument> <host> <port>
 ~~~
 
-This extended query is used to setup and control connections that go directly between clients, bypassing the IRC server. This is typically used for features that require a large amount of traffic between clients or simply wish to bypass the server itself such as file transfer and direct chat.
+This extended query sets up and controls connections that go directly between clients, bypassing the IRC server. This is typically used for features that require a large amount of traffic between clients or simply wish to bypass the server itself such as file transfer and direct chat.
 
 The Direct Client-to-Client (DCC) Protocol requires its own specification, and is not described in-depth here.
 
@@ -271,7 +267,7 @@ Type:    Extended Query
 Params:  PING <info>
 ~~~
 
-This extended query is used to confirm reachability with other clients and to check latency. When receiving a CTCP PING, the reply MUST contain exactly the same parameters as the original query.
+This extended query confirms reachability and latency to the target client. When receiving a CTCP PING, the reply MUST contain exactly the same parameters as the original query.
 
 PING is universally implemented. Clients SHOULD implement this CTCP message.
 
@@ -293,7 +289,7 @@ Type:   Metadata Query
 Reply:  SOURCE <info>
 ~~~
 
-This metadata query is used to return the location of the source code for the client.
+This metadata query returns the location of the source code for the client.
 
 SOURCE is rarely implemented. Clients MAY implement this CTCP message.
 
@@ -312,11 +308,11 @@ Type:    Extended Query
 Params:  TIME <timestring>
 ~~~
 
-This extended query is used to return the client’s local time in an unspecified human-readable format. In practice, both the format output by ctime() and the format described in Section 3.3 of {{!RFC5322}} are common. Earlier specifications recommended to prefix the time string with a colon, but this is no longer recommended.
+This extended query returns the client’s local time in an unspecified human-readable format. In practice, both the format output by ctime() and the format described in Section 3.3 of {{!RFC5322}} are common. Earlier specifications recommended prefixing the time string with a colon, but this is no longer recommended.
 
 New implementations MAY default to UTC time for privacy reasons.
 
-TIME is almost universally implemented. Clients SHOULD implement this CTCP message.
+TIME is almost universally implemented. Clients MAY implement this CTCP message.
 
 Example:
 
@@ -333,7 +329,7 @@ Type:   Metadata Query
 Reply:  VERSION <verstring>
 ~~~
 
-This metadata query is used to return the name and version of the client software in use. There is no specified format for the version string.
+This metadata query returns the name and version of the client software in use. There is no specified format for the version string.
 
 Clients may allow users to customise the response value for this query.
 
@@ -368,6 +364,11 @@ Example:
 ~~~
 
 # Change History \[RFC Editor: Please remove this section\]
+
+Changes from draft 1 (July 18, 2017)
+
+- General editing, fixed mistypes.
+- Simplified some of the examples.
 
 Changes from draft 0 (May 29, 2017)
 

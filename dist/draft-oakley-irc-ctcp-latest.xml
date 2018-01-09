@@ -28,7 +28,7 @@
       </address>
     </author>
 
-    <date year="2017" month="July" day="14"/>
+    <date year="2018" month="January" day="09"/>
 
     
     
@@ -101,7 +101,7 @@
 
 <section anchor="extended-formatting" title="Extended formatting">
 
-<t>This type of CTCP is used to request special formatting of a user-visible message. That is, to send a user-visible message that should be displayed differently from regular messages - e.g. as an action, a whisper, an announcement.</t>
+<t>This type of CTCP requests special formatting of a user-visible message. That is, to send a user-visible message that should be displayed differently from regular messages - e.g. as an action, a whisper, an announcement.</t>
 
 <t>Extended formatting messages are sent as a PRIVMSG, and are expected to be used in channels as well as between clients. There is no automatic response to this message type, as it is not a query nor reply.</t>
 
@@ -116,7 +116,7 @@
 </section>
 <section anchor="metadata-query" title="Metadata Query">
 
-<t>This type of CTCP is used to provide relatively static information about the target client, user or connection.</t>
+<t>This type of CTCP provides relatively static information about the target client, user or connection.</t>
 
 <t>This CTCP takes the form of a query and a response (as a PRIVMSG and NOTICE, respectively). Due to how bouncers interact with multiple clients, there may sometimes be multiple responses to queries.</t>
 
@@ -134,7 +134,7 @@
 </section>
 <section anchor="extended-query" title="Extended Query">
 
-<t>This type of CTCP is used to provide dynamic information or invoke actions from the client.</t>
+<t>This type of CTCP provides dynamic information or invoke actions from the client.</t>
 
 <t>This CTCP takes the form of a query and a response (as a PRIVMSG and NOTICE, respectively).</t>
 
@@ -193,7 +193,7 @@
 
 
 
-<reference  anchor="RFC1459" target='http://www.rfc-editor.org/info/rfc1459'>
+<reference  anchor="RFC1459" target='https://www.rfc-editor.org/info/rfc1459'>
 <front>
 <title>Internet Relay Chat Protocol</title>
 <author initials='J.' surname='Oikarinen' fullname='J. Oikarinen'><organization /></author>
@@ -207,7 +207,7 @@
 
 
 
-<reference  anchor="RFC2812" target='http://www.rfc-editor.org/info/rfc2812'>
+<reference  anchor="RFC2812" target='https://www.rfc-editor.org/info/rfc2812'>
 <front>
 <title>Internet Relay Chat: Client Protocol</title>
 <author initials='C.' surname='Kalt' fullname='C. Kalt'><organization /></author>
@@ -220,7 +220,7 @@
 
 
 
-<reference  anchor="RFC2119" target='http://www.rfc-editor.org/info/rfc2119'>
+<reference  anchor="RFC2119" target='https://www.rfc-editor.org/info/rfc2119'>
 <front>
 <title>Key words for use in RFCs to Indicate Requirement Levels</title>
 <author initials='S.' surname='Bradner' fullname='S. Bradner'><organization /></author>
@@ -234,7 +234,7 @@
 
 
 
-<reference  anchor="RFC5234" target='http://www.rfc-editor.org/info/rfc5234'>
+<reference  anchor="RFC5234" target='https://www.rfc-editor.org/info/rfc5234'>
 <front>
 <title>Augmented BNF for Syntax Specifications: ABNF</title>
 <author initials='D.' surname='Crocker' fullname='D. Crocker' role='editor'><organization /></author>
@@ -249,7 +249,7 @@
 
 
 
-<reference  anchor="RFC5322" target='http://www.rfc-editor.org/info/rfc5322'>
+<reference  anchor="RFC5322" target='https://www.rfc-editor.org/info/rfc5322'>
 <front>
 <title>Internet Message Format</title>
 <author initials='P.' surname='Resnick' fullname='P. Resnick' role='editor'><organization /></author>
@@ -296,12 +296,8 @@ Params:  ACTION <text>
 
 <figure><artwork><![CDATA[
   Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION \x01
-
-  Formatted:  * dan
-]]></artwork></figure>
-
-<figure><artwork><![CDATA[
   Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION\x01
+  Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION
 
   Formatted:  * dan
 ]]></artwork></figure>
@@ -333,7 +329,7 @@ Type:    Extended Query
 Params:  DCC <type> <argument> <host> <port>
 ]]></artwork></figure>
 
-<t>This extended query is used to setup and control connections that go directly between clients, bypassing the IRC server. This is typically used for features that require a large amount of traffic between clients or simply wish to bypass the server itself such as file transfer and direct chat.</t>
+<t>This extended query sets up and controls connections that go directly between clients, bypassing the IRC server. This is typically used for features that require a large amount of traffic between clients or simply wish to bypass the server itself such as file transfer and direct chat.</t>
 
 <t>The Direct Client-to-Client (DCC) Protocol requires its own specification, and is not described in-depth here.</t>
 
@@ -368,7 +364,7 @@ Type:    Extended Query
 Params:  PING <info>
 ]]></artwork></figure>
 
-<t>This extended query is used to confirm reachability with other clients and to check latency. When receiving a CTCP PING, the reply MUST contain exactly the same parameters as the original query.</t>
+<t>This extended query confirms reachability and latency to the target client. When receiving a CTCP PING, the reply MUST contain exactly the same parameters as the original query.</t>
 
 <t>PING is universally implemented. Clients SHOULD implement this CTCP message.</t>
 
@@ -390,7 +386,7 @@ Type:   Metadata Query
 Reply:  SOURCE <info>
 ]]></artwork></figure>
 
-<t>This metadata query is used to return the location of the source code for the client.</t>
+<t>This metadata query returns the location of the source code for the client.</t>
 
 <t>SOURCE is rarely implemented. Clients MAY implement this CTCP message.</t>
 
@@ -409,11 +405,11 @@ Type:    Extended Query
 Params:  TIME <timestring>
 ]]></artwork></figure>
 
-<t>This extended query is used to return the client’s local time in an unspecified human-readable format. In practice, both the format output by ctime() and the format described in Section 3.3 of <xref target="RFC5322"/> are common. Earlier specifications recommended to prefix the time string with a colon, but this is no longer recommended.</t>
+<t>This extended query returns the client’s local time in an unspecified human-readable format. In practice, both the format output by ctime() and the format described in Section 3.3 of <xref target="RFC5322"/> are common. Earlier specifications recommended prefixing the time string with a colon, but this is no longer recommended.</t>
 
 <t>New implementations MAY default to UTC time for privacy reasons.</t>
 
-<t>TIME is almost universally implemented. Clients SHOULD implement this CTCP message.</t>
+<t>TIME is almost universally implemented. Clients MAY implement this CTCP message.</t>
 
 <t>Example:</t>
 
@@ -430,7 +426,7 @@ Type:   Metadata Query
 Reply:  VERSION <verstring>
 ]]></artwork></figure>
 
-<t>This metadata query is used to return the name and version of the client software in use. There is no specified format for the version string.</t>
+<t>This metadata query returns the name and version of the client software in use. There is no specified format for the version string.</t>
 
 <t>Clients may allow users to customise the response value for this query.</t>
 
@@ -468,6 +464,13 @@ Reply:  USERINFO <info>
 </section>
 <section anchor="change-history-rfc-editor-please-remove-this-section" title="Change History [RFC Editor: Please remove this section]">
 
+<t>Changes from draft 1 (July 18, 2017)</t>
+
+<t><list style="symbols">
+  <t>General editing, fixed mistypes.</t>
+  <t>Simplified some of the examples.</t>
+</list></t>
+
 <t>Changes from draft 0 (May 29, 2017)</t>
 
 <t><list style="symbols">
@@ -482,107 +485,107 @@ Reply:  USERINFO <info>
   </back>
 
 <!-- ##markdown-source:
-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
-AA==
+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
 
 -->
 
