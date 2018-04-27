@@ -29,6 +29,11 @@ author:
 
 --- abstract
 
+**DANIEL:**
+- RIP OUT THE CTCP TYPES STUFF AS MENTIONED BY JW
+- CHECK OUT THE CTCP SPACING THING AND PROVIDE A SANE RECOMMENDATION ON IT AS MENTIONED BY SADIE
+DO THIS BEFORE PUSHING AN UPDATED COPY TO THE IETF FOR FURTHER REVIEW
+
 This document describes the Client-to-Client Protocol (CTCP), which lets Internet Relay Chat (IRC) clients send each other messages that get displayed or responded to in special ways. CTCP has been widely implemented, with most clients supporting it natively. This document outlines how to implement CTCP and the most common messages used.
 
 It updates RFC 1459 and RFC 2812.
