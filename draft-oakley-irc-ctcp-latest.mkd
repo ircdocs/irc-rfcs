@@ -37,22 +37,31 @@ It updates RFC 1459 and RFC 2812.
 
 # Introduction
 
-The core Internet Relay Chat (IRC) protocol as described in {{!RFC1459}} and {{!RFC2812}} only has a single command for regular user messages, and does not provide a way for clients to exchange information directly. Client-to-Client Protocol (CTCP) messages let clients exchange messages that get displayed or responded to in special ways. Some examples of how CTCP is used is to request special formatting on messages, query other clients for metadata, and help initiate file transfers with other clients.
+The core Internet Relay Chat (IRC) protocol as described in {{!RFC1459}} and {{!RFC2812}} does not provide a way to exchange computer-readable information directly between clients. The Client-to-Client Protocol (CTCP) lets them exchange messages that get processed, displayed or responded to in special ways.
 
-This document goes over the subset of CTCP which is commonly implemented, and is compatible with clients implementing CTCP as described by older documents.
+CTCP can be used to request special formatting on messages, query other clients for metadata, and help initiate file transfers with other clients among other uses. This document covers the subset of CTCP which is commonly implemented, and clients implementing this specification are compatible with those implementing the protocol as described by older documents.
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in {{!RFC2119}}.
 
 
+# Protocol Structure
+
+CTCP queries are sent with the PRIVMSG IRC command, and CTCP replies are sent with NOTICE command. To indicate a CTCP query or reply, the body of the message (the second parameter) begins with the CTCP delimiter.
+
+Queries MAY be sent to channels. Replies MUST always be sent to the querying client only.
+
+Many servers implement optional filtering so that only specific CTCP commands can be sent to channels. When this is done, it can typically be enabled or disabled by channel operators with a channel mode.
+
+
 # Message Syntax
 
-CTCP queries are sent with the PRIVMSG IRC command, and CTCP replies are sent with NOTICE command. To indicate a CTCP query or reply, the body of the message (the second parameter) begins with the CTCP delimiter. The ABNF {{!RFC5234}} for this message body is as follows:
+The ABNF {{!RFC5234}} for CTCP message bodies is as follows:
 
 ~~~abnf
   delim    = %x01
 
   command  = 1*( %x02-09 / %x0B-0C / %x0E-1F / %x21-FF )
-                ; any octet except NUL, delim, CR, LF, and " "
+                ; any octet except NUL, delim, CR, LF, and SPACE
 
   params   = 1*( %x02-09 / %x0B-0C / %x0E-FF )
                 ; any octet except NUL, delim, CR, and LF
@@ -63,11 +72,9 @@ CTCP queries are sent with the PRIVMSG IRC command, and CTCP replies are sent wi
 
 Commands are case-insensitive. When creating new CTCP commands, authors SHOULD use only alphanumeric characters for ease of implementation.
 
-The final CTCP delimiter SHOULD be sent on outgoing messages for compatibility reasons, and software MUST accept incoming messages which lack it. This is due to how servers implement message truncation and certain clients implement message splitting.
+The final CTCP delimiter SHOULD be sent on outgoing messages for compatibility reasons, but software MUST accept incoming messages which lack it. This avoids issues where messages are truncated or split by the server or client.
 
-Queries MAY be sent to channels. When these queries are responded to, the responses are sent to the querying client rather than the channel which the query was originally sent to.
-
-Many servers implement optional filtering so that only the ACTION CTCP message can be sent to channels. When this is done, it can typically be enabled or disabled by channel operators with a channel mode.
+In message examples throughout this document, the CTCP delimiter is shown as `\x01`.
 
 Here are two examples of CTCP queries and replies:
 
@@ -75,14 +82,14 @@ Here are two examples of CTCP queries and replies:
   :alice!a@localhost PRIVMSG bob :\x01VERSION\x01
   :bob!b@localhost NOTICE alice :\x01VERSION Snak for Mac 4.13\x01
 
-  :alice!a@localhost PRIVMSG #ircv3 :\x01PING 1473523796 918320\x01
+  :alice!a@localhost PRIVMSG #ircv3 :\x01PING 1473523796 918320
   :bob!b@localhost NOTICE alice :\x01PING 1473523796 918320\x01
 ~~~
 
 
 # Message Types
 
-CTCP messages generally take on one of these types. These message types are defined here to simplify understanding, and aren’t differentiated by the protocol itself.
+CTCP messages conform to one of the types described below. These message types are defined here to simplify understanding, and aren’t differentiated by the protocol itself.
 
 
 ## Extended formatting
@@ -102,7 +109,7 @@ Example:
 
 ## Metadata Query
 
-This type of CTCP provides relatively static information about the target client, user or connection.
+This type of CTCP provides static information about the target client, user or connection.
 
 This CTCP takes the form of a query and a response (as a PRIVMSG and NOTICE, respectively). Due to how bouncers interact with multiple clients, there may sometimes be multiple responses to queries.
 
@@ -120,7 +127,7 @@ Example:
 
 ## Extended Query
 
-This type of CTCP provides dynamic information or invoke actions from the client.
+This type of CTCP provides dynamic information or invokes actions from the client.
 
 This CTCP takes the form of a query and a response (as a PRIVMSG and NOTICE, respectively).
 
@@ -143,11 +150,11 @@ CTCP messages themselves are not standardised. Clients that receive either unexp
 
 # Acknowledgements
 
-Thanks to the IRCv3 group for giving feedback on this specification, and to Khaled for advice on client flood protection.
+Thanks to the IRCv3 group for giving feedback on this specification, and to Khaled Mardam-Bey for advice on client flood protection.
 
 Thanks to Michael Sandrof for creating CTCP, Troy Rollo for creating the related DCC protocol, as well as Klaus Zeuge and Ben Mesander who wrote and revised related specifications.
 
-Special thanks to dequis, Sadie and James Wheare for help with this and related work.
+Special thanks to dequis, Sadie Powell and James Wheare for help with this and related work.
 
 
 # Security Considerations
@@ -265,6 +272,7 @@ Example:
 ~~~
 Type:    Extended Query
 Params:  PING <info>
+Reply:   PING <info>
 ~~~
 
 This extended query confirms reachability and latency to the target client. When receiving a CTCP PING, the reply MUST contain exactly the same parameters as the original query.
@@ -304,8 +312,8 @@ Example:
 ## TIME
 
 ~~~
-Type:    Extended Query
-Params:  TIME <timestring>
+Type:   Extended Query
+Reply:  TIME <timestring>
 ~~~
 
 This extended query returns the client’s local time in an unspecified human-readable format. In practice, both the format output by ctime() and the format described in Section 3.3 of {{!RFC5322}} are common. Earlier specifications recommended prefixing the time string with a colon, but this is no longer recommended.
