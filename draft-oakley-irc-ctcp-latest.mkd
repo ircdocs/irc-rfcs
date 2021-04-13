@@ -48,9 +48,9 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 CTCP queries are sent with the PRIVMSG IRC command, and CTCP replies are sent with NOTICE command. To indicate a CTCP query or reply, the body of the message (the second parameter) begins with the CTCP delimiter.
 
-Queries MAY be sent to channels. Replies MUST always be sent to the querying client only.
+Queries MAY be sent to channels. Replies MUST always be sent to the querying client only, not the channel.
 
-Many servers implement optional filtering so that only specific CTCP commands can be sent to channels. When this is done, it can typically be enabled or disabled by channel operators with a channel mode.
+Many servers implement filters so that only specific CTCP commands can be sent to channels. When this is done, channel operators can typically enable and disable this filtering with a channel mode.
 
 
 # Message Syntax
@@ -72,11 +72,11 @@ The ABNF {{!RFC5234}} for CTCP message bodies is as follows:
 
 Commands are case-insensitive. When creating new CTCP commands, authors SHOULD use only alphanumeric characters for ease of implementation.
 
-The final CTCP delimiter SHOULD be sent on outgoing messages for compatibility reasons, but software MUST accept incoming messages which lack it. This avoids issues where messages are truncated or split by the server or client.
+The final CTCP delimiter SHOULD be sent on outgoing messages for compatibility reasons, but software MUST accept incoming messages which lack it.
 
 In message examples throughout this document, the CTCP delimiter is shown as `\x01`.
 
-Here are two examples of CTCP queries and replies:
+Here are two examples of valid CTCP queries and replies:
 
 ~~~
   :alice!a@localhost PRIVMSG bob :\x01VERSION\x01
@@ -87,65 +87,9 @@ Here are two examples of CTCP queries and replies:
 ~~~
 
 
-# Message Types
-
-CTCP messages conform to one of the types described below. These message types are defined here to simplify understanding, and aren’t differentiated by the protocol itself.
-
-
-## Extended formatting
-
-This type of CTCP requests special formatting of a user-visible message. That is, to send a user-visible message that should be displayed differently from regular messages - e.g. as an action, a whisper, an announcement.
-
-Extended formatting messages are sent as a PRIVMSG, and are expected to be used in channels as well as between clients. There is no automatic response to this message type, as it is not a query nor reply.
-
-These messages are sent as a PRIVMSG and can have parameters, but generate no reply.
-
-Example:
-
-~~~
-  :dan!u@localhost PRIVMSG #ircv3 :\x01ACTION writes some specs!\x01
-~~~
-
-
-## Metadata Query
-
-This type of CTCP provides static information about the target client, user or connection.
-
-This CTCP takes the form of a query and a response (as a PRIVMSG and NOTICE, respectively). Due to how bouncers interact with multiple clients, there may sometimes be multiple responses to queries.
-
-Metadata queries MUST NOT require the recipient to implement any side effects (beyond sending the reply itself); if a CTCP message causes side effects by design, it should be categorized as an extended query instead.
-
-Metadata queries do not have any parameters, but expect a reply with parameters as the response data.
-
-Example:
-
-~~~
-  :alice!a@localhost PRIVMSG bob :\x01VERSION\x01
-  :bob!b@localhost NOTICE alice :\x01VERSION SaberChat 27.5\x01
-~~~
-
-
-## Extended Query
-
-This type of CTCP provides dynamic information or invokes actions from the client.
-
-This CTCP takes the form of a query and a response (as a PRIVMSG and NOTICE, respectively).
-
-Queries sent to a channel always generate private replies.
-
-Extended queries and replies may have parameters.
-
-Example:
-
-~~~
-  :alice!a@localhost PRIVMSG bob :\x01PING 1473523796 918320\x01
-  :bob!b@localhost NOTICE alice :\x01PING 1473523796 918320\x01
-~~~
-
-
 # Messages
 
-CTCP messages themselves are not standardised. Clients that receive either unexpected messages or known messages with unexpected values SHOULD ignore them and produce no response to the sending user. Clients MAY receive more than one response per user for a query they send, due to multiple clients being connected behind an IRC bouncer.
+There is not a formal registry of CTCP message names, and CTCP responses are uniquely flexible. Clients that receive either unexpected messages or known messages with unexpected values SHOULD ignore them and send no response to the querying user.
 
 
 # Acknowledgements
@@ -180,19 +124,19 @@ This document has no actions for IANA.
 
 This section is not exhaustive, and only lists those CTCP messages which are widely implemented across the IRC ecosystem.
 
-The reply and parameter lines below use a simplified syntax that represents variables by surrounding them with angle brackets.
+The Query and Reply lines below represent variables by surrounding them with angle brackets.
 
 
 ## ACTION
 
 ~~~
-Type:    Extended Formatting
-Params:  ACTION <text>
+Query:  ACTION <text>
+Reply:  None
 ~~~
 
-This extended formatting message shows that \<text\> should be displayed as a third-person action or emote; in clients, it’s generally activated with the command `/me`.
+Clients receiving this message MUST display \<text\> as a third-person action or emote. Users typically use the `/me` command in their IRC clients to send this message.
 
-If \<text\> is empty, clients SHOULD still include a single space after `ACTION` (i.e. an empty params section) to help compatibility. Clients SHOULD correctly parse incoming ACTION messages with or without the params section.
+If \<text\> is empty, clients SHOULD still include a single space after `ACTION` (i.e. an empty params section) to help ensure compatibility. Clients SHOULD correctly parse incoming ACTION messages with or without the params section.
 
 ACTION is universally implemented and very commonly used. Clients MUST implement this CTCP message to effectively use IRC.
 
@@ -216,32 +160,32 @@ Examples:
 ## CLIENTINFO
 
 ~~~
-Type:   Extended Query
+Query:  CLIENTINFO
 Reply:  CLIENTINFO <tokens>
 ~~~
 
-This extended query returns a list of the CTCP messages that this client supports and implements, delimited by a single ASCII space.
+Clients receiving this message MUST return a list of the CTCP messages they support, delimited by a single ASCII space.
 
 CLIENTINFO is widely implemented. Clients SHOULD implement this CTCP message.
 
 Example:
 
 ~~~
-  Query:     CLIENTINFO
-  Response:  CLIENTINFO ACTION DCC CLIENTINFO PING TIME VERSION
+  Query:  CLIENTINFO
+  Reply:  CLIENTINFO ACTION DCC CLIENTINFO PING TIME VERSION
 ~~~
 
 
 ## DCC
 
 ~~~
-Type:    Extended Query
-Params:  DCC <type> <argument> <host> <port>
+Query:  DCC <type> <argument> <host> <port>
+Reply:  Described elsewhere.
 ~~~
 
-This extended query sets up and controls connections that go directly between clients, bypassing the IRC server. This is typically used for features that require a large amount of traffic between clients or simply wish to bypass the server itself such as file transfer and direct chat.
+This message sets up connections that go directly between clients, bypassing the IRC server. This is typically used for features that require a large amount of traffic between clients (e.g. file transfer), or simply direct chat that bypasses the server.
 
-The Direct Client-to-Client (DCC) Protocol requires its own specification, and is not described in-depth here.
+The Direct Client-to-Client (DCC) protocol requires its own specification, and is not described in-depth here.
 
 DCC is widely implemented. Clients MAY implement this CTCP message.
 
@@ -249,74 +193,71 @@ DCC is widely implemented. Clients MAY implement this CTCP message.
 ## FINGER
 
 ~~~
-Type:   Metadata Query
+Query:  FINGER
 Reply:  FINGER <info>
 ~~~
 
-This metadata query returns miscellaneous info about the user, typically the same information that’s held in their realname field.
-
-However, some implementations return the client name and version instead.
+Clients receiving this message reply with miscellaneous information about the user, typically the contents of their realname/gecos field. However, some implementations return the client name and version instead.
 
 FINGER is largely obsolete. Clients MAY implement this CTCP message.
 
 Example:
 
 ~~~
-  Query:     FINGER
-  Response:  FINGER WeeChat 1.8-dev
+  Query:  FINGER
+  Reply:  FINGER WeeChat 1.8-dev
 ~~~
 
 
 ## PING
 
 ~~~
-Type:    Extended Query
-Params:  PING <info>
-Reply:   PING <info>
+Query:  PING <info>
+Reply:  PING <info>
 ~~~
 
-This extended query confirms reachability and latency to the target client. When receiving a CTCP PING, the reply MUST contain exactly the same parameters as the original query.
+Clients receiving this message MUST send a reply containing exactly the same params as the original query. This message confirms reachability and latency between two clients.
 
 PING is universally implemented. Clients SHOULD implement this CTCP message.
 
 Example:
 
 ~~~
-  Query:     PING 1473523721 662865
-  Response:  PING 1473523721 662865
+  Query:  PING 1473523721 662865
+  Reply:  PING 1473523721 662865
   
-  Query:     PING foo bar baz
-  Response:  PING foo bar baz
+  Query:  PING foo bar baz
+  Reply:  PING foo bar baz
 ~~~
 
 
 ## SOURCE
 
 ~~~
-Type:   Metadata Query
+Query:  SOURCE
 Reply:  SOURCE <info>
 ~~~
 
-This metadata query returns the location of the source code for the client.
+Clients receiving this message MUST reply with a URL where the source code for the client can be found.
 
 SOURCE is rarely implemented. Clients MAY implement this CTCP message.
 
 Example:
 
 ~~~
-  Query:     SOURCE
-  Response:  SOURCE https://weechat.org/download
+  Query:  SOURCE
+  Reply:  SOURCE https://weechat.org/download
 ~~~
 
 
 ## TIME
 
 ~~~
-Type:   Extended Query
+Query:  TIME
 Reply:  TIME <timestring>
 ~~~
 
-This extended query returns the client’s local time in an unspecified human-readable format. In practice, both the format output by ctime() and the format described in Section 3.3 of {{!RFC5322}} are common. Earlier specifications recommended prefixing the time string with a colon, but this is no longer recommended.
+Clients receiving this message reply with the client's local time in a human-readable format. In practice, both the format returned by ctime() and the format described in Section 3.3 of {{!RFC5322}} are common. Earlier specifications recommended prefixing the time string with a colon, but this is no longer recommended.
 
 New implementations MAY default to UTC time for privacy reasons.
 
@@ -325,40 +266,40 @@ TIME is almost universally implemented. Clients MAY implement this CTCP message.
 Example:
 
 ~~~
-  Query:     TIME
-  Response:  TIME Mon, 08 May 2017 09:15:29 GMT
+  Query:  TIME
+  Reply:  TIME Mon, 08 May 2017 09:15:29 GMT
 ~~~
 
 
 ## VERSION
 
 ~~~
-Type:   Metadata Query
+Query:  VERSION
 Reply:  VERSION <verstring>
 ~~~
 
-This metadata query returns the name and version of the client software in use. There is no specified format for the version string.
+Clients receiving this message MUST reply with the name and version of the client software in use. There is no specified format for the version string.
 
-Clients may allow users to customise the response value for this query.
+Clients MAY receive more than one response for a query they send. Clients may allow users to customise the response value for this query.
 
 VERSION is universally implemented. Clients SHOULD implement this CTCP message.
 
 Example:
 
 ~~~
-  Query:     VERSION
-  Response:  VERSION WeeChat 1.8-dev (git: v1.7-329-g22f2fd03a)
+  Query:  VERSION
+  Reply:  VERSION WeeChat 1.8-dev (git: v1.7-329-g22f2fd03a)
 ~~~
 
 
 ## USERINFO
 
 ~~~
-Type:   Metadata Query
+Query:  USERINFO
 Reply:  USERINFO <info>
 ~~~
 
-This metadata query returns miscellaneous info about the user, typically the same information that’s held in their realname field.
+Clients receiving this message reply with miscellaneous info about the user, typically the same information that’s held in their realname/gecos field.
 
 However, some implementations return `<nickname> (<realname>)` instead.
 
@@ -367,11 +308,15 @@ USERINFO is largely obsolete. Clients MAY implement this CTCP message.
 Example:
 
 ~~~
-  Query:     USERINFO
-  Response:  USERINFO fred (Fred Foobar)
+  Query:  USERINFO
+  Reply:  USERINFO fred (Fred Foobar)
 ~~~
 
 # Change History \[RFC Editor: Please remove this section\]
+
+Changes from draft 2 (... 2021)
+
+- Removed the CTCP Types section (thanks James).
 
 Changes from draft 1 (July 18, 2017)
 

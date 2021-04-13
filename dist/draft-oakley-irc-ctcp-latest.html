@@ -1,438 +1,1062 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>Internet Relay Chat: Client-to-Client Protocol (CTCP)</title>
+<meta content="Mantas Mikulėnas" name="author">
+<meta content="Daniel Oakley" name="author">
+<meta content="
+       This document describes the Client-to-Client Protocol (CTCP), which lets Internet Relay Chat (IRC) clients send each other messages that get displayed or responded to in special ways. CTCP has been widely implemented, with most clients supporting it natively. This document outlines how to implement CTCP and the most common messages used. 
+       It updates RFC 1459 and RFC 2812. 
+    " name="description">
+<meta content="xml2rfc 3.7.0" name="generator">
+<meta content="draft-oakley-irc-ctcp-latest" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.7.0
+    Python 3.8.1
+    appdirs 1.4.4
+    ConfigArgParse 1.4
+    google-i18n-address 2.4.0
+    html5lib 1.1
+    intervaltree 3.1.0
+    Jinja2 2.11.3
+    kitchen 1.2.6
+    lxml 4.5.2
+    pycountry 20.7.3
+    pyflakes 2.3.1
+    PyYAML 5.4.1
+    requests 2.22.0
+    setuptools 41.2.0
+    six 1.13.0
+-->
+<link href="dist/draft-oakley-irc-ctcp-latest.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
 
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
-  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
-
-  <title>Internet Relay Chat: Client-to-Client Protocol (CTCP)</title>
-
-  
 <style type="text/css">/*<![CDATA[*/
-@viewport {
-  zoom: 1.0;
-  width: extend-to-zoom;
-}
-@-ms-viewport {
-  width: extend-to-zoom;
-  zoom: 1.0;
-}
+/* retrieved as-is from https://github.com/martinthomson/i-d-template/blob/main/v3.css */
 
-@media screen and (min-width: 1024px) {
-  ul.toc, #rfc\.toc {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    right: calc(50vw - 500px);
-    width: 300px;
-    padding: 0 1em;
-    z-index: 1;
-  }
-  #rfc\.toc {
-    top: 16px;
-  }
-  ul.toc {
-    top: 80px;
-    overflow: auto;
-  }
+/* @import url('https://martinthomson.github.io/i-d-template/fonts.css'); */
 
-  body {
-    padding-left: 1.5em;
-    padding-right: 29em;
-  }
+html {
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --pilcrow-weak: #ddd;
+  --pilcrow-strong: #bbb;
+  --small-font-size: 14.5px;
+  scrollbar-color: #bbb #eee;
 }
-
+@media (prefers-color-scheme: dark) {
+html {
+  --background-color: #121212;
+  --text-color: #f0f0f0;
+  --title-color: #fff;
+  --link-color: #4da4f0;
+  --highlight-color: #282828;
+  --line-color: #444;
+  --pilcrow-weak: #444;
+  --pilcrow-strong: #666;
+  scrollbar-color: #777 #333;
+}
+}
 body {
-  font: 15px "Helvetica Neue",Helvetica,Arial,sans-serif;
-  color: #333;
-  font-size-adjust: 0.5;
-  line-height: 130%;
-  margin: 2.5em auto;
-  max-width: 724px;
+  max-width: 600px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
 }
 
-.title, .filename, h1, h2, h3, h4 {
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-size-adjust: 0.5;
-  font-weight: 500;
-  color: #333;
-  line-height: 100%;
-  margin: 0.8em 0 0.3em;
-}
-.title { font-size: 36px; }
-h1 { font-size: 30px; }
-h2 { font-size: 24px; }
-h3, h4 { font-size: 18px; }
-h1 a[href], h2 a[href], h3 a[href], h4 a[href] {
-  color: #333;
-}
-
-ul.toc li {
-  list-style: none;
-  text-indent: -2.5em;
-  padding-left: 2.5em;
-  padding-bottom: 5px;
-  margin: 0;
-}
-ul.toc ul {
-  margin: 0;
-}
-/* xml2rfc nests ul directly inside ul which messes with the style badly */
-ul.toc, ul.toc>ul, ul.toc ul>ul {
-  margin: 0 0 0 1.5em;
-}
-
-table {
-  margin-left: 0em;
-  border-collapse: collapse;
-}
-th {
-  text-align: left;
-  border-bottom: 2px solid #ddd;
-}
-td {
-  border-top: 1px solid #ddd;
-  vertical-align: top;
-}
-tr:nth-child(2n+1) > td,
-tr:nth-child(2n+1) > th {
-  background-color: #f9f9f9;
-}
-td.reference {
-  max-width: 200px;
-  border-top: none;
-  padding-right: 1em;
-}
-.right {
-  text-align: right;
-}
-
-
-table.header {
-  width: 100%;
-}
-table.header td {
-  border: none;
-  background-color: transparent;
-  color: black;
-}
-.filename {
-  color: rgb(119, 119, 119);
-  font-size: 23px;
-  font-weight: normal;
-  height: auto;
-  line-height: 100%;
-}
-#rfc\.abstract+p {
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 130%;
-}
-
-samp, tt, code, pre {
-  font: 11pt consolas, monospace;
-  font-size-adjust: none;
-}
-pre {
-  background-color: #eee;
-  border: 1px solid #ddd;
-  overflow-x: auto;
-  padding: 5px;
-  margin: 5px;
-}
-.figure {
-  font-style: italic;
-  margin: 0 1.5em;
-}
-
-address {
-  margin: 10px 0 0;
-}
-.vcard {
-  font-style: normal;
-}
-.vcardline {
-  display: block;
-}
-.vcardline .fn {
-  font-weight: bold;
-}
-.vcardline .hidden {
+.ears {
   display: none;
 }
 
-dl {
+/* headings */
+#title, h1, h2, h3, h4, h5, h6 {
+  font-family: "Cabin Condensed", sans-serif;
+  font-weight: 600;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+#title {
+  padding: 1em 0 0.2em;
+  font-size: 32px;
+  line-height: 40px;
+  clear: both;
+}
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 27px;
+}
+h4, h5, h6 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+}
+#abstract+p, #abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 18px;
+  line-height: 24px;
+}
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+.alignCenter.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 0.5em 2em;
+}
+ol ol, ul ul, ol ul, ul ol {
   margin-left: 1em;
 }
-dl.dl-horizontal: {
-  margin-left: 0;
+li {
+  margin: 0 0 0.25em 0;
+}
+.ulCompact li {
+  margin: 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+}
+ul.empty li, .ulEmpty li {
+  margin-top: 0.5em;
+}
+ul.compact, .ulCompact,
+ol.compact, .olCompact {
+  line-height: 100%;
+  margin: 0 0 0 2em;
+}
+
+/* definition lists */
+dl {
 }
 dl > dt {
   float: left;
   margin-right: 1em;
 }
-dl.nohang > dt {
-  float: none;
-}
 dl > dd {
-  margin-bottom: .5em;
+  margin-bottom: .8em;
+  min-height: 1.3em;
 }
-dl.compact > dd {
+dl.compact > dd, .dlCompact > dd {
   margin-bottom: 0em;
 }
 dl > dd > dl {
   margin-top: 0.5em;
   margin-bottom: 0em;
 }
-ul.empty {
-  list-style-type: none;
-}
-ul.empty li {
-  margin-top: .5em;
-}
-
-hr {
-  border: 0;
-  border-top: 1px solid #eee;
-}
-
-a {
-  text-decoration: none;
-}
-a[href] {
-  color: #2a6496;
-}
-a[href]:hover {
-  background-color: #eee;
-}
-
-ol, ul, li, p {
-  padding: 0;
-  margin: 0.5em 0 0.5em 2em;
-}
-li, p {
-  margin-left: 0;
-}
-address {
-  font-style: normal;
-}
-
-.github-fork-ribbon-wrapper {
+dd.break {
   display: none;
 }
-@media screen and (min-width: 800px) {
-  /* "Fork me on GitHub" CSS ribbon based on
-   * https://github.com/simonwhitaker/github-fork-ribbon-css
-   */
-  .github-fork-ribbon {
-    position: absolute;
-    padding: 2px 0;
-    background-color: #a00;
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));
-    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
-    font: 700 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-    pointer-events: auto;
+/* links */
+a, a[href].selfRef:hover {
+  text-decoration: none;
+}
+a[href].selfRef {
+  color: var(--text-color);
+}
+a[href] {
+  color: var(--link-color);
+}
+a[href]:hover {
+  text-decoration: underline;
+}
+a[href].selfRef:hover {
+  background-color: var(--highlight-color);
+}
+a.xref {
+  white-space: nowrap;
+}
 
-    top: 38px;
-    right: -45px;
-
-    transform: rotate(45deg);
-  }
-
-  .github-fork-ribbon a[href],
-  .github-fork-ribbon a[href]:hover {
-    color: #fff;
-    background-color: transparent;
-    text-decoration: none;
-    text-shadow: 0 -1px rgba(0, 0, 0, 0.5);
-    text-align: center;
-
-    width: 190px;
-    line-height: 18px;
-
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px 'Oxygen Mono', monospace;
+}
+pre {
+  border: 1px solid var(--line-color);
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+  padding: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+}
+@media screen {
+  pre {
     display: inline-block;
-    padding: 2px 0;
-
-    border: 1.5px dotted #fff;
-    border-color: rgba(255, 255, 255, 0.6);
+    overflow-x: auto;
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
   }
-
-  .github-fork-ribbon-wrapper {
+  figure pre {
     display: block;
-    width: 130px;
-    height: 130px;
-    position: absolute;
-    overflow: hidden;
-    top: 0; right: 0;
-    z-index: 2;
-    pointer-events: none;
+    width: calc(100% - 25px);
+  }
+  pre + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
   }
 }
-@media screen and (min-width: 1000px) {
-  .github-fork-ribbon-wrapper {
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  margin: 1em 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  max-width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+}
+table.right {
+  margin-left: auto;
+}
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+table.left {
+  margin-right: auto;
+}
+thead, tbody {
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 10px;
+}
+th {
+  background-color: var(--line-color);
+}
+tr:nth-child(2n) > td {
+  background-color: var(--background-color);
+}
+tr:nth-child(2n+1) > td {
+  background-color: var(--highlight-color);
+}
+thead+tbody > tr:nth-child(2n) > td {
+  background-color: var(--highlight-color);
+}
+thead+tbody > tr:nth-child(2n+1) > td {
+  background-color: var(--background-color);
+}
+table caption {
+  margin: 0;
+  padding: 3px 0 3px 1em;
+}
+table p {
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  opacity: 0; /* dan: opacity was 0.2 in stock. felt distracting? */
+  user-select: none;
+}
+a.pilcrow[href] { color: var(--pilcrow-weak); }
+a.pilcrow[href]:hover { text-decoration: none; }
+@media not print {
+  :hover > a.pilcrow {
+    opacity: 1;
+  }
+  a.pilcrow[href]:hover {
+    color: var(--pilcrow-strong);
+    background-color: transparent;
+  }
+}
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+}
+
+.role {
+  font-variant: all-small-caps;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 8em;
+}
+#identifiers dt {
+  width: var(--identifier-width);
+  margin: 0;
+  clear: left;
+  float: left;
+  text-align: right;
+}
+#identifiers dd {
+  margin: 0 0 0 calc(1em + var(--identifier-width));
+  min-width: 5em;
+}
+#identifiers .authors .author {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+#identifiers .authors .org {
+  font-style: italic;
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: left;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+}
+#toc nav ul {
+  margin: 0 0.5em 0 0;
+  padding: 0;
+  list-style: none;
+}
+#toc nav li {
+  line-height: 1.3em;
+  margin: 0.75em 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+#toc a.xref {
+  white-space: normal;
+}
+/* references */
+.references dt {
+  text-align: right;
+  font-weight: bold;
+  min-width: 7em;
+}
+.references dd {
+  margin-left: 8em;
+  overflow: auto;
+}
+
+.refInstance {
+  margin-bottom: 1.25em;
+}
+
+.references .ascii {
+  margin-bottom: 0.25em;
+}
+
+/* index */
+.index ul {
+  margin: 0 0 0 1em;
+  padding: 0;
+  list-style: none;
+}
+.index ul ul {
+  margin: 0;
+}
+.index li {
+  margin: 0;
+  text-indent: -2em;
+  padding-left: 2em;
+  padding-bottom: 5px;
+}
+.indexIndex {
+  margin: 0.5em 0 1em;
+}
+.index a {
+  font-weight: 700;
+}
+/* make the index two-column on all but the smallest screens */
+@media (min-width: 500px) {
+  .index ul {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  .index ul ul {
+    column-count: 1;
+    column-gap: 0;
+  }
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  margin: 1em 0;
+}
+address.vcard .nameRole {
+  font-weight: 700;
+  margin-left: 0;
+}
+address.vcard .label {
+  margin: 0.5em 0;
+}
+address.vcard .type {
+  display: none;
+}
+.alternative-contact {
+  margin: 1.5em 0 1em;
+}
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 500px) {
+  #authors-addresses > section {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  #authors-addresses > section > h2 {
+    column-span: all;
+  }
+  /* hack for break-inside: avoid-column */
+  #authors-addresses address {
+    display: inline-block;
+    break-inside: avoid-column;
+  }
+}
+
+.rfcEditorRemove p:first-of-type {
+  font-style: italic;
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+/* alternative layout for smaller screens */
+@media screen and (max-width: 929px) {
+  #toc {
     position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+  }
+  #toc.active {
+      opacity: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 2px 0 2px 6px;
+    padding-right: 1em;
+    font-size: 18px;
+    line-height: 24px;
+    min-width: 190px;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+  }
+  #toc h2::before { /* css hamburger */
+    float: right;
+    position: relative;
+    width: 1em;
+    height: 1px;
+    left: -164px;
+    margin: 8px 0 0 0;
+    background: white none repeat scroll 0 0;
+    box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+    content: "";
+  }
+  #toc nav {
+    display: none;
+    background-color: var(--background-color);
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+  #toc.active nav {
+    display: block;
+  }
+  /* Make the collapsed ToC header render white on gray also when it's a link */
+  #toc h2 a,
+  #toc h2 a:link,
+  #toc h2 a:focus,
+  #toc h2 a:hover,
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+  #toc a.toplink {
+    margin-top: 2px;
+  }
+}
+
+/* alternative layout for wide screens */
+@media screen and (min-width: 930px) {
+  body {
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 2em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  #toc nav > ul  {
+    margin-bottom: 2em;
+  }
+  #toc ul {
+    margin: 0 0 0 4px;
+    font-size: var(--small-font-size);
+  }
+  #toc ul p, #toc ul li {
+    margin: 2px 0;
+    line-height: 22px;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre {
+    page-break-inside: avoid;
+  }
+  figure {
+    overflow: scroll;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  h2+*, h3+*, h4+*, h5+*, h6+* {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Changes introduced to fix issues found during implementation */
+
+/* Separate body from document info even without intervening H1 */
+section {
+  clear: both;
+}
+
+/* Top align author divs, to avoid names without organization dropping level with org names */
+.author {
+  vertical-align: top;
+}
+
+/* Style section numbers with more space between number and title */
+.section-number {
+  padding-right: 0.5em;
+}
+
+/* Add styling for a link in the ToC that points to the top of the document */
+a.toplink {
+  float: right;
+  margin: 8px 0.5em 0;
+}
+
+/* Fix the dl styling to match the RFC 7992 attributes */
+dl > dt,
+dl.dlParallel > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.dlNewline > dt {
+  float: none;
+}
+
+/* Provide styling for table cell text alignment */
+table .text-left, table .text-left {
+  text-align: left;
+}
+table .text-center, table .text-center {
+  text-align: center;
+}
+table .text-right, table .text-right {
+  text-align: right;
+}
+
+/* Make the alternative author contact information look less like just another
+   author, and group it closer with the primary author contact information */
+.alternative-contact {
+  margin: 0.5em 0 0.25em 0;
+}
+address .non-ascii {
+  margin: 0 0 0 2em;
+}
+
+/* With it being possible to set tables with alignment
+  left, center, and right, { width: 100%; } does not make sense */
+table {
+  width: auto;
+}
+
+/* Avoid reference text that sits in a block with very wide left margin,
+   because of a long floating dt label.*/
+.references dd {
+  overflow: visible;
+}
+
+/* Control caption placement */
+caption {
+  caption-side: bottom;
+}
+
+/* Limit the width of the author address vcard, so names in right-to-left
+   script don't end up on the other side of the page. */
+
+address.vcard {
+  max-width: 20em;
+  margin-right: auto;
+}
+
+/* For address alignment dependent on LTR or RTL scripts */
+address div.left {
+  text-align: left;
+}
+address div.right {
+  text-align: right;
+}
+
+/* Give the table caption label the same styling as the figcaption */
+
+@media print {
+  .toplink {
+    display: none;
   }
 
-/*]]>*/</style>
+  /* avoid overwriting the top border line with the ToC header */
+  #toc {
+    padding-top: 1px;
+  }
 
+  /* Avoid page breaks inside dl and author address entries */
+  dd {
+    page-break-before: avoid;
+  }
+  .vcard {
+    page-break-inside: avoid;
+  }
 
-  <link href="#rfc.toc" rel="Contents">
-<link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
-<link href="#rfc.section.2" rel="Chapter" title="2 Protocol Structure">
-<link href="#rfc.section.3" rel="Chapter" title="3 Message Syntax">
-<link href="#rfc.section.4" rel="Chapter" title="4 Message Types">
-<link href="#rfc.section.4.1" rel="Chapter" title="4.1 Extended formatting">
-<link href="#rfc.section.4.2" rel="Chapter" title="4.2 Metadata Query">
-<link href="#rfc.section.4.3" rel="Chapter" title="4.3 Extended Query">
-<link href="#rfc.section.5" rel="Chapter" title="5 Messages">
-<link href="#rfc.section.6" rel="Chapter" title="6 Acknowledgements">
-<link href="#rfc.section.7" rel="Chapter" title="7 Security Considerations">
-<link href="#rfc.section.8" rel="Chapter" title="8 IANA Considerations">
-<link href="#rfc.references" rel="Chapter" title="9 Normative References">
-<link href="#rfc.appendix.A" rel="Chapter" title="A Message List">
-<link href="#rfc.appendix.A.1" rel="Chapter" title="A.1 ACTION">
-<link href="#rfc.appendix.A.2" rel="Chapter" title="A.2 CLIENTINFO">
-<link href="#rfc.appendix.A.3" rel="Chapter" title="A.3 DCC">
-<link href="#rfc.appendix.A.4" rel="Chapter" title="A.4 FINGER">
-<link href="#rfc.appendix.A.5" rel="Chapter" title="A.5 PING">
-<link href="#rfc.appendix.A.6" rel="Chapter" title="A.6 SOURCE">
-<link href="#rfc.appendix.A.7" rel="Chapter" title="A.7 TIME">
-<link href="#rfc.appendix.A.8" rel="Chapter" title="A.8 VERSION">
-<link href="#rfc.appendix.A.9" rel="Chapter" title="A.9 USERINFO">
-<link href="#rfc.appendix.B" rel="Chapter" title="B Change History [RFC Editor: Please remove this section]">
-<link href="#rfc.authors" rel="Chapter">
+}
+/* Tweak the bcp14 keyword presentation */
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: bold;
+  font-size: 0.9em;
+}/* my special additions to the default I-D template style */
 
+/* I like open-sans, sorta riffing on the style I'm using on modern already */
+@import url('https://modern.ircdocs.horse/css/open-sans.css');
+body {
+    font: 16px/22px "Open Sans", sans-serif;
+}
+#title, h1, h2, h3, h4, h5, h6 {
+    font-family: "Open Sans", sans-serif;
+}
 
-  <meta name="generator" content="xml2rfc version 2.9.6 - https://tools.ietf.org/tools/xml2rfc" />
-  <link rel="schema.dct" href="http://purl.org/dc/terms/" />
+/* I'll only do these for screen viewing because they do expand the text.
+   and leaving the doc smoller for printing feels sensible/responsible. */
+@media screen {
+    /* give the text and headings some more room to breathe */
+    p + p {
+        margin-top: 11px;
+    }
+    h2 {
+        margin-top: 20px;
+    }
+    h3 {
+        margin-top: 20px;
+    }
 
-  <meta name="dct.creator" content="Mikulenas, M. and D. Oakley" />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-oakley-irc-ctcp-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-04-27" />
-  <meta name="dct.abstract" content="This document describes the Client-to-Client Protocol (CTCP), which lets Internet Relay Chat (IRC) clients send each other messages that get displayed or responded to in special ways. CTCP has been widely implemented, with most clients supporting it natively. This document outlines how to implement CTCP and the most common messages used." />
-  <meta name="description" content="This document describes the Client-to-Client Protocol (CTCP), which lets Internet Relay Chat (IRC) clients send each other messages that get displayed or responded to in special ways. CTCP has been widely implemented, with most clients supporting it natively. This document outlines how to implement CTCP and the most common messages used." />
+    /* make the pre boxes feel more open and happier */
+    pre {
+    padding: 8px 5px;
+    border-radius: 4px;
+    }
+}
+  /*]]>*/</style>
 
+<link href="rfc-local.css" rel="stylesheet" type="text/css">
 </head>
-
 <body>
-
-  <table class="header">
-    <tbody>
-    
-    	<tr>
-<td class="left">Network Working Group</td>
-<td class="right">M. Mikulenas</td>
-</tr>
-<tr>
+<script src="metadata.min.js"></script>
+<table class="ears">
+<thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="right">Independent</td>
-</tr>
-<tr>
-<td class="left">Updates: 1459, 2812 (if approved)</td>
-<td class="right">D. Oakley</td>
-</tr>
-<tr>
-<td class="left">Intended status: Informational</td>
-<td class="right">ircdocs</td>
-</tr>
-<tr>
-<td class="left">Expires: October 29, 2018</td>
-<td class="right">April 27, 2018</td>
-</tr>
-
-    	
-    </tbody>
-  </table>
-
-  <p class="title">Internet Relay Chat: Client-to-Client Protocol (CTCP)<br />
-  <span class="filename">draft-oakley-irc-ctcp-latest</span></p>
-  
-  <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
-<p>This document describes the Client-to-Client Protocol (CTCP), which lets Internet Relay Chat (IRC) clients send each other messages that get displayed or responded to in special ways. CTCP has been widely implemented, with most clients supporting it natively. This document outlines how to implement CTCP and the most common messages used.</p>
-<p>It updates RFC 1459 and RFC 2812.</p>
-<h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
-<p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
-<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
-<p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on October 29, 2018.</p>
-<h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
-<p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
-<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.</p>
-
-  
-  <hr class="noprint" />
-  <h1 class="np" id="rfc.toc"><a href="#rfc.toc">Table of Contents</a></h1>
-  <ul class="toc">
-
-  	<li>1.   <a href="#rfc.section.1">Introduction</a>
+<td class="center">IRC CTCP</td>
+<td class="right">April 2021</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Mikulėnas &amp; Oakley</td>
+<td class="center">Expires 15 October 2021</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">Network Working Group</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-oakley-irc-ctcp-latest</dd>
+<dt class="label-updates">Updates:</dt>
+<dd class="updates">
+<a href="https://www.rfc-editor.org/rfc/rfc1459" class="eref">1459</a>, <a href="https://www.rfc-editor.org/rfc/rfc2812" class="eref">2812</a> (if approved)</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2021-04-13" class="published">13 April 2021</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Informational</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2021-10-15">15 October 2021</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">M. Mikulėnas</div>
+<div class="org">Independent</div>
+</div>
+<div class="author">
+      <div class="author-name">D. Oakley</div>
+<div class="org">ircdocs</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">Internet Relay Chat: Client-to-Client Protocol (CTCP)</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">This document describes the Client-to-Client Protocol (CTCP), which lets Internet Relay Chat (IRC) clients send each other messages that get displayed or responded to in special ways. CTCP has been widely implemented, with most clients supporting it natively. This document outlines how to implement CTCP and the most common messages used.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">It updates RFC 1459 and RFC 2812.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 15 October 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2021 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a></p>
 </li>
-<li>2.   <a href="#rfc.section.2">Protocol Structure</a>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-protocol-structure" class="xref">Protocol Structure</a></p>
 </li>
-<li>3.   <a href="#rfc.section.3">Message Syntax</a>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="xref">3</a>.  <a href="#name-message-syntax" class="xref">Message Syntax</a></p>
 </li>
-<li>4.   <a href="#rfc.section.4">Message Types</a>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-messages" class="xref">Messages</a></p>
 </li>
-<ul><li>4.1.   <a href="#rfc.section.4.1">Extended formatting</a>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-acknowledgements" class="xref">Acknowledgements</a></p>
 </li>
-<li>4.2.   <a href="#rfc.section.4.2">Metadata Query</a>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-security-considerations" class="xref">Security Considerations</a></p>
 </li>
-<li>4.3.   <a href="#rfc.section.4.3">Extended Query</a>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-iana-considerations" class="xref">IANA Considerations</a></p>
 </li>
-</ul><li>5.   <a href="#rfc.section.5">Messages</a>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-normative-references" class="xref">Normative References</a></p>
 </li>
-<li>6.   <a href="#rfc.section.6">Acknowledgements</a>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#section-appendix.a" class="xref">Appendix A</a>.  <a href="#name-message-list" class="xref">Message List</a></p>
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.9.2.1">
+                <p id="section-toc.1-1.9.2.1.1"><a href="#section-a.1" class="xref">A.1</a>.  <a href="#name-action" class="xref">ACTION</a></p>
 </li>
-<li>7.   <a href="#rfc.section.7">Security Considerations</a>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.9.2.2">
+                <p id="section-toc.1-1.9.2.2.1"><a href="#section-a.2" class="xref">A.2</a>.  <a href="#name-clientinfo" class="xref">CLIENTINFO</a></p>
 </li>
-<li>8.   <a href="#rfc.section.8">IANA Considerations</a>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.9.2.3">
+                <p id="section-toc.1-1.9.2.3.1"><a href="#section-a.3" class="xref">A.3</a>.  <a href="#name-dcc" class="xref">DCC</a></p>
 </li>
-<li>9.   <a href="#rfc.references">Normative References</a>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.9.2.4">
+                <p id="section-toc.1-1.9.2.4.1"><a href="#section-a.4" class="xref">A.4</a>.  <a href="#name-finger" class="xref">FINGER</a></p>
 </li>
-<li>Appendix A.   <a href="#rfc.appendix.A">Message List</a>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.9.2.5">
+                <p id="section-toc.1-1.9.2.5.1"><a href="#section-a.5" class="xref">A.5</a>.  <a href="#name-ping" class="xref">PING</a></p>
 </li>
-<ul><li>A.1.   <a href="#rfc.appendix.A.1">ACTION</a>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.9.2.6">
+                <p id="section-toc.1-1.9.2.6.1"><a href="#section-a.6" class="xref">A.6</a>.  <a href="#name-source" class="xref">SOURCE</a></p>
 </li>
-<li>A.2.   <a href="#rfc.appendix.A.2">CLIENTINFO</a>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.9.2.7">
+                <p id="section-toc.1-1.9.2.7.1"><a href="#section-a.7" class="xref">A.7</a>.  <a href="#name-time" class="xref">TIME</a></p>
 </li>
-<li>A.3.   <a href="#rfc.appendix.A.3">DCC</a>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.9.2.8">
+                <p id="section-toc.1-1.9.2.8.1"><a href="#section-a.8" class="xref">A.8</a>.  <a href="#name-version" class="xref">VERSION</a></p>
 </li>
-<li>A.4.   <a href="#rfc.appendix.A.4">FINGER</a>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.9.2.9">
+                <p id="section-toc.1-1.9.2.9.1"><a href="#section-a.9" class="xref">A.9</a>.  <a href="#name-userinfo" class="xref">USERINFO</a></p>
 </li>
-<li>A.5.   <a href="#rfc.appendix.A.5">PING</a>
+            </ul>
 </li>
-<li>A.6.   <a href="#rfc.appendix.A.6">SOURCE</a>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#section-appendix.b" class="xref">Appendix B</a>.  <a href="#name-change-history-rfc-editor-p" class="xref">Change History [RFC Editor: Please remove this section]</a></p>
 </li>
-<li>A.7.   <a href="#rfc.appendix.A.7">TIME</a>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#section-appendix.c" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a></p>
 </li>
-<li>A.8.   <a href="#rfc.appendix.A.8">VERSION</a>
-</li>
-<li>A.9.   <a href="#rfc.appendix.A.9">USERINFO</a>
-</li>
-</ul><li>Appendix B.   <a href="#rfc.appendix.B">Change History [RFC Editor: Please remove this section]</a>
-</li>
-<li><a href="#rfc.authors">Authors' Addresses</a>
-</li>
-
-
-  </ul>
-
-  <h1 id="rfc.section.1">
-<a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a>
-</h1>
-<p id="rfc.section.1.p.1">The core Internet Relay Chat (IRC) protocol as described in <a href="#RFC1459" class="xref">[RFC1459]</a> and <a href="#RFC2812" class="xref">[RFC2812]</a> does not provide a way to exchange computer-readable information directly between clients. The Client-to-Client Protocol (CTCP) lets them exchange messages that get processed, displayed or responded to in special ways.</p>
-<p id="rfc.section.1.p.2">CTCP can be used to request special formatting on messages, query other clients for metadata, and help initiate file transfers with other clients among other uses. This document covers the subset of CTCP which is commonly implemented, and clients implementing this specification are compatible with those implementing the protocol as described by older documents.</p>
-<p id="rfc.section.1.p.3">The key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;,  &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; in this document are to be interpreted as described in <a href="#RFC2119" class="xref">[RFC2119]</a>.</p>
-<h1 id="rfc.section.2">
-<a href="#rfc.section.2">2.</a> <a href="#protocol-structure" id="protocol-structure">Protocol Structure</a>
-</h1>
-<p id="rfc.section.2.p.1">CTCP queries are sent with the PRIVMSG IRC command, and CTCP replies are sent with NOTICE command. To indicate a CTCP query or reply, the body of the message (the second parameter) begins with the CTCP delimiter.</p>
-<p id="rfc.section.2.p.2">Queries MAY be sent to channels. Replies MUST always be sent to the querying client only.</p>
-<p id="rfc.section.2.p.3">Many servers implement optional filtering so that only specific CTCP commands can be sent to channels. When this is done, it can typically be enabled or disabled by channel operators with a channel mode.</p>
-<h1 id="rfc.section.3">
-<a href="#rfc.section.3">3.</a> <a href="#message-syntax" id="message-syntax">Message Syntax</a>
-</h1>
-<p id="rfc.section.3.p.1">The ABNF <a href="#RFC5234" class="xref">[RFC5234]</a> for CTCP message bodies is as follows:</p>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="introduction">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">The core Internet Relay Chat (IRC) protocol as described in <span>[<a href="#RFC1459" class="xref">RFC1459</a>]</span> and <span>[<a href="#RFC2812" class="xref">RFC2812</a>]</span> does not provide a way to exchange computer-readable information directly between clients. The Client-to-Client Protocol (CTCP) lets them exchange messages that get processed, displayed or responded to in special ways.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">CTCP can be used to request special formatting on messages, query other clients for metadata, and help initiate file transfers with other clients among other uses. This document covers the subset of CTCP which is commonly implemented, and clients implementing this specification are compatible with those implementing the protocol as described by older documents.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in <span>[<a href="#RFC2119" class="xref">RFC2119</a>]</span>.<a href="#section-1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="protocol-structure">
+<section id="section-2">
+      <h2 id="name-protocol-structure">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-protocol-structure" class="section-name selfRef">Protocol Structure</a>
+      </h2>
+<p id="section-2-1">CTCP queries are sent with the PRIVMSG IRC command, and CTCP replies are sent with NOTICE command. To indicate a CTCP query or reply, the body of the message (the second parameter) begins with the CTCP delimiter.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-2">Queries MAY be sent to channels. Replies MUST always be sent to the querying client only, not the channel.<a href="#section-2-2" class="pilcrow">¶</a></p>
+<p id="section-2-3">Many servers implement filters so that only specific CTCP commands can be sent to channels. When this is done, channel operators can typically enable and disable this filtering with a channel mode.<a href="#section-2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="message-syntax">
+<section id="section-3">
+      <h2 id="name-message-syntax">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-message-syntax" class="section-name selfRef">Message Syntax</a>
+      </h2>
+<p id="section-3-1">The ABNF <span>[<a href="#RFC5234" class="xref">RFC5234</a>]</span> for CTCP message bodies is as follows:<a href="#section-3-1" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignCenter art-abnf" id="section-3-2">
 <pre>
   delim    = %x01
 
@@ -443,312 +1067,363 @@ address {
                 ; any octet except NUL, delim, CR, and LF
 
   body     = delim command [ SPACE params ] [ delim ]
-</pre>
-<p id="rfc.section.3.p.2">Commands are case-insensitive. When creating new CTCP commands, authors SHOULD use only alphanumeric characters for ease of implementation.</p>
-<p id="rfc.section.3.p.3">The final CTCP delimiter SHOULD be sent on outgoing messages for compatibility reasons, but software MUST accept incoming messages which lack it. This avoids issues where messages are truncated or split by the server or client.</p>
-<p id="rfc.section.3.p.4">In message examples throughout this document, the CTCP delimiter is shown as <samp>\x01</samp>.</p>
-<p id="rfc.section.3.p.5">Here are two examples of CTCP queries and replies:</p>
+</pre><a href="#section-3-2" class="pilcrow">¶</a>
+</div>
+<p id="section-3-3">Commands are case-insensitive. When creating new CTCP commands, authors SHOULD use only alphanumeric characters for ease of implementation.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-4">The final CTCP delimiter SHOULD be sent on outgoing messages for compatibility reasons, but software MUST accept incoming messages which lack it.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5">In message examples throughout this document, the CTCP delimiter is shown as <code>\x01</code>.<a href="#section-3-5" class="pilcrow">¶</a></p>
+<p id="section-3-6">Here are two examples of valid CTCP queries and replies:<a href="#section-3-6" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3-7">
 <pre>
   :alice!a@localhost PRIVMSG bob :\x01VERSION\x01
   :bob!b@localhost NOTICE alice :\x01VERSION Snak for Mac 4.13\x01
 
   :alice!a@localhost PRIVMSG #ircv3 :\x01PING 1473523796 918320
   :bob!b@localhost NOTICE alice :\x01PING 1473523796 918320\x01
-</pre>
-<h1 id="rfc.section.4">
-<a href="#rfc.section.4">4.</a> <a href="#message-types" id="message-types">Message Types</a>
-</h1>
-<p id="rfc.section.4.p.1">CTCP messages conform to one of the types described below. These message types are defined here to simplify understanding, and aren&#8217;t differentiated by the protocol itself.</p>
-<h1 id="rfc.section.4.1">
-<a href="#rfc.section.4.1">4.1.</a> <a href="#extended-formatting" id="extended-formatting">Extended formatting</a>
-</h1>
-<p id="rfc.section.4.1.p.1">This type of CTCP requests special formatting of a user-visible message. That is, to send a user-visible message that should be displayed differently from regular messages - e.g. as an action, a whisper, an announcement.</p>
-<p id="rfc.section.4.1.p.2">Extended formatting messages are sent as a PRIVMSG, and are expected to be used in channels as well as between clients. There is no automatic response to this message type, as it is not a query nor reply.</p>
-<p id="rfc.section.4.1.p.3">These messages are sent as a PRIVMSG and can have parameters, but generate no reply.</p>
-<p id="rfc.section.4.1.p.4">Example:</p>
+</pre><a href="#section-3-7" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="messages">
+<section id="section-4">
+      <h2 id="name-messages">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-messages" class="section-name selfRef">Messages</a>
+      </h2>
+<p id="section-4-1">There is not a formal registry of CTCP message names, and CTCP responses are uniquely flexible. Clients that receive either unexpected messages or known messages with unexpected values SHOULD ignore them and send no response to the querying user.<a href="#section-4-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="acknowledgements">
+<section id="section-5">
+      <h2 id="name-acknowledgements">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
+      </h2>
+<p id="section-5-1">Thanks to the IRCv3 group for giving feedback on this specification, and to Khaled Mardam-Bey for advice on client flood protection.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">Thanks to Michael Sandrof for creating CTCP, Troy Rollo for creating the related DCC protocol, as well as Klaus Zeuge and Ben Mesander who wrote and revised related specifications.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-3">Special thanks to dequis, Sadie Powell and James Wheare for help with this and related work.<a href="#section-5-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="security-considerations">
+<section id="section-6">
+      <h2 id="name-security-considerations">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-6-1">CTCP messages are completely untrusted data, and clients MUST NOT assume that they are well-formed or complete.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">Older CTCP specifications describe quoting methods which are complex and not widely implemented. Implementations SHOULD NOT implement "low-level quoting" or "CTCP-level quoting" when parsing messages.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<p id="section-6-3">Older CTCP specifications describe including more than one CTCP message inside a single PRIVMSG or NOTICE command. Implementations SHOULD NOT implement this form of CTCP parsing as it is not widely-implemented and may result in an implementation that can be more easily flooded off the server they are connected to.<a href="#section-6-3" class="pilcrow">¶</a></p>
+<p id="section-6-4">CTCP requests can be abused to flood clients off the server they are connected to. Clients may ignore or delay excessive incoming requests to protect against this.<a href="#section-6-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="section-7">
+      <h2 id="name-iana-considerations">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-7-1">This document has no actions for IANA.<a href="#section-7-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<section id="section-8">
+      <h2 id="name-normative-references">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+      </h2>
+<dl class="references">
+<dt id="RFC1459">[RFC1459]</dt>
+      <dd>
+<span class="refAuthor">Oikarinen, J.</span> and <span class="refAuthor">D. Reed</span>, <span class="refTitle">"Internet Relay Chat Protocol"</span>, <span class="seriesInfo">RFC 1459</span>, <span class="seriesInfo">DOI 10.17487/RFC1459</span>, <time datetime="1993-05" class="refDate">May 1993</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc1459">https://www.rfc-editor.org/info/rfc1459</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2119">[RFC2119]</dt>
+      <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2812">[RFC2812]</dt>
+      <dd>
+<span class="refAuthor">Kalt, C.</span>, <span class="refTitle">"Internet Relay Chat: Client Protocol"</span>, <span class="seriesInfo">RFC 2812</span>, <span class="seriesInfo">DOI 10.17487/RFC2812</span>, <time datetime="2000-04" class="refDate">April 2000</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2812">https://www.rfc-editor.org/info/rfc2812</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5234">[RFC5234]</dt>
+      <dd>
+<span class="refAuthor">Crocker, D., Ed.</span> and <span class="refAuthor">P. Overell</span>, <span class="refTitle">"Augmented BNF for Syntax Specifications: ABNF"</span>, <span class="seriesInfo">STD 68</span>, <span class="seriesInfo">RFC 5234</span>, <span class="seriesInfo">DOI 10.17487/RFC5234</span>, <time datetime="2008-01" class="refDate">January 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5234">https://www.rfc-editor.org/info/rfc5234</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5322">[RFC5322]</dt>
+    <dd>
+<span class="refAuthor">Resnick, P., Ed.</span>, <span class="refTitle">"Internet Message Format"</span>, <span class="seriesInfo">RFC 5322</span>, <span class="seriesInfo">DOI 10.17487/RFC5322</span>, <time datetime="2008-10" class="refDate">October 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5322">https://www.rfc-editor.org/info/rfc5322</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+<div id="message-list">
+<section id="section-appendix.a">
+      <h2 id="name-message-list">
+<a href="#section-appendix.a" class="section-number selfRef">Appendix A. </a><a href="#name-message-list" class="section-name selfRef">Message List</a>
+      </h2>
+<p id="section-appendix.a-1">This section is not exhaustive, and only lists those CTCP messages which are widely implemented across the IRC ecosystem.<a href="#section-appendix.a-1" class="pilcrow">¶</a></p>
+<p id="section-appendix.a-2">The Query and Reply lines below represent variables by surrounding them with angle brackets.<a href="#section-appendix.a-2" class="pilcrow">¶</a></p>
+<div id="action">
+<section id="section-a.1">
+        <h2 id="name-action">
+<a href="#section-a.1" class="section-number selfRef">A.1. </a><a href="#name-action" class="section-name selfRef">ACTION</a>
+        </h2>
+<div class="artwork art-text alignLeft" id="section-a.1-1">
 <pre>
-  :dan!u@localhost PRIVMSG #ircv3 :\x01ACTION writes some specs!\x01
-</pre>
-<h1 id="rfc.section.4.2">
-<a href="#rfc.section.4.2">4.2.</a> <a href="#metadata-query" id="metadata-query">Metadata Query</a>
-</h1>
-<p id="rfc.section.4.2.p.1">This type of CTCP provides static information about the target client, user or connection.</p>
-<p id="rfc.section.4.2.p.2">This CTCP takes the form of a query and a response (as a PRIVMSG and NOTICE, respectively). Due to how bouncers interact with multiple clients, there may sometimes be multiple responses to queries.</p>
-<p id="rfc.section.4.2.p.3">Metadata queries MUST NOT require the recipient to implement any side effects (beyond sending the reply itself); if a CTCP message causes side effects by design, it should be categorized as an extended query instead.</p>
-<p id="rfc.section.4.2.p.4">Metadata queries do not have any parameters, but expect a reply with parameters as the response data.</p>
-<p id="rfc.section.4.2.p.5">Example:</p>
-<pre>
-  :alice!a@localhost PRIVMSG bob :\x01VERSION\x01
-  :bob!b@localhost NOTICE alice :\x01VERSION SaberChat 27.5\x01
-</pre>
-<h1 id="rfc.section.4.3">
-<a href="#rfc.section.4.3">4.3.</a> <a href="#extended-query" id="extended-query">Extended Query</a>
-</h1>
-<p id="rfc.section.4.3.p.1">This type of CTCP provides dynamic information or invokes actions from the client.</p>
-<p id="rfc.section.4.3.p.2">This CTCP takes the form of a query and a response (as a PRIVMSG and NOTICE, respectively).</p>
-<p id="rfc.section.4.3.p.3">Queries sent to a channel always generate private replies.</p>
-<p id="rfc.section.4.3.p.4">Extended queries and replies may have parameters.</p>
-<p id="rfc.section.4.3.p.5">Example:</p>
-<pre>
-  :alice!a@localhost PRIVMSG bob :\x01PING 1473523796 918320\x01
-  :bob!b@localhost NOTICE alice :\x01PING 1473523796 918320\x01
-</pre>
-<h1 id="rfc.section.5">
-<a href="#rfc.section.5">5.</a> <a href="#messages" id="messages">Messages</a>
-</h1>
-<p id="rfc.section.5.p.1">CTCP messages themselves are not standardised. Clients that receive either unexpected messages or known messages with unexpected values SHOULD ignore them and produce no response to the sending user. Clients MAY receive more than one response per user for a query they send, due to multiple clients being connected behind an IRC bouncer.</p>
-<h1 id="rfc.section.6">
-<a href="#rfc.section.6">6.</a> <a href="#acknowledgements" id="acknowledgements">Acknowledgements</a>
-</h1>
-<p id="rfc.section.6.p.1">Thanks to the IRCv3 group for giving feedback on this specification, and to Khaled Mardam-Bey for advice on client flood protection.</p>
-<p id="rfc.section.6.p.2">Thanks to Michael Sandrof for creating CTCP, Troy Rollo for creating the related DCC protocol, as well as Klaus Zeuge and Ben Mesander who wrote and revised related specifications.</p>
-<p id="rfc.section.6.p.3">Special thanks to dequis, Sadie Powell and James Wheare for help with this and related work.</p>
-<h1 id="rfc.section.7">
-<a href="#rfc.section.7">7.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
-</h1>
-<p id="rfc.section.7.p.1">CTCP messages are completely untrusted data, and clients MUST NOT assume that they are well-formed or complete.</p>
-<p id="rfc.section.7.p.2">Older CTCP specifications describe quoting methods which are complex and not widely implemented. Implementations SHOULD NOT implement &#8220;low-level quoting&#8221; or &#8220;CTCP-level quoting&#8221; when parsing messages.</p>
-<p id="rfc.section.7.p.3">Older CTCP specifications describe including more than one CTCP message inside a single PRIVMSG or NOTICE command. Implementations SHOULD NOT implement this form of CTCP parsing as it is not widely-implemented and may result in an implementation that can be more easily flooded off the server they are connected to.</p>
-<p id="rfc.section.7.p.4">CTCP requests can be abused to flood clients off the server they are connected to. Clients may ignore or delay excessive incoming requests to protect against this.</p>
-<h1 id="rfc.section.8">
-<a href="#rfc.section.8">8.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
-</h1>
-<p id="rfc.section.8.p.1">This document has no actions for IANA.</p>
-<h1 id="rfc.references">
-<a href="#rfc.references">9.</a> Normative References</h1>
-<table><tbody>
-<tr>
-<td class="reference"><b id="RFC1459">[RFC1459]</b></td>
-<td class="top">
-<a>Oikarinen, J.</a> and <a>D. Reed</a>, "<a href="https://tools.ietf.org/html/rfc1459">Internet Relay Chat Protocol</a>", RFC 1459, DOI 10.17487/RFC1459, May 1993.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC2119">[RFC2119]</b></td>
-<td class="top">
-<a>Bradner, S.</a>, "<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC2812">[RFC2812]</b></td>
-<td class="top">
-<a>Kalt, C.</a>, "<a href="https://tools.ietf.org/html/rfc2812">Internet Relay Chat: Client Protocol</a>", RFC 2812, DOI 10.17487/RFC2812, April 2000.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC5234">[RFC5234]</b></td>
-<td class="top">
-<a>Crocker, D.</a> and <a>P. Overell</a>, "<a href="https://tools.ietf.org/html/rfc5234">Augmented BNF for Syntax Specifications: ABNF</a>", STD 68, RFC 5234, DOI 10.17487/RFC5234, January 2008.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC5322">[RFC5322]</b></td>
-<td class="top">
-<a>Resnick, P.</a>, "<a href="https://tools.ietf.org/html/rfc5322">Internet Message Format</a>", RFC 5322, DOI 10.17487/RFC5322, October 2008.</td>
-</tr>
-</tbody></table>
-<h1 id="rfc.appendix.A">
-<a href="#rfc.appendix.A">Appendix A.</a> <a href="#message-list" id="message-list">Message List</a>
-</h1>
-<p id="rfc.section.A.p.1">This section is not exhaustive, and only lists those CTCP messages which are widely implemented across the IRC ecosystem.</p>
-<p id="rfc.section.A.p.2">The reply and parameter lines below use a simplified syntax that represents variables by surrounding them with angle brackets.</p>
-<h1 id="rfc.appendix.A.1">
-<a href="#rfc.appendix.A.1">A.1.</a> <a href="#action" id="action">ACTION</a>
-</h1>
-<pre>
-Type:    Extended Formatting
-Params:  ACTION &lt;text&gt;
-</pre>
-<p id="rfc.section.A.1.p.1">This extended formatting message shows that &lt;text&gt; should be displayed as a third-person action or emote; in clients, it&#8217;s generally activated with the command <samp>/me</samp>.</p>
-<p id="rfc.section.A.1.p.2">If &lt;text&gt; is empty, clients SHOULD still include a single space after <samp>ACTION</samp> (i.e. an empty params section) to help compatibility. Clients SHOULD correctly parse incoming ACTION messages with or without the params section.</p>
-<p id="rfc.section.A.1.p.3">ACTION is universally implemented and very commonly used. Clients MUST implement this CTCP message to effectively use IRC.</p>
-<p id="rfc.section.A.1.p.4">Examples:</p>
+Query:  ACTION &lt;text&gt;
+Reply:  None
+</pre><a href="#section-a.1-1" class="pilcrow">¶</a>
+</div>
+<p id="section-a.1-2">Clients receiving this message MUST display &lt;text&gt; as a third-person action or emote. Users typically use the <code>/me</code> command in their IRC clients to send this message.<a href="#section-a.1-2" class="pilcrow">¶</a></p>
+<p id="section-a.1-3">If &lt;text&gt; is empty, clients SHOULD still include a single space after <code>ACTION</code> (i.e. an empty params section) to help ensure compatibility. Clients SHOULD correctly parse incoming ACTION messages with or without the params section.<a href="#section-a.1-3" class="pilcrow">¶</a></p>
+<p id="section-a.1-4">ACTION is universally implemented and very commonly used. Clients MUST implement this CTCP message to effectively use IRC.<a href="#section-a.1-4" class="pilcrow">¶</a></p>
+<p id="section-a.1-5">Examples:<a href="#section-a.1-5" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-a.1-6">
 <pre>
   Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION does it!\x01
 
   Formatted:  * dan does it!
-</pre>
+</pre><a href="#section-a.1-6" class="pilcrow">¶</a>
+</div>
+<div class="artwork art-text alignLeft" id="section-a.1-7">
 <pre>
   Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION \x01
   Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION\x01
   Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION
 
   Formatted:  * dan
-</pre>
-<h1 id="rfc.appendix.A.2">
-<a href="#rfc.appendix.A.2">A.2.</a> <a href="#clientinfo" id="clientinfo">CLIENTINFO</a>
-</h1>
-<pre>
-Type:   Extended Query
-Reply:  CLIENTINFO &lt;tokens&gt;
-</pre>
-<p id="rfc.section.A.2.p.1">This extended query returns a list of the CTCP messages that this client supports and implements, delimited by a single ASCII space.</p>
-<p id="rfc.section.A.2.p.2">CLIENTINFO is widely implemented. Clients SHOULD implement this CTCP message.</p>
-<p id="rfc.section.A.2.p.3">Example:</p>
-<pre>
-  Query:     CLIENTINFO
-  Response:  CLIENTINFO ACTION DCC CLIENTINFO PING TIME VERSION
-</pre>
-<h1 id="rfc.appendix.A.3">
-<a href="#rfc.appendix.A.3">A.3.</a> <a href="#dcc" id="dcc">DCC</a>
-</h1>
-<pre>
-Type:    Extended Query
-Params:  DCC &lt;type&gt; &lt;argument&gt; &lt;host&gt; &lt;port&gt;
-</pre>
-<p id="rfc.section.A.3.p.1">This extended query sets up and controls connections that go directly between clients, bypassing the IRC server. This is typically used for features that require a large amount of traffic between clients or simply wish to bypass the server itself such as file transfer and direct chat.</p>
-<p id="rfc.section.A.3.p.2">The Direct Client-to-Client (DCC) Protocol requires its own specification, and is not described in-depth here.</p>
-<p id="rfc.section.A.3.p.3">DCC is widely implemented. Clients MAY implement this CTCP message.</p>
-<h1 id="rfc.appendix.A.4">
-<a href="#rfc.appendix.A.4">A.4.</a> <a href="#finger" id="finger">FINGER</a>
-</h1>
-<pre>
-Type:   Metadata Query
-Reply:  FINGER &lt;info&gt;
-</pre>
-<p id="rfc.section.A.4.p.1">This metadata query returns miscellaneous info about the user, typically the same information that&#8217;s held in their realname field.</p>
-<p id="rfc.section.A.4.p.2">However, some implementations return the client name and version instead.</p>
-<p id="rfc.section.A.4.p.3">FINGER is largely obsolete. Clients MAY implement this CTCP message.</p>
-<p id="rfc.section.A.4.p.4">Example:</p>
-<pre>
-  Query:     FINGER
-  Response:  FINGER WeeChat 1.8-dev
-</pre>
-<h1 id="rfc.appendix.A.5">
-<a href="#rfc.appendix.A.5">A.5.</a> <a href="#ping" id="ping">PING</a>
-</h1>
-<pre>
-Type:    Extended Query
-Params:  PING &lt;info&gt;
-Reply:   PING &lt;info&gt;
-</pre>
-<p id="rfc.section.A.5.p.1">This extended query confirms reachability and latency to the target client. When receiving a CTCP PING, the reply MUST contain exactly the same parameters as the original query.</p>
-<p id="rfc.section.A.5.p.2">PING is universally implemented. Clients SHOULD implement this CTCP message.</p>
-<p id="rfc.section.A.5.p.3">Example:</p>
-<pre>
-  Query:     PING 1473523721 662865
-  Response:  PING 1473523721 662865
-  
-  Query:     PING foo bar baz
-  Response:  PING foo bar baz
-</pre>
-<h1 id="rfc.appendix.A.6">
-<a href="#rfc.appendix.A.6">A.6.</a> <a href="#source" id="source">SOURCE</a>
-</h1>
-<pre>
-Type:   Metadata Query
-Reply:  SOURCE &lt;info&gt;
-</pre>
-<p id="rfc.section.A.6.p.1">This metadata query returns the location of the source code for the client.</p>
-<p id="rfc.section.A.6.p.2">SOURCE is rarely implemented. Clients MAY implement this CTCP message.</p>
-<p id="rfc.section.A.6.p.3">Example:</p>
-<pre>
-  Query:     SOURCE
-  Response:  SOURCE https://weechat.org/download
-</pre>
-<h1 id="rfc.appendix.A.7">
-<a href="#rfc.appendix.A.7">A.7.</a> <a href="#time" id="time">TIME</a>
-</h1>
-<pre>
-Type:   Extended Query
-Reply:  TIME &lt;timestring&gt;
-</pre>
-<p id="rfc.section.A.7.p.1">This extended query returns the client&#8217;s local time in an unspecified human-readable format. In practice, both the format output by ctime() and the format described in Section 3.3 of <a href="#RFC5322" class="xref">[RFC5322]</a> are common. Earlier specifications recommended prefixing the time string with a colon, but this is no longer recommended.</p>
-<p id="rfc.section.A.7.p.2">New implementations MAY default to UTC time for privacy reasons.</p>
-<p id="rfc.section.A.7.p.3">TIME is almost universally implemented. Clients MAY implement this CTCP message.</p>
-<p id="rfc.section.A.7.p.4">Example:</p>
-<pre>
-  Query:     TIME
-  Response:  TIME Mon, 08 May 2017 09:15:29 GMT
-</pre>
-<h1 id="rfc.appendix.A.8">
-<a href="#rfc.appendix.A.8">A.8.</a> <a href="#version" id="version">VERSION</a>
-</h1>
-<pre>
-Type:   Metadata Query
-Reply:  VERSION &lt;verstring&gt;
-</pre>
-<p id="rfc.section.A.8.p.1">This metadata query returns the name and version of the client software in use. There is no specified format for the version string.</p>
-<p id="rfc.section.A.8.p.2">Clients may allow users to customise the response value for this query.</p>
-<p id="rfc.section.A.8.p.3">VERSION is universally implemented. Clients SHOULD implement this CTCP message.</p>
-<p id="rfc.section.A.8.p.4">Example:</p>
-<pre>
-  Query:     VERSION
-  Response:  VERSION WeeChat 1.8-dev (git: v1.7-329-g22f2fd03a)
-</pre>
-<h1 id="rfc.appendix.A.9">
-<a href="#rfc.appendix.A.9">A.9.</a> <a href="#userinfo" id="userinfo">USERINFO</a>
-</h1>
-<pre>
-Type:   Metadata Query
-Reply:  USERINFO &lt;info&gt;
-</pre>
-<p id="rfc.section.A.9.p.1">This metadata query returns miscellaneous info about the user, typically the same information that&#8217;s held in their realname field.</p>
-<p id="rfc.section.A.9.p.2">However, some implementations return <samp>&lt;nickname&gt; (&lt;realname&gt;)</samp> instead.</p>
-<p id="rfc.section.A.9.p.3">USERINFO is largely obsolete. Clients MAY implement this CTCP message.</p>
-<p id="rfc.section.A.9.p.4">Example:</p>
-<pre>
-  Query:     USERINFO
-  Response:  USERINFO fred (Fred Foobar)
-</pre>
-<h1 id="rfc.appendix.B">
-<a href="#rfc.appendix.B">Appendix B.</a> <a href="#change-history-rfc-editor-please-remove-this-section" id="change-history-rfc-editor-please-remove-this-section">Change History [RFC Editor: Please remove this section]</a>
-</h1>
-<p id="rfc.section.B.p.1">Changes from draft 1 (July 18, 2017)</p>
-<p></p>
-
-<ul>
-<li>General editing, fixed mistypes.</li>
-<li>Simplified some of the examples.</li>
-</ul>
-<p id="rfc.section.B.p.3">Changes from draft 0 (May 29, 2017)</p>
-<p></p>
-
-<ul>
-<li>Added note about servers truncating CTCP messages (thanks Peter).</li>
-<li>Fixed misspellings and added note to TIME about previously-recommended prefix (thanks Patrick).</li>
-<li>Mentioned how to parse/send empty ACTION messages (thanks dequis and the crew).</li>
-</ul>
-<h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
-<div class="avoidbreak">
-  <address class="vcard">
-	<span class="vcardline">
-	  <span class="fn">Mantas Mikulenas</span> 
-	  <span class="n hidden">
-		<span class="family-name">Mikulenas</span>
-	  </span>
-	</span>
-	<span class="org vcardline">Independent</span>
-	<span class="adr">
-	  
-	  <span class="vcardline">
-		<span class="locality"></span> 
-		<span class="region"></span>
-		<span class="code"></span>
-	  </span>
-	  <span class="country-name vcardline"></span>
-	</span>
-	<span class="vcardline">EMail: <a href="mailto:grawity@gmail.com">grawity@gmail.com</a></span>
-
-  </address>
-</div><div class="avoidbreak">
-  <address class="vcard">
-	<span class="vcardline">
-	  <span class="fn">Daniel Oakley</span> 
-	  <span class="n hidden">
-		<span class="family-name">Oakley</span>
-	  </span>
-	</span>
-	<span class="org vcardline">ircdocs</span>
-	<span class="adr">
-	  
-	  <span class="vcardline">
-		<span class="locality"></span> 
-		<span class="region"></span>
-		<span class="code"></span>
-	  </span>
-	  <span class="country-name vcardline"></span>
-	</span>
-	<span class="vcardline">EMail: <a href="mailto:daniel@danieloaks.net">daniel@danieloaks.net</a></span>
-
-  </address>
+</pre><a href="#section-a.1-7" class="pilcrow">¶</a>
 </div>
+</section>
+</div>
+<div id="clientinfo">
+<section id="section-a.2">
+        <h2 id="name-clientinfo">
+<a href="#section-a.2" class="section-number selfRef">A.2. </a><a href="#name-clientinfo" class="section-name selfRef">CLIENTINFO</a>
+        </h2>
+<div class="artwork art-text alignLeft" id="section-a.2-1">
+<pre>
+Query:  CLIENTINFO
+Reply:  CLIENTINFO &lt;tokens&gt;
+</pre><a href="#section-a.2-1" class="pilcrow">¶</a>
+</div>
+<p id="section-a.2-2">Clients receiving this message MUST return a list of the CTCP messages they support, delimited by a single ASCII space.<a href="#section-a.2-2" class="pilcrow">¶</a></p>
+<p id="section-a.2-3">CLIENTINFO is widely implemented. Clients SHOULD implement this CTCP message.<a href="#section-a.2-3" class="pilcrow">¶</a></p>
+<p id="section-a.2-4">Example:<a href="#section-a.2-4" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-a.2-5">
+<pre>
+  Query:  CLIENTINFO
+  Reply:  CLIENTINFO ACTION DCC CLIENTINFO PING TIME VERSION
+</pre><a href="#section-a.2-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="dcc">
+<section id="section-a.3">
+        <h2 id="name-dcc">
+<a href="#section-a.3" class="section-number selfRef">A.3. </a><a href="#name-dcc" class="section-name selfRef">DCC</a>
+        </h2>
+<div class="artwork art-text alignLeft" id="section-a.3-1">
+<pre>
+Query:  DCC &lt;type&gt; &lt;argument&gt; &lt;host&gt; &lt;port&gt;
+Reply:  Described elsewhere.
+</pre><a href="#section-a.3-1" class="pilcrow">¶</a>
+</div>
+<p id="section-a.3-2">This message sets up connections that go directly between clients, bypassing the IRC server. This is typically used for features that require a large amount of traffic between clients (e.g. file transfer), or simply direct chat that bypasses the server.<a href="#section-a.3-2" class="pilcrow">¶</a></p>
+<p id="section-a.3-3">The Direct Client-to-Client (DCC) protocol requires its own specification, and is not described in-depth here.<a href="#section-a.3-3" class="pilcrow">¶</a></p>
+<p id="section-a.3-4">DCC is widely implemented. Clients MAY implement this CTCP message.<a href="#section-a.3-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="finger">
+<section id="section-a.4">
+        <h2 id="name-finger">
+<a href="#section-a.4" class="section-number selfRef">A.4. </a><a href="#name-finger" class="section-name selfRef">FINGER</a>
+        </h2>
+<div class="artwork art-text alignLeft" id="section-a.4-1">
+<pre>
+Query:  FINGER
+Reply:  FINGER &lt;info&gt;
+</pre><a href="#section-a.4-1" class="pilcrow">¶</a>
+</div>
+<p id="section-a.4-2">Clients receiving this message reply with miscellaneous information about the user, typically the contents of their realname/gecos field. However, some implementations return the client name and version instead.<a href="#section-a.4-2" class="pilcrow">¶</a></p>
+<p id="section-a.4-3">FINGER is largely obsolete. Clients MAY implement this CTCP message.<a href="#section-a.4-3" class="pilcrow">¶</a></p>
+<p id="section-a.4-4">Example:<a href="#section-a.4-4" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-a.4-5">
+<pre>
+  Query:  FINGER
+  Reply:  FINGER WeeChat 1.8-dev
+</pre><a href="#section-a.4-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="ping">
+<section id="section-a.5">
+        <h2 id="name-ping">
+<a href="#section-a.5" class="section-number selfRef">A.5. </a><a href="#name-ping" class="section-name selfRef">PING</a>
+        </h2>
+<div class="artwork art-text alignLeft" id="section-a.5-1">
+<pre>
+Query:  PING &lt;info&gt;
+Reply:  PING &lt;info&gt;
+</pre><a href="#section-a.5-1" class="pilcrow">¶</a>
+</div>
+<p id="section-a.5-2">Clients receiving this message MUST send a reply containing exactly the same params as the original query. This message confirms reachability and latency between two clients.<a href="#section-a.5-2" class="pilcrow">¶</a></p>
+<p id="section-a.5-3">PING is universally implemented. Clients SHOULD implement this CTCP message.<a href="#section-a.5-3" class="pilcrow">¶</a></p>
+<p id="section-a.5-4">Example:<a href="#section-a.5-4" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-a.5-5">
+<pre>
+  Query:  PING 1473523721 662865
+  Reply:  PING 1473523721 662865
 
+  Query:  PING foo bar baz
+  Reply:  PING foo bar baz
+</pre><a href="#section-a.5-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="source">
+<section id="section-a.6">
+        <h2 id="name-source">
+<a href="#section-a.6" class="section-number selfRef">A.6. </a><a href="#name-source" class="section-name selfRef">SOURCE</a>
+        </h2>
+<div class="artwork art-text alignLeft" id="section-a.6-1">
+<pre>
+Query:  SOURCE
+Reply:  SOURCE &lt;info&gt;
+</pre><a href="#section-a.6-1" class="pilcrow">¶</a>
+</div>
+<p id="section-a.6-2">Clients receiving this message MUST reply with a URL where the source code for the client can be found.<a href="#section-a.6-2" class="pilcrow">¶</a></p>
+<p id="section-a.6-3">SOURCE is rarely implemented. Clients MAY implement this CTCP message.<a href="#section-a.6-3" class="pilcrow">¶</a></p>
+<p id="section-a.6-4">Example:<a href="#section-a.6-4" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-a.6-5">
+<pre>
+  Query:  SOURCE
+  Reply:  SOURCE https://weechat.org/download
+</pre><a href="#section-a.6-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="time">
+<section id="section-a.7">
+        <h2 id="name-time">
+<a href="#section-a.7" class="section-number selfRef">A.7. </a><a href="#name-time" class="section-name selfRef">TIME</a>
+        </h2>
+<div class="artwork art-text alignLeft" id="section-a.7-1">
+<pre>
+Query:  TIME
+Reply:  TIME &lt;timestring&gt;
+</pre><a href="#section-a.7-1" class="pilcrow">¶</a>
+</div>
+<p id="section-a.7-2">Clients receiving this message reply with the client's local time in a human-readable format. In practice, both the format returned by ctime() and the format described in Section 3.3 of <span>[<a href="#RFC5322" class="xref">RFC5322</a>]</span> are common. Earlier specifications recommended prefixing the time string with a colon, but this is no longer recommended.<a href="#section-a.7-2" class="pilcrow">¶</a></p>
+<p id="section-a.7-3">New implementations MAY default to UTC time for privacy reasons.<a href="#section-a.7-3" class="pilcrow">¶</a></p>
+<p id="section-a.7-4">TIME is almost universally implemented. Clients MAY implement this CTCP message.<a href="#section-a.7-4" class="pilcrow">¶</a></p>
+<p id="section-a.7-5">Example:<a href="#section-a.7-5" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-a.7-6">
+<pre>
+  Query:  TIME
+  Reply:  TIME Mon, 08 May 2017 09:15:29 GMT
+</pre><a href="#section-a.7-6" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="version">
+<section id="section-a.8">
+        <h2 id="name-version">
+<a href="#section-a.8" class="section-number selfRef">A.8. </a><a href="#name-version" class="section-name selfRef">VERSION</a>
+        </h2>
+<div class="artwork art-text alignLeft" id="section-a.8-1">
+<pre>
+Query:  VERSION
+Reply:  VERSION &lt;verstring&gt;
+</pre><a href="#section-a.8-1" class="pilcrow">¶</a>
+</div>
+<p id="section-a.8-2">Clients receiving this message MUST reply with the name and version of the client software in use. There is no specified format for the version string.<a href="#section-a.8-2" class="pilcrow">¶</a></p>
+<p id="section-a.8-3">Clients MAY receive more than one response for a query they send. Clients may allow users to customise the response value for this query.<a href="#section-a.8-3" class="pilcrow">¶</a></p>
+<p id="section-a.8-4">VERSION is universally implemented. Clients SHOULD implement this CTCP message.<a href="#section-a.8-4" class="pilcrow">¶</a></p>
+<p id="section-a.8-5">Example:<a href="#section-a.8-5" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-a.8-6">
+<pre>
+  Query:  VERSION
+  Reply:  VERSION WeeChat 1.8-dev (git: v1.7-329-g22f2fd03a)
+</pre><a href="#section-a.8-6" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="userinfo">
+<section id="section-a.9">
+        <h2 id="name-userinfo">
+<a href="#section-a.9" class="section-number selfRef">A.9. </a><a href="#name-userinfo" class="section-name selfRef">USERINFO</a>
+        </h2>
+<div class="artwork art-text alignLeft" id="section-a.9-1">
+<pre>
+Query:  USERINFO
+Reply:  USERINFO &lt;info&gt;
+</pre><a href="#section-a.9-1" class="pilcrow">¶</a>
+</div>
+<p id="section-a.9-2">Clients receiving this message reply with miscellaneous info about the user, typically the same information that's held in their realname/gecos field.<a href="#section-a.9-2" class="pilcrow">¶</a></p>
+<p id="section-a.9-3">However, some implementations return <code>&lt;nickname&gt; (&lt;realname&gt;)</code> instead.<a href="#section-a.9-3" class="pilcrow">¶</a></p>
+<p id="section-a.9-4">USERINFO is largely obsolete. Clients MAY implement this CTCP message.<a href="#section-a.9-4" class="pilcrow">¶</a></p>
+<p id="section-a.9-5">Example:<a href="#section-a.9-5" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-a.9-6">
+<pre>
+  Query:  USERINFO
+  Reply:  USERINFO fred (Fred Foobar)
+</pre><a href="#section-a.9-6" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="change-history-rfc-editor-please-remove-this-section">
+<section id="section-appendix.b">
+      <h2 id="name-change-history-rfc-editor-p">
+<a href="#section-appendix.b" class="section-number selfRef">Appendix B. </a><a href="#name-change-history-rfc-editor-p" class="section-name selfRef">Change History [RFC Editor: Please remove this section]</a>
+      </h2>
+<p id="section-appendix.b-1">Changes from draft 2 (... 2021)<a href="#section-appendix.b-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-appendix.b-2.1">Removed the CTCP Types section (thanks James).<a href="#section-appendix.b-2.1" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-appendix.b-3">Changes from draft 1 (July 18, 2017)<a href="#section-appendix.b-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-appendix.b-4.1">General editing, fixed mistypes.<a href="#section-appendix.b-4.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.b-4.2">Simplified some of the examples.<a href="#section-appendix.b-4.2" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-appendix.b-5">Changes from draft 0 (May 29, 2017)<a href="#section-appendix.b-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-appendix.b-6.1">Added note about servers truncating CTCP messages (thanks Peter).<a href="#section-appendix.b-6.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.b-6.2">Fixed misspellings and added note to TIME about previously-recommended prefix (thanks Patrick).<a href="#section-appendix.b-6.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.b-6.3">Mentioned how to parse/send empty ACTION messages (thanks dequis and the crew).<a href="#section-appendix.b-6.3" class="pilcrow">¶</a>
+</li>
+      </ul>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="section-appendix.c">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Mantas Mikulėnas</span></div>
+<div dir="auto" class="left"><span class="org">Independent</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:grawity@gmail.com" class="email">grawity@gmail.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Daniel Oakley</span></div>
+<div dir="auto" class="left"><span class="org">ircdocs</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:daniel@danieloaks.net" class="email">daniel@danieloaks.net</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
 </body>
 </html>

@@ -2,11 +2,11 @@
 
 
 
-Network Working Group                                       M. Mikulenas
+Network Working Group                                       M. Mikulėnas
 Internet-Draft                                               Independent
 Updates: 1459, 2812 (if approved)                              D. Oakley
 Intended status: Informational                                   ircdocs
-Expires: October 29, 2018                                 April 27, 2018
+Expires: 15 October 2021                                   13 April 2021
 
 
          Internet Relay Chat: Client-to-Client Protocol (CTCP)
@@ -37,25 +37,25 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 29, 2018.
+   This Internet-Draft will expire on 15 October 2021.
 
 Copyright Notice
 
-   Copyright (c) 2018 IETF Trust and the persons identified as the
+   Copyright (c) 2021 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
-   Provisions Relating to IETF Documents
-   (https://trustee.ietf.org/license-info) in effect on the date of
-   publication of this document.  Please review these documents
-   carefully, as they describe your rights and restrictions with respect
-   to this document.
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.
 
 
 
-Mikulenas & Oakley      Expires October 29, 2018                [Page 1]
+
+Mikulėnas & Oakley       Expires 15 October 2021                [Page 1]
 
-Internet-Draft        IRC Client-to-Client Protocol           April 2018
+Internet-Draft                  IRC CTCP                      April 2021
 
 
 Table of Contents
@@ -63,28 +63,24 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Protocol Structure  . . . . . . . . . . . . . . . . . . . . .   3
    3.  Message Syntax  . . . . . . . . . . . . . . . . . . . . . . .   3
-   4.  Message Types . . . . . . . . . . . . . . . . . . . . . . . .   4
-     4.1.  Extended formatting . . . . . . . . . . . . . . . . . . .   4
-     4.2.  Metadata Query  . . . . . . . . . . . . . . . . . . . . .   4
-     4.3.  Extended Query  . . . . . . . . . . . . . . . . . . . . .   5
-   5.  Messages  . . . . . . . . . . . . . . . . . . . . . . . . . .   5
-   6.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   5
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
-   9.  Normative References  . . . . . . . . . . . . . . . . . . . .   6
-   Appendix A.  Message List . . . . . . . . . . . . . . . . . . . .   6
-     A.1.  ACTION  . . . . . . . . . . . . . . . . . . . . . . . . .   7
-     A.2.  CLIENTINFO  . . . . . . . . . . . . . . . . . . . . . . .   7
-     A.3.  DCC . . . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     A.4.  FINGER  . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     A.5.  PING  . . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     A.6.  SOURCE  . . . . . . . . . . . . . . . . . . . . . . . . .   9
-     A.7.  TIME  . . . . . . . . . . . . . . . . . . . . . . . . . .   9
-     A.8.  VERSION . . . . . . . . . . . . . . . . . . . . . . . . .   9
-     A.9.  USERINFO  . . . . . . . . . . . . . . . . . . . . . . . .  10
+   4.  Messages  . . . . . . . . . . . . . . . . . . . . . . . . . .   4
+   5.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   4
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
+   8.  Normative References  . . . . . . . . . . . . . . . . . . . .   4
+   Appendix A.  Message List . . . . . . . . . . . . . . . . . . . .   5
+     A.1.  ACTION  . . . . . . . . . . . . . . . . . . . . . . . . .   5
+     A.2.  CLIENTINFO  . . . . . . . . . . . . . . . . . . . . . . .   6
+     A.3.  DCC . . . . . . . . . . . . . . . . . . . . . . . . . . .   6
+     A.4.  FINGER  . . . . . . . . . . . . . . . . . . . . . . . . .   6
+     A.5.  PING  . . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     A.6.  SOURCE  . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     A.7.  TIME  . . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     A.8.  VERSION . . . . . . . . . . . . . . . . . . . . . . . . .   8
+     A.9.  USERINFO  . . . . . . . . . . . . . . . . . . . . . . . .   8
    Appendix B.  Change History [RFC Editor: Please remove this
-                section] . . . . . . . . . . . . . . . . . . . . . .  10
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
+           section]  . . . . . . . . . . . . . . . . . . . . . . . .   9
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
 
 1.  Introduction
 
@@ -109,9 +105,13 @@ Table of Contents
 
 
 
-Mikulenas & Oakley      Expires October 29, 2018                [Page 2]
+
+
+
+
+Mikulėnas & Oakley       Expires 15 October 2021                [Page 2]
 
-Internet-Draft        IRC Client-to-Client Protocol           April 2018
+Internet-Draft                  IRC CTCP                      April 2021
 
 
 2.  Protocol Structure
@@ -122,12 +122,11 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2018
    delimiter.
 
    Queries MAY be sent to channels.  Replies MUST always be sent to the
-   querying client only.
+   querying client only, not the channel.
 
-   Many servers implement optional filtering so that only specific CTCP
-   commands can be sent to channels.  When this is done, it can
-   typically be enabled or disabled by channel operators with a channel
-   mode.
+   Many servers implement filters so that only specific CTCP commands
+   can be sent to channels.  When this is done, channel operators can
+   typically enable and disable this filtering with a channel mode.
 
 3.  Message Syntax
 
@@ -149,13 +148,12 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2018
 
    The final CTCP delimiter SHOULD be sent on outgoing messages for
    compatibility reasons, but software MUST accept incoming messages
-   which lack it.  This avoids issues where messages are truncated or
-   split by the server or client.
+   which lack it.
 
    In message examples throughout this document, the CTCP delimiter is
    shown as "\x01".
 
-   Here are two examples of CTCP queries and replies:
+   Here are two examples of valid CTCP queries and replies:
 
      :alice!a@localhost PRIVMSG bob :\x01VERSION\x01
      :bob!b@localhost NOTICE alice :\x01VERSION Snak for Mac 4.13\x01
@@ -165,93 +163,21 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2018
 
 
 
-Mikulenas & Oakley      Expires October 29, 2018                [Page 3]
+
+
+Mikulėnas & Oakley       Expires 15 October 2021                [Page 3]
 
-Internet-Draft        IRC Client-to-Client Protocol           April 2018
+Internet-Draft                  IRC CTCP                      April 2021
 
 
-4.  Message Types
+4.  Messages
 
-   CTCP messages conform to one of the types described below.  These
-   message types are defined here to simplify understanding, and aren't
-   differentiated by the protocol itself.
+   There is not a formal registry of CTCP message names, and CTCP
+   responses are uniquely flexible.  Clients that receive either
+   unexpected messages or known messages with unexpected values SHOULD
+   ignore them and send no response to the querying user.
 
-4.1.  Extended formatting
-
-   This type of CTCP requests special formatting of a user-visible
-   message.  That is, to send a user-visible message that should be
-   displayed differently from regular messages - e.g. as an action, a
-   whisper, an announcement.
-
-   Extended formatting messages are sent as a PRIVMSG, and are expected
-   to be used in channels as well as between clients.  There is no
-   automatic response to this message type, as it is not a query nor
-   reply.
-
-   These messages are sent as a PRIVMSG and can have parameters, but
-   generate no reply.
-
-   Example:
-
-     :dan!u@localhost PRIVMSG #ircv3 :\x01ACTION writes some specs!\x01
-
-4.2.  Metadata Query
-
-   This type of CTCP provides static information about the target
-   client, user or connection.
-
-   This CTCP takes the form of a query and a response (as a PRIVMSG and
-   NOTICE, respectively).  Due to how bouncers interact with multiple
-   clients, there may sometimes be multiple responses to queries.
-
-   Metadata queries MUST NOT require the recipient to implement any side
-   effects (beyond sending the reply itself); if a CTCP message causes
-   side effects by design, it should be categorized as an extended query
-   instead.
-
-   Metadata queries do not have any parameters, but expect a reply with
-   parameters as the response data.
-
-   Example:
-
-     :alice!a@localhost PRIVMSG bob :\x01VERSION\x01
-     :bob!b@localhost NOTICE alice :\x01VERSION SaberChat 27.5\x01
-
-
-
-
-
-Mikulenas & Oakley      Expires October 29, 2018                [Page 4]
-
-Internet-Draft        IRC Client-to-Client Protocol           April 2018
-
-
-4.3.  Extended Query
-
-   This type of CTCP provides dynamic information or invokes actions
-   from the client.
-
-   This CTCP takes the form of a query and a response (as a PRIVMSG and
-   NOTICE, respectively).
-
-   Queries sent to a channel always generate private replies.
-
-   Extended queries and replies may have parameters.
-
-   Example:
-
-     :alice!a@localhost PRIVMSG bob :\x01PING 1473523796 918320\x01
-     :bob!b@localhost NOTICE alice :\x01PING 1473523796 918320\x01
-
-5.  Messages
-
-   CTCP messages themselves are not standardised.  Clients that receive
-   either unexpected messages or known messages with unexpected values
-   SHOULD ignore them and produce no response to the sending user.
-   Clients MAY receive more than one response per user for a query they
-   send, due to multiple clients being connected behind an IRC bouncer.
-
-6.  Acknowledgements
+5.  Acknowledgements
 
    Thanks to the IRCv3 group for giving feedback on this specification,
    and to Khaled Mardam-Bey for advice on client flood protection.
@@ -263,7 +189,7 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2018
    Special thanks to dequis, Sadie Powell and James Wheare for help with
    this and related work.
 
-7.  Security Considerations
+6.  Security Considerations
 
    CTCP messages are completely untrusted data, and clients MUST NOT
    assume that they are well-formed or complete.
@@ -274,14 +200,6 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2018
 
    Older CTCP specifications describe including more than one CTCP
    message inside a single PRIVMSG or NOTICE command.  Implementations
-
-
-
-Mikulenas & Oakley      Expires October 29, 2018                [Page 5]
-
-Internet-Draft        IRC Client-to-Client Protocol           April 2018
-
-
    SHOULD NOT implement this form of CTCP parsing as it is not widely-
    implemented and may result in an implementation that can be more
    easily flooded off the server they are connected to.
@@ -290,15 +208,23 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2018
    connected to.  Clients may ignore or delay excessive incoming
    requests to protect against this.
 
-8.  IANA Considerations
+7.  IANA Considerations
 
    This document has no actions for IANA.
 
-9.  Normative References
+8.  Normative References
 
    [RFC1459]  Oikarinen, J. and D. Reed, "Internet Relay Chat Protocol",
               RFC 1459, DOI 10.17487/RFC1459, May 1993,
               <https://www.rfc-editor.org/info/rfc1459>.
+
+
+
+
+Mikulėnas & Oakley       Expires 15 October 2021                [Page 4]
+
+Internet-Draft                  IRC CTCP                      April 2021
+
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -323,32 +249,20 @@ Appendix A.  Message List
    This section is not exhaustive, and only lists those CTCP messages
    which are widely implemented across the IRC ecosystem.
 
-   The reply and parameter lines below use a simplified syntax that
-   represents variables by surrounding them with angle brackets.
-
-
-
-
-
-
-
-
-Mikulenas & Oakley      Expires October 29, 2018                [Page 6]
-
-Internet-Draft        IRC Client-to-Client Protocol           April 2018
-
+   The Query and Reply lines below represent variables by surrounding
+   them with angle brackets.
 
 A.1.  ACTION
 
-   Type:    Extended Formatting
-   Params:  ACTION <text>
+   Query:  ACTION <text>
+   Reply:  None
 
-   This extended formatting message shows that <text> should be
-   displayed as a third-person action or emote; in clients, it's
-   generally activated with the command "/me".
+   Clients receiving this message MUST display <text> as a third-person
+   action or emote.  Users typically use the "/me" command in their IRC
+   clients to send this message.
 
    If <text> is empty, clients SHOULD still include a single space after
-   "ACTION" (i.e. an empty params section) to help compatibility.
+   "ACTION" (i.e. an empty params section) to help ensure compatibility.
    Clients SHOULD correctly parse incoming ACTION messages with or
    without the params section.
 
@@ -361,6 +275,13 @@ A.1.  ACTION
 
      Formatted:  * dan does it!
 
+
+
+Mikulėnas & Oakley       Expires 15 October 2021                [Page 5]
+
+Internet-Draft                  IRC CTCP                      April 2021
+
+
      Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION \x01
      Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION\x01
      Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION
@@ -369,116 +290,112 @@ A.1.  ACTION
 
 A.2.  CLIENTINFO
 
-   Type:   Extended Query
+   Query:  CLIENTINFO
    Reply:  CLIENTINFO <tokens>
 
-   This extended query returns a list of the CTCP messages that this
-   client supports and implements, delimited by a single ASCII space.
+   Clients receiving this message MUST return a list of the CTCP
+   messages they support, delimited by a single ASCII space.
 
    CLIENTINFO is widely implemented.  Clients SHOULD implement this CTCP
    message.
 
    Example:
 
-     Query:     CLIENTINFO
-     Response:  CLIENTINFO ACTION DCC CLIENTINFO PING TIME VERSION
-
-
-
-
-
-
-
-Mikulenas & Oakley      Expires October 29, 2018                [Page 7]
-
-Internet-Draft        IRC Client-to-Client Protocol           April 2018
-
+     Query:  CLIENTINFO
+     Reply:  CLIENTINFO ACTION DCC CLIENTINFO PING TIME VERSION
 
 A.3.  DCC
 
-   Type:    Extended Query
-   Params:  DCC <type> <argument> <host> <port>
+   Query:  DCC <type> <argument> <host> <port>
+   Reply:  Described elsewhere.
 
-   This extended query sets up and controls connections that go directly
-   between clients, bypassing the IRC server.  This is typically used
-   for features that require a large amount of traffic between clients
-   or simply wish to bypass the server itself such as file transfer and
-   direct chat.
+   This message sets up connections that go directly between clients,
+   bypassing the IRC server.  This is typically used for features that
+   require a large amount of traffic between clients (e.g. file
+   transfer), or simply direct chat that bypasses the server.
 
-   The Direct Client-to-Client (DCC) Protocol requires its own
+   The Direct Client-to-Client (DCC) protocol requires its own
    specification, and is not described in-depth here.
 
    DCC is widely implemented.  Clients MAY implement this CTCP message.
 
 A.4.  FINGER
 
-   Type:   Metadata Query
+   Query:  FINGER
    Reply:  FINGER <info>
 
-   This metadata query returns miscellaneous info about the user,
-   typically the same information that's held in their realname field.
-
+   Clients receiving this message reply with miscellaneous information
+   about the user, typically the contents of their realname/gecos field.
    However, some implementations return the client name and version
    instead.
 
    FINGER is largely obsolete.  Clients MAY implement this CTCP message.
 
+
+
+Mikulėnas & Oakley       Expires 15 October 2021                [Page 6]
+
+Internet-Draft                  IRC CTCP                      April 2021
+
+
    Example:
 
-     Query:     FINGER
-     Response:  FINGER WeeChat 1.8-dev
+     Query:  FINGER
+     Reply:  FINGER WeeChat 1.8-dev
 
 A.5.  PING
 
-   Type:    Extended Query
-   Params:  PING <info>
-   Reply:   PING <info>
+   Query:  PING <info>
+   Reply:  PING <info>
 
-   This extended query confirms reachability and latency to the target
-   client.  When receiving a CTCP PING, the reply MUST contain exactly
-   the same parameters as the original query.
+   Clients receiving this message MUST send a reply containing exactly
+   the same params as the original query.  This message confirms
+   reachability and latency between two clients.
 
    PING is universally implemented.  Clients SHOULD implement this CTCP
    message.
 
    Example:
 
+     Query:  PING 1473523721 662865
+     Reply:  PING 1473523721 662865
 
-
-Mikulenas & Oakley      Expires October 29, 2018                [Page 8]
-
-Internet-Draft        IRC Client-to-Client Protocol           April 2018
-
-
-     Query:     PING 1473523721 662865
-     Response:  PING 1473523721 662865
-
-     Query:     PING foo bar baz
-     Response:  PING foo bar baz
+     Query:  PING foo bar baz
+     Reply:  PING foo bar baz
 
 A.6.  SOURCE
 
-   Type:   Metadata Query
+   Query:  SOURCE
    Reply:  SOURCE <info>
 
-   This metadata query returns the location of the source code for the
-   client.
+   Clients receiving this message MUST reply with a URL where the source
+   code for the client can be found.
 
    SOURCE is rarely implemented.  Clients MAY implement this CTCP
    message.
 
    Example:
 
-     Query:     SOURCE
-     Response:  SOURCE https://weechat.org/download
+     Query:  SOURCE
+     Reply:  SOURCE https://weechat.org/download
 
 A.7.  TIME
 
-   Type:   Extended Query
+   Query:  TIME
    Reply:  TIME <timestring>
 
-   This extended query returns the client's local time in an unspecified
-   human-readable format.  In practice, both the format output by
+
+
+
+
+
+Mikulėnas & Oakley       Expires 15 October 2021                [Page 7]
+
+Internet-Draft                  IRC CTCP                      April 2021
+
+
+   Clients receiving this message reply with the client's local time in
+   a human-readable format.  In practice, both the format returned by
    ctime() and the format described in Section 3.3 of [RFC5322] are
    common.  Earlier specifications recommended prefixing the time string
    with a colon, but this is no longer recommended.
@@ -490,26 +407,19 @@ A.7.  TIME
 
    Example:
 
-     Query:     TIME
-     Response:  TIME Mon, 08 May 2017 09:15:29 GMT
+     Query:  TIME
+     Reply:  TIME Mon, 08 May 2017 09:15:29 GMT
 
 A.8.  VERSION
 
-   Type:   Metadata Query
+   Query:  VERSION
    Reply:  VERSION <verstring>
 
+   Clients receiving this message MUST reply with the name and version
+   of the client software in use.  There is no specified format for the
+   version string.
 
-
-
-Mikulenas & Oakley      Expires October 29, 2018                [Page 9]
-
-Internet-Draft        IRC Client-to-Client Protocol           April 2018
-
-
-   This metadata query returns the name and version of the client
-   software in use.  There is no specified format for the version
-   string.
-
+   Clients MAY receive more than one response for a query they send.
    Clients may allow users to customise the response value for this
    query.
 
@@ -518,56 +428,61 @@ Internet-Draft        IRC Client-to-Client Protocol           April 2018
 
    Example:
 
-     Query:     VERSION
-     Response:  VERSION WeeChat 1.8-dev (git: v1.7-329-g22f2fd03a)
+     Query:  VERSION
+     Reply:  VERSION WeeChat 1.8-dev (git: v1.7-329-g22f2fd03a)
 
 A.9.  USERINFO
 
-   Type:   Metadata Query
+   Query:  USERINFO
    Reply:  USERINFO <info>
 
-   This metadata query returns miscellaneous info about the user,
-   typically the same information that's held in their realname field.
+   Clients receiving this message reply with miscellaneous info about
+   the user, typically the same information that's held in their
+   realname/gecos field.
 
    However, some implementations return "<nickname> (<realname>)"
    instead.
+
+
+
+Mikulėnas & Oakley       Expires 15 October 2021                [Page 8]
+
+Internet-Draft                  IRC CTCP                      April 2021
+
 
    USERINFO is largely obsolete.  Clients MAY implement this CTCP
    message.
 
    Example:
 
-     Query:     USERINFO
-     Response:  USERINFO fred (Fred Foobar)
+     Query:  USERINFO
+     Reply:  USERINFO fred (Fred Foobar)
 
 Appendix B.  Change History [RFC Editor: Please remove this section]
 
+   Changes from draft 2 (... 2021)
+
+   *  Removed the CTCP Types section (thanks James).
+
    Changes from draft 1 (July 18, 2017)
 
-   o  General editing, fixed mistypes.
+   *  General editing, fixed mistypes.
 
-   o  Simplified some of the examples.
+   *  Simplified some of the examples.
 
    Changes from draft 0 (May 29, 2017)
 
-   o  Added note about servers truncating CTCP messages (thanks Peter).
+   *  Added note about servers truncating CTCP messages (thanks Peter).
 
-   o  Fixed misspellings and added note to TIME about previously-
+   *  Fixed misspellings and added note to TIME about previously-
       recommended prefix (thanks Patrick).
 
-
-
-Mikulenas & Oakley      Expires October 29, 2018               [Page 10]
-
-Internet-Draft        IRC Client-to-Client Protocol           April 2018
-
-
-   o  Mentioned how to parse/send empty ACTION messages (thanks dequis
+   *  Mentioned how to parse/send empty ACTION messages (thanks dequis
       and the crew).
 
 Authors' Addresses
 
-   Mantas Mikulenas
+   Mantas Mikulėnas
    Independent
 
    Email: grawity@gmail.com
@@ -586,31 +501,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Mikulenas & Oakley      Expires October 29, 2018               [Page 11]
+Mikulėnas & Oakley       Expires 15 October 2021                [Page 9]
