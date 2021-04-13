@@ -323,6 +323,6 @@ Changes from draft 1 (July 18, 2017)
 
 Changes from draft 0 (May 29, 2017)
 
-- Added note about servers truncating CTCP messages (thanks Peter).
+- Added note about servers truncating CTCP messages (thanks Sadie).
 - Fixed misspellings and added note to TIME about previously-recommended prefix (thanks Patrick).
 - Mentioned how to parse/send empty ACTION messages (thanks dequis and the crew).
