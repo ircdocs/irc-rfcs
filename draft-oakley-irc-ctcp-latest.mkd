@@ -1,38 +1,33 @@
 ---
-coding: utf-8
-
 title: "Internet Relay Chat: Client-to-Client Protocol (CTCP)"
-abbrev: IRC Client-to-Client Protocol
+abbrev: IRC CTCP
 docname: draft-oakley-irc-ctcp-latest
-
-submissionType: independent
 category: info
+updates: 1459, 2812
+
+ipr: trust200902
+submissionType: independent
 
 stand_alone: yes
-pi: [toc, sortrefs, symrefs, comments]
-
-updates: 1459, 2812
+pi:
+  toc: yes
+  sortrefs: yes
+  symrefs: yes
+  comments: yes
 
 author:
   -
-    #ins: M. Mikulėnas
-    #name: Mantas Mikulėnas
-    ins: M. Mikulenas
-    name: Mantas Mikulenas
-    org: Independent
+    ins: M. Mikulėnas
+    name: Mantas Mikulėnas
+    organization: Independent
     email: grawity@gmail.com
   -
     ins: D. Oakley
     name: Daniel Oakley
-    org: ircdocs
+    organization: ircdocs
     email: daniel@danieloaks.net
 
 --- abstract
-
-**DANIEL:**
-- RIP OUT THE CTCP TYPES STUFF AS MENTIONED BY JW
-- CHECK OUT THE CTCP SPACING THING AND PROVIDE A SANE RECOMMENDATION ON IT AS MENTIONED BY SADIE
-DO THIS BEFORE PUSHING AN UPDATED COPY TO THE IETF FOR FURTHER REVIEW
 
 This document describes the Client-to-Client Protocol (CTCP), which lets Internet Relay Chat (IRC) clients send each other messages that get displayed or responded to in special ways. CTCP has been widely implemented, with most clients supporting it natively. This document outlines how to implement CTCP and the most common messages used.
 

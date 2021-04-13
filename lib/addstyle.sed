@@ -9,6 +9,7 @@
     # pattern is on this line, then this will mean that the end of the line
     # will appear before the style.  That's terrible.  See below.
     r lib/style.css
+    r lib/style-special.css
     a\
   /*]]>*/</style>
     g

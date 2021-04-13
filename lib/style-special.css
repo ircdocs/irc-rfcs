@@ -1,0 +1,31 @@
+/* my special additions to the default I-D template style */
+
+/* I like open-sans, sorta riffing on the style I'm using on modern already */
+@import url('https://modern.ircdocs.horse/css/open-sans.css');
+body {
+    font: 16px/22px "Open Sans", sans-serif;
+}
+#title, h1, h2, h3, h4, h5, h6 {
+    font-family: "Open Sans", sans-serif;
+}
+
+/* I'll only do these for screen viewing because they do expand the text.
+   and leaving the doc smoller for printing feels sensible/responsible. */
+@media screen {
+    /* give the text and headings some more room to breathe */
+    p + p {
+        margin-top: 11px;
+    }
+    h2 {
+        margin-top: 20px;
+    }
+    h3 {
+        margin-top: 20px;
+    }
+
+    /* make the pre boxes feel more open and happier */
+    pre {
+    padding: 8px 5px;
+    border-radius: 4px;
+    }
+}
