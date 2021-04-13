@@ -164,7 +164,7 @@ Query:  CLIENTINFO
 Reply:  CLIENTINFO <tokens>
 ~~~
 
-Clients receiving this message MUST return a list of the CTCP messages they support, delimited by a single ASCII space.
+Clients receiving this message MUST reply with a list of the CTCP messages they support, delimited by an ASCII space.
 
 CLIENTINFO is widely implemented. Clients SHOULD implement this CTCP message.
 
@@ -197,7 +197,7 @@ Query:  FINGER
 Reply:  FINGER <info>
 ~~~
 
-Clients receiving this message reply with miscellaneous information about the user, typically the contents of their realname/gecos field. However, some implementations return the client name and version instead.
+Clients receiving this message MUST reply with miscellaneous information about the user (typically the contents of their realname/gecos field). However, some implementations return the client name and version instead.
 
 FINGER is largely obsolete. Clients MAY implement this CTCP message.
 
@@ -257,9 +257,9 @@ Query:  TIME
 Reply:  TIME <timestring>
 ~~~
 
-Clients receiving this message reply with the client's local time in a human-readable format. In practice, both the format returned by ctime() and the format described in Section 3.3 of {{!RFC5322}} are common. Earlier specifications recommended prefixing the time string with a colon, but this is no longer recommended.
+Clients receiving this message MUST reply with the client's local time in a human-readable format. In practice, both the format returned by ctime() and the format described in Section 3.3 of {{!RFC5322}} are common. Earlier specifications recommended prefixing the time string with a colon, but this is no longer recommended.
 
-New implementations MAY default to UTC time for privacy reasons.
+Clients MAY default to UTC time for privacy reasons and only respond with the local time if the user enables it.
 
 TIME is almost universally implemented. Clients MAY implement this CTCP message.
 
@@ -299,9 +299,7 @@ Query:  USERINFO
 Reply:  USERINFO <info>
 ~~~
 
-Clients receiving this message reply with miscellaneous info about the user, typically the same information that’s held in their realname/gecos field.
-
-However, some implementations return `<nickname> (<realname>)` instead.
+Clients receiving this message MUST reply with miscellaneous information about the user (typically the contents of their realname/gecos field).
 
 USERINFO is largely obsolete. Clients MAY implement this CTCP message.
 
