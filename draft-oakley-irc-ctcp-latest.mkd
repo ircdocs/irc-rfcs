@@ -10,10 +10,16 @@ submissionType: independent
 
 stand_alone: yes
 pi:
+  rfcedstyle: yes
   toc: yes
+  tocindent: yes
   sortrefs: yes
   symrefs: yes
+  strict: yes
   comments: yes
+  inline: yes
+  text-list-symbols: -o*+
+  docmapping: yes
 
 author:
   -
