@@ -472,7 +472,7 @@ Appendix B.  Change History [RFC Editor: Please remove this section]
 
    Changes from draft 0 (May 29, 2017)
 
-   *  Added note about servers truncating CTCP messages (thanks Peter).
+   *  Added note about servers truncating CTCP messages (thanks Sadie).
 
    *  Fixed misspellings and added note to TIME about previously-
       recommended prefix (thanks Patrick).
