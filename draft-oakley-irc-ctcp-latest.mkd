@@ -61,12 +61,12 @@ The ABNF {{!RFC5234}} for CTCP message bodies is as follows:
   delim    = %x01
 
   command  = 1*( %x02-09 / %x0B-0C / %x0E-1F / %x21-FF )
-                ; any octet except NUL, delim, CR, LF, and SPACE
+                ; any octet except NUL, delim, CR, LF, and SP
 
   params   = 1*( %x02-09 / %x0B-0C / %x0E-FF )
                 ; any octet except NUL, delim, CR, and LF
 
-  body     = delim command [ SPACE params ] [ delim ]
+  body     = delim command [ SP params ] [ delim ]
 ~~~
 {: artwork-align="center" artwork-name="syntax"}
 

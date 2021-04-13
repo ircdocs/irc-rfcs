@@ -132,15 +132,15 @@ Internet-Draft                  IRC CTCP                      April 2021
 
    The ABNF [RFC5234] for CTCP message bodies is as follows:
 
-       delim    = %x01
+         delim    = %x01
 
-       command  = 1*( %x02-09 / %x0B-0C / %x0E-1F / %x21-FF )
-                     ; any octet except NUL, delim, CR, LF, and SPACE
+         command  = 1*( %x02-09 / %x0B-0C / %x0E-1F / %x21-FF )
+                       ; any octet except NUL, delim, CR, LF, and SP
 
-       params   = 1*( %x02-09 / %x0B-0C / %x0E-FF )
-                     ; any octet except NUL, delim, CR, and LF
+         params   = 1*( %x02-09 / %x0B-0C / %x0E-FF )
+                       ; any octet except NUL, delim, CR, and LF
 
-       body     = delim command [ SPACE params ] [ delim ]
+         body     = delim command [ SP params ] [ delim ]
 
    Commands are case-insensitive.  When creating new CTCP commands,
    authors SHOULD use only alphanumeric characters for ease of
