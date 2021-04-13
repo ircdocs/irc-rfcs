@@ -20,7 +20,7 @@ Abstract
    implemented, with most clients supporting it natively.  This document
    outlines how to implement CTCP and the most common messages used.
 
-   It updates RFC 1459 and RFC 2812.
+   This document updates RFCs 1459 and 2812.
 
 Status of This Memo
 

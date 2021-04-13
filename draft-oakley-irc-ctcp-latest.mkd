@@ -31,7 +31,7 @@ author:
 
 This document describes the Client-to-Client Protocol (CTCP), which lets Internet Relay Chat (IRC) clients send each other messages that get displayed or responded to in special ways. CTCP has been widely implemented, with most clients supporting it natively. This document outlines how to implement CTCP and the most common messages used.
 
-It updates RFC 1459 and RFC 2812.
+This document updates RFCs 1459 and 2812.
 
 --- middle
 
