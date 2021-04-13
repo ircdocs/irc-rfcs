@@ -4,12 +4,10 @@ I'm trying to write an update to the outdated [RFC 1459](https://tools.ietf.org/
 
 Newest builds are available here:
 
-- IRC Client: [HTML](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-client-latest.html) / [Text](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-client-latest.txt)
+<!-- - IRC Client: [HTML](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-client-latest.html) / [Text](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-client-latest.txt) -->
 - IRC CTCP: [HTML](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-ctcp-latest.html) / [Text](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-ctcp-latest.txt)
 
-The 'drafts' in this repo are based off my [Modern docs](https://modern.ircdocs.horse/). This repo can pretty much be considered 'on hold' until the relevant Modern documents are stable and complete enough for me to be happy with. Recent updates in this repo are just an attempt to prove that the tech works, not to actually start work in this repo.
-
-If you'd like to contribute, please take a look at the [Modern docs](https://modern.ircdocs.horse/) and contribute in the relevant [Github repo](https://github.com/ircdocs/modern-irc).
+The 'drafts' in this repo are mostly based off my [Modern docs](https://modern.ircdocs.horse/). The CTCP I-D is something I'm working on, but the IRC Client Protocol document is probably not going to be worked on for a very long time (I think that info's better conveyed in the [Modern doc](https://modern.ircdocs.horse/) and more recent documentation attempts like [devdocs](https://dd.ircdocs.horse)).
 
 
 ## Why?
@@ -32,17 +30,15 @@ I'm going to split this into a few separate documents, each describing a separat
 
 ### Client Protocol
 
-This is the big one, the replacement for RFC 1459 and RFC 2812 on the whole. It'll include:
+This is the big one, the replacement for RFC 1459 and RFC 2812 on the whole. It'll probably include:
 
 - Core client protocol.
 - `RPL_ISUPPORT`
-- Client Capability Negotiation.
-- SASL Authentication.
-- Message Tags.
+- Basic message tags (at least describing them as part of the IRC framing).
 
 This document is being actively worked on as the main [Modern Client Protocol Doc](https://modern.ircdocs.horse/). I'm **not working on the client protocol spec here** until that linked Modern document is at a point where I'm relatively happy removing the WIP tag from it.
 
-[HTML](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-client-latest.html) / [Text](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-client-latest.txt)
+<!-- [HTML](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-client-latest.html) / [Text](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-client-latest.txt) -->
 
 ### Client-to-Client Protocol (CTCP)
 
@@ -67,18 +63,13 @@ Especially given that there are servers (and competing IRC protocol efforts) exp
 
 ## Building
 
-To build this, install [kramdown-rfc2629](https://github.com/cabo/kramdown-rfc2629) and then use the `build.sh` script. That script will put the xml, txt and html files in the `dist/` directory.
+To build this, install [kramdown-rfc2629](https://github.com/cabo/kramdown-rfc2629) and then use the relevant `build-*.sh` script. That script will put the xml, txt and html files in the `dist/` directory.
 
-As noted below, when submitting changes, only include the source file changes. Don't include the newly-built `dist/` changes. This helps when merging and resolving conflicts.
+As noted below, when submitting changes only include the source file changes. Don't include the newly-built `dist/` changes. This helps when merging and resolving conflicts.
 
 
 ## Contributing
 
-When putting in a pull request, ***ONLY*** submit a change for the source files. ***DO NOT*** include rebuilding the `dist/` files in your pull request. This is to prevent a million conflicts if we have three PRs sitting in the waiting queue and try to merge all of them at once (particularly the .txt files). We can generate new `dist/` files after we merge things into the repo.
+When putting in a pull request, ***ONLY*** submit a change for the source files. ***DO NOT*** include the new `dist/` files in your pull request. This is to prevent a million conflicts if we have three PRs sitting in the waiting queue and try to merge all of them at once (particularly the .txt files). We can generate new `dist/` files after we merge things into the repo.
 
 **NOTE:** `lib/addstyle.sed` and `lib/style.css` have been taken from Martin Thompson's [I-D Template](https://github.com/martinthomson/i-d-template) repository.
-
-
-## Plans
-
-Regardless of how this spec goes, the [Modern docs](https://modern.ircdocs.horse/) are online, go through everything here and are updated more often than the material here.
