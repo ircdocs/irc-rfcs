@@ -31,6 +31,7 @@ author:
     ins: D. Oakley
     name: Daniel Oakley
     organization: ircdocs
+    role: editor
     email: daniel@danieloaks.net
 
 --- abstract
@@ -128,7 +129,7 @@ This document has no actions for IANA.
 
 # Message List
 
-This section is not exhaustive, and only lists those CTCP messages which are widely implemented across the IRC ecosystem.
+This section is not exhaustive, and only lists those CTCP messages which are widely implemented across the IRC ecosystem. Clients MUST ONLY send params on a query if a params section is listed here.
 
 The Query and Reply lines below represent variables by surrounding them with angle brackets.
 
@@ -142,7 +143,7 @@ Reply:  None
 
 Clients receiving this message MUST display \<text\> as a third-person action or emote. Users typically use the `/me` command in their IRC clients to send this message.
 
-If \<text\> is empty, clients SHOULD still include a single space after `ACTION` (i.e. an empty params section) to help ensure compatibility. Clients SHOULD correctly parse incoming ACTION messages with or without the params section.
+If \<text\> is empty, clients SHOULD still include a single space after `ACTION` (i.e. an empty params section) to help ensure compatibility. Clients SHOULD correctly parse incoming ACTION messages with or without the params section. Leading spaces in \<text\> SHOULD NOT be stripped before being displayed to users.
 
 ACTION is universally implemented and very commonly used. Clients MUST implement this CTCP message to effectively use IRC.
 
@@ -222,7 +223,7 @@ Query:  PING <info>
 Reply:  PING <info>
 ~~~
 
-Clients receiving this message MUST send a reply containing exactly the same params as the original query. This message confirms reachability and latency between two clients.
+Clients receiving this message MUST send a reply containing exactly the same params as the original query. However, leading spaces MAY be stripped. This message confirms reachability and latency between two clients.
 
 PING is universally implemented. Clients SHOULD implement this CTCP message.
 
@@ -321,6 +322,7 @@ Example:
 Changes from draft 2 (... 2021)
 
 - Removed the CTCP Types section (thanks James).
+- Added advice on leading spaces in messages (thanks Sadie).
 - Minor ABNF fix.
 
 Changes from draft 1 (July 18, 2017)

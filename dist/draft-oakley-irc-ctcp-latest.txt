@@ -4,9 +4,9 @@
 
 Network Working Group                                       M. Mikulėnas
 Internet-Draft                                               Independent
-Updates: 1459, 2812 (if approved)                              D. Oakley
+Updates: 1459, 2812 (if approved)                         D. Oakley, Ed.
 Intended status: Informational                                   ircdocs
-Expires: 15 October 2021                                   13 April 2021
+Expires: 16 October 2021                                   14 April 2021
 
 
          Internet Relay Chat: Client-to-Client Protocol (CTCP)
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 October 2021.
+   This Internet-Draft will expire on 16 October 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Mikulėnas & Oakley       Expires 15 October 2021                [Page 1]
+Mikulėnas & Oakley       Expires 16 October 2021                [Page 1]
 
 Internet-Draft                  IRC CTCP                      April 2021
 
@@ -75,7 +75,7 @@ Table of Contents
      A.4.  FINGER  . . . . . . . . . . . . . . . . . . . . . . . . .   6
      A.5.  PING  . . . . . . . . . . . . . . . . . . . . . . . . . .   7
      A.6.  SOURCE  . . . . . . . . . . . . . . . . . . . . . . . . .   7
-     A.7.  TIME  . . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     A.7.  TIME  . . . . . . . . . . . . . . . . . . . . . . . . . .   8
      A.8.  VERSION . . . . . . . . . . . . . . . . . . . . . . . . .   8
      A.9.  USERINFO  . . . . . . . . . . . . . . . . . . . . . . . .   8
    Appendix B.  Change History [RFC Editor: Please remove this
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Mikulėnas & Oakley       Expires 15 October 2021                [Page 2]
+Mikulėnas & Oakley       Expires 16 October 2021                [Page 2]
 
 Internet-Draft                  IRC CTCP                      April 2021
 
@@ -165,7 +165,7 @@ Internet-Draft                  IRC CTCP                      April 2021
 
 
 
-Mikulėnas & Oakley       Expires 15 October 2021                [Page 3]
+Mikulėnas & Oakley       Expires 16 October 2021                [Page 3]
 
 Internet-Draft                  IRC CTCP                      April 2021
 
@@ -221,7 +221,7 @@ Internet-Draft                  IRC CTCP                      April 2021
 
 
 
-Mikulėnas & Oakley       Expires 15 October 2021                [Page 4]
+Mikulėnas & Oakley       Expires 16 October 2021                [Page 4]
 
 Internet-Draft                  IRC CTCP                      April 2021
 
@@ -247,7 +247,8 @@ Internet-Draft                  IRC CTCP                      April 2021
 Appendix A.  Message List
 
    This section is not exhaustive, and only lists those CTCP messages
-   which are widely implemented across the IRC ecosystem.
+   which are widely implemented across the IRC ecosystem.  Clients MUST
+   ONLY send params on a query if a params section is listed here.
 
    The Query and Reply lines below represent variables by surrounding
    them with angle brackets.
@@ -264,23 +265,26 @@ A.1.  ACTION
    If <text> is empty, clients SHOULD still include a single space after
    "ACTION" (i.e. an empty params section) to help ensure compatibility.
    Clients SHOULD correctly parse incoming ACTION messages with or
-   without the params section.
+   without the params section.  Leading spaces in <text> SHOULD NOT be
+   stripped before being displayed to users.
 
    ACTION is universally implemented and very commonly used.  Clients
    MUST implement this CTCP message to effectively use IRC.
 
    Examples:
 
-     Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION does it!\x01
-
-     Formatted:  * dan does it!
 
 
 
-Mikulėnas & Oakley       Expires 15 October 2021                [Page 5]
+
+Mikulėnas & Oakley       Expires 16 October 2021                [Page 5]
 
 Internet-Draft                  IRC CTCP                      April 2021
 
+
+     Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION does it!\x01
+
+     Formatted:  * dan does it!
 
      Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION \x01
      Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION\x01
@@ -324,19 +328,22 @@ A.4.  FINGER
    Query:  FINGER
    Reply:  FINGER <info>
 
+
+
+
+
+
+Mikulėnas & Oakley       Expires 16 October 2021                [Page 6]
+
+Internet-Draft                  IRC CTCP                      April 2021
+
+
    Clients receiving this message MUST reply with miscellaneous
    information about the user (typically the contents of their realname/
    gecos field).  However, some implementations return the client name
    and version instead.
 
    FINGER is largely obsolete.  Clients MAY implement this CTCP message.
-
-
-
-Mikulėnas & Oakley       Expires 15 October 2021                [Page 6]
-
-Internet-Draft                  IRC CTCP                      April 2021
-
 
    Example:
 
@@ -349,8 +356,9 @@ A.5.  PING
    Reply:  PING <info>
 
    Clients receiving this message MUST send a reply containing exactly
-   the same params as the original query.  This message confirms
-   reachability and latency between two clients.
+   the same params as the original query.  However, leading spaces MAY
+   be stripped.  This message confirms reachability and latency between
+   two clients.
 
    PING is universally implemented.  Clients SHOULD implement this CTCP
    message.
@@ -379,20 +387,17 @@ A.6.  SOURCE
      Query:  SOURCE
      Reply:  SOURCE https://weechat.org/download
 
+
+
+Mikulėnas & Oakley       Expires 16 October 2021                [Page 7]
+
+Internet-Draft                  IRC CTCP                      April 2021
+
+
 A.7.  TIME
 
    Query:  TIME
    Reply:  TIME <timestring>
-
-
-
-
-
-
-Mikulėnas & Oakley       Expires 15 October 2021                [Page 7]
-
-Internet-Draft                  IRC CTCP                      April 2021
-
 
    Clients receiving this message MUST reply with the client's local
    time in a human-readable format.  In practice, both the format
@@ -437,18 +442,17 @@ A.9.  USERINFO
    Query:  USERINFO
    Reply:  USERINFO <info>
 
-   Clients receiving this message MUST reply with miscellaneous
-   information about the user (typically the contents of their realname/
-   gecos field).
 
 
 
-
-
-Mikulėnas & Oakley       Expires 15 October 2021                [Page 8]
+Mikulėnas & Oakley       Expires 16 October 2021                [Page 8]
 
 Internet-Draft                  IRC CTCP                      April 2021
 
+
+   Clients receiving this message MUST reply with miscellaneous
+   information about the user (typically the contents of their realname/
+   gecos field).
 
    USERINFO is largely obsolete.  Clients MAY implement this CTCP
    message.
@@ -463,6 +467,8 @@ Appendix B.  Change History [RFC Editor: Please remove this section]
    Changes from draft 2 (... 2021)
 
    *  Removed the CTCP Types section (thanks James).
+
+   *  Added advice on leading spaces in messages (thanks Sadie).
 
    *  Minor ABNF fix.
 
@@ -490,7 +496,17 @@ Authors' Addresses
    Email: grawity@gmail.com
 
 
-   Daniel Oakley
+
+
+
+
+
+Mikulėnas & Oakley       Expires 16 October 2021                [Page 9]
+
+Internet-Draft                  IRC CTCP                      April 2021
+
+
+   Daniel Oakley (editor)
    ircdocs
 
    Email: daniel@danieloaks.net
@@ -501,4 +517,44 @@ Authors' Addresses
 
 
 
-Mikulėnas & Oakley       Expires 15 October 2021                [Page 9]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mikulėnas & Oakley       Expires 16 October 2021               [Page 10]
