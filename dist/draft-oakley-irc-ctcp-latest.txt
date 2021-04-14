@@ -6,7 +6,7 @@ Network Working Group                                       M. Mikulėnas
 Internet-Draft                                               Independent
 Updates: 1459, 2812 (if approved)                         D. Oakley, Ed.
 Intended status: Informational                                   ircdocs
-Expires: 16 October 2021                                   14 April 2021
+Expires: 17 October 2021                                   15 April 2021
 
 
          Internet Relay Chat: Client-to-Client Protocol (CTCP)
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 October 2021.
+   This Internet-Draft will expire on 17 October 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Mikulėnas & Oakley       Expires 16 October 2021                [Page 1]
+Mikulėnas & Oakley       Expires 17 October 2021                [Page 1]
 
 Internet-Draft                  IRC CTCP                      April 2021
 
@@ -72,12 +72,12 @@ Table of Contents
      A.1.  ACTION  . . . . . . . . . . . . . . . . . . . . . . . . .   5
      A.2.  CLIENTINFO  . . . . . . . . . . . . . . . . . . . . . . .   6
      A.3.  DCC . . . . . . . . . . . . . . . . . . . . . . . . . . .   6
-     A.4.  FINGER  . . . . . . . . . . . . . . . . . . . . . . . . .   6
+     A.4.  FINGER  . . . . . . . . . . . . . . . . . . . . . . . . .   7
      A.5.  PING  . . . . . . . . . . . . . . . . . . . . . . . . . .   7
      A.6.  SOURCE  . . . . . . . . . . . . . . . . . . . . . . . . .   7
      A.7.  TIME  . . . . . . . . . . . . . . . . . . . . . . . . . .   8
      A.8.  VERSION . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     A.9.  USERINFO  . . . . . . . . . . . . . . . . . . . . . . . .   8
+     A.9.  USERINFO  . . . . . . . . . . . . . . . . . . . . . . . .   9
    Appendix B.  Change History [RFC Editor: Please remove this
            section]  . . . . . . . . . . . . . . . . . . . . . . . .   9
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Mikulėnas & Oakley       Expires 16 October 2021                [Page 2]
+Mikulėnas & Oakley       Expires 17 October 2021                [Page 2]
 
 Internet-Draft                  IRC CTCP                      April 2021
 
@@ -165,7 +165,7 @@ Internet-Draft                  IRC CTCP                      April 2021
 
 
 
-Mikulėnas & Oakley       Expires 16 October 2021                [Page 3]
+Mikulėnas & Oakley       Expires 17 October 2021                [Page 3]
 
 Internet-Draft                  IRC CTCP                      April 2021
 
@@ -221,7 +221,7 @@ Internet-Draft                  IRC CTCP                      April 2021
 
 
 
-Mikulėnas & Oakley       Expires 16 October 2021                [Page 4]
+Mikulėnas & Oakley       Expires 17 October 2021                [Page 4]
 
 Internet-Draft                  IRC CTCP                      April 2021
 
@@ -277,7 +277,7 @@ A.1.  ACTION
 
 
 
-Mikulėnas & Oakley       Expires 16 October 2021                [Page 5]
+Mikulėnas & Oakley       Expires 17 October 2021                [Page 5]
 
 Internet-Draft                  IRC CTCP                      April 2021
 
@@ -298,7 +298,9 @@ A.2.  CLIENTINFO
    Reply:  CLIENTINFO <tokens>
 
    Clients receiving this message MUST reply with a list of the CTCP
-   messages they support, delimited by an ASCII space.
+   messages they support, delimited by an ASCII space.  Some legacy
+   implementations add an extra text message at the end prefixed by a
+   colon, as demonstrated in the examples.
 
    CLIENTINFO is widely implemented.  Clients SHOULD implement this CTCP
    message.
@@ -307,6 +309,10 @@ A.2.  CLIENTINFO
 
      Query:  CLIENTINFO
      Reply:  CLIENTINFO ACTION DCC CLIENTINFO PING TIME VERSION
+
+     Query:  CLIENTINFO
+     Reply:  CLIENTINFO CLIENTINFO PING VERSION  :Use CLIENTINFO
+             <COMMAND> to get more specific information
 
 A.3.  DCC
 
@@ -323,20 +329,19 @@ A.3.  DCC
 
    DCC is widely implemented.  Clients MAY implement this CTCP message.
 
+
+
+
+
+Mikulėnas & Oakley       Expires 17 October 2021                [Page 6]
+
+Internet-Draft                  IRC CTCP                      April 2021
+
+
 A.4.  FINGER
 
    Query:  FINGER
    Reply:  FINGER <info>
-
-
-
-
-
-
-Mikulėnas & Oakley       Expires 16 October 2021                [Page 6]
-
-Internet-Draft                  IRC CTCP                      April 2021
-
 
    Clients receiving this message MUST reply with miscellaneous
    information about the user (typically the contents of their realname/
@@ -382,17 +387,17 @@ A.6.  SOURCE
    SOURCE is rarely implemented.  Clients MAY implement this CTCP
    message.
 
+
+
+Mikulėnas & Oakley       Expires 17 October 2021                [Page 7]
+
+Internet-Draft                  IRC CTCP                      April 2021
+
+
    Example:
 
      Query:  SOURCE
      Reply:  SOURCE https://weechat.org/download
-
-
-
-Mikulėnas & Oakley       Expires 16 October 2021                [Page 7]
-
-Internet-Draft                  IRC CTCP                      April 2021
-
 
 A.7.  TIME
 
@@ -437,18 +442,18 @@ A.8.  VERSION
      Query:  VERSION
      Reply:  VERSION WeeChat 1.8-dev (git: v1.7-329-g22f2fd03a)
 
+
+
+
+Mikulėnas & Oakley       Expires 17 October 2021                [Page 8]
+
+Internet-Draft                  IRC CTCP                      April 2021
+
+
 A.9.  USERINFO
 
    Query:  USERINFO
    Reply:  USERINFO <info>
-
-
-
-
-Mikulėnas & Oakley       Expires 16 October 2021                [Page 8]
-
-Internet-Draft                  IRC CTCP                      April 2021
-
 
    Clients receiving this message MUST reply with miscellaneous
    information about the user (typically the contents of their realname/
@@ -493,17 +498,15 @@ Authors' Addresses
    Mantas Mikulėnas
    Independent
 
-   Email: grawity@gmail.com
 
 
 
-
-
-
-
-Mikulėnas & Oakley       Expires 16 October 2021                [Page 9]
+Mikulėnas & Oakley       Expires 17 October 2021                [Page 9]
 
 Internet-Draft                  IRC CTCP                      April 2021
+
+
+   Email: grawity@gmail.com
 
 
    Daniel Oakley (editor)
@@ -554,7 +557,4 @@ Internet-Draft                  IRC CTCP                      April 2021
 
 
 
-
-
-
-Mikulėnas & Oakley       Expires 16 October 2021               [Page 10]
+Mikulėnas & Oakley       Expires 17 October 2021               [Page 10]

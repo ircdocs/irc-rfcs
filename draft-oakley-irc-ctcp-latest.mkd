@@ -171,7 +171,7 @@ Query:  CLIENTINFO
 Reply:  CLIENTINFO <tokens>
 ~~~
 
-Clients receiving this message MUST reply with a list of the CTCP messages they support, delimited by an ASCII space.
+Clients receiving this message MUST reply with a list of the CTCP messages they support, delimited by an ASCII space. Some legacy implementations add an extra text message at the end prefixed by a colon, as demonstrated in the examples.
 
 CLIENTINFO is widely implemented. Clients SHOULD implement this CTCP message.
 
@@ -180,6 +180,12 @@ Example:
 ~~~
   Query:  CLIENTINFO
   Reply:  CLIENTINFO ACTION DCC CLIENTINFO PING TIME VERSION
+~~~
+
+~~~
+  Query:  CLIENTINFO
+  Reply:  CLIENTINFO CLIENTINFO PING VERSION  :Use CLIENTINFO
+          <COMMAND> to get more specific information
 ~~~
 
 
