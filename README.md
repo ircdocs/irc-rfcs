@@ -4,8 +4,8 @@ I'm trying to write an update to the outdated [RFC 1459](https://tools.ietf.org/
 
 Newest builds are available here:
 
-<!-- - IRC Client: [HTML](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-client-latest.html) / [Text](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-client-latest.txt) -->
-- IRC CTCP: [HTML](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-ctcp-latest.html) / [Text](https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-ctcp-latest.txt)
+<!-- - IRC Client: [HTML](https://rawgit.com/ircdocs/irc-rfcs/master/dist/draft-oakley-irc-client-latest.html) / [Text](https://rawgit.com/ircdocs/irc-rfcs/master/dist/draft-oakley-irc-client-latest.txt) -->
+- IRC CTCP: [HTML](https://rawgit.com/ircdocs/irc-rfcs/master/dist/draft-oakley-irc-ctcp-latest.html) / [Text](https://rawgit.com/ircdocs/irc-rfcs/master/dist/draft-oakley-irc-ctcp-latest.txt)
 
 The 'drafts' in this repo are mostly based off my [Modern docs](https://modern.ircdocs.horse/). The CTCP I-D is something I'm working on, but the IRC Client Protocol document is probably not going to be worked on for a very long time (I think that info's better conveyed in the [Modern doc](https://modern.ircdocs.horse/) and more recent documentation attempts like [devdocs](https://dd.ircdocs.horse)).
 
