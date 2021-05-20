@@ -114,9 +114,9 @@ CTCP messages are completely untrusted data and clients MUST NOT assume that the
 
 Older CTCP specifications describe quoting methods which are complex and not widely implemented. Implementations SHOULD NOT implement "low-level quoting" or "CTCP-level quoting" when parsing messages.
 
-Older CTCP specifications describe including more than one CTCP message inside a single PRIVMSG or NOTICE command. Implementations SHOULD NOT implement this form of CTCP parsing as it is not widely-implemented and may result in an implementation that can be more easily flooded off the server they are connected to.
-
 CTCP requests can be abused to flood clients off the server they are connected to. Clients SHOULD ignore or delay excessive incoming requests to protect against this.
+
+Older CTCP specifications describe including more than one CTCP message inside a single PRIVMSG or NOTICE command. Implementations SHOULD NOT implement this form of CTCP parsing as it is not widely-implemented and may result in an implementation that can be more easily flooded off the server they are connected to.
 
 
 # IANA Considerations
