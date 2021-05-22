@@ -141,7 +141,7 @@ Query:  ACTION <text>
 Reply:  None
 ~~~
 
-Clients receiving this message MUST display \<text\> as a third-person action or emote. Users typically use the `/me` command in their IRC clients to send this message.
+Clients which implement this message MUST display \<text\> as a third-person action or emote. Users typically use the `/me` command in their IRC clients to send this message.
 
 If \<text\> is empty, clients SHOULD still include a single space after `ACTION` (i.e. an empty params section) to help ensure compatibility. Clients SHOULD correctly parse incoming ACTION messages with or without the params section. Leading spaces in \<text\> SHOULD NOT be stripped before being displayed to users.
 
@@ -171,7 +171,7 @@ Query:  CLIENTINFO
 Reply:  CLIENTINFO <tokens>
 ~~~
 
-Clients receiving this message MUST reply with a list of the CTCP messages they support, delimited by an ASCII space. Some legacy implementations add an extra text message at the end prefixed by a colon, as demonstrated in the examples.
+Clients which implement this message MUST reply with a list of the CTCP messages they support, delimited by an ASCII space. Some legacy implementations add an extra text message at the end prefixed by a colon, as demonstrated in the examples.
 
 CLIENTINFO is widely implemented. Clients SHOULD implement this CTCP message.
 
@@ -210,7 +210,7 @@ Query:  FINGER
 Reply:  FINGER <info>
 ~~~
 
-Clients receiving this message MUST reply with miscellaneous information about the user (typically the contents of their realname/gecos field). However, some implementations return the client name and version instead.
+Clients which implement this message MUST reply with miscellaneous information about the user (typically the contents of their realname/gecos field). However, some implementations return the client name and version instead.
 
 FINGER is largely obsolete. Clients MAY implement this CTCP message.
 
@@ -229,7 +229,7 @@ Query:  PING <info>
 Reply:  PING <info>
 ~~~
 
-Clients receiving this message MUST send a reply containing exactly the same params as the original query. However, leading spaces MAY be stripped. This message confirms reachability and latency between two clients.
+Clients which implement this message MUST send a reply containing exactly the same params as the original query. However, leading spaces MAY be stripped. This message confirms reachability and latency between two clients.
 
 PING is universally implemented. Clients SHOULD implement this CTCP message.
 
@@ -251,7 +251,7 @@ Query:  SOURCE
 Reply:  SOURCE <info>
 ~~~
 
-Clients receiving this message MUST reply with a URL where the source code for the client can be found.
+Clients which implement this message MUST reply with a URL where the source code for the client can be found.
 
 SOURCE is rarely implemented. Clients MAY implement this CTCP message.
 
@@ -270,7 +270,7 @@ Query:  TIME
 Reply:  TIME <timestring>
 ~~~
 
-Clients receiving this message MUST reply with the client's local time in a human-readable format. In practice, both the format returned by ctime() and the format described in Section 3.3 of {{!RFC5322}} are common. Earlier specifications recommended prefixing the time string with a colon, but this is no longer recommended.
+Clients which implement this message MUST reply with the client's local time in a human-readable format. In practice, both the format returned by ctime() and the format described in Section 3.3 of {{!RFC5322}} are common. Earlier specifications recommended prefixing the time string with a colon, but this is no longer recommended.
 
 Clients MAY default to UTC time for privacy reasons and only respond with the local time if the user enables it.
 
@@ -291,7 +291,7 @@ Query:  VERSION
 Reply:  VERSION <verstring>
 ~~~
 
-Clients receiving this message MUST reply with the name and version of the client software in use. There is no specified format for the version string.
+Clients which implement this message MUST reply with the name and version of the client software in use. There is no specified format for the version string.
 
 Clients MAY receive more than one reply after sending a VERSION query. Clients may allow users to customise the response value for this query.
 
@@ -312,7 +312,7 @@ Query:  USERINFO
 Reply:  USERINFO <info>
 ~~~
 
-Clients receiving this message MUST reply with miscellaneous information about the user (typically the contents of their realname/gecos field).
+Clients which implement this message MUST reply with miscellaneous information about the user (typically the contents of their realname/gecos field).
 
 USERINFO is largely obsolete. Clients MAY implement this CTCP message.
 
