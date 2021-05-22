@@ -6,7 +6,7 @@ Network Working Group                                       M. Mikulėnas
 Internet-Draft                                               Independent
 Updates: 1459, 2812 (if approved)                         D. Oakley, Ed.
 Intended status: Informational                                   ircdocs
-Expires: 17 October 2021                                   15 April 2021
+Expires: 24 November 2021                                    23 May 2021
 
 
          Internet Relay Chat: Client-to-Client Protocol (CTCP)
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 October 2021.
+   This Internet-Draft will expire on 24 November 2021.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Mikulėnas & Oakley       Expires 17 October 2021                [Page 1]
+Mikulėnas & Oakley      Expires 24 November 2021                [Page 1]
 
-Internet-Draft                  IRC CTCP                      April 2021
+Internet-Draft                  IRC CTCP                        May 2021
 
 
 Table of Contents
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Mikulėnas & Oakley       Expires 17 October 2021                [Page 2]
+Mikulėnas & Oakley      Expires 24 November 2021                [Page 2]
 
-Internet-Draft                  IRC CTCP                      April 2021
+Internet-Draft                  IRC CTCP                        May 2021
 
 
 2.  Protocol Structure
@@ -165,9 +165,9 @@ Internet-Draft                  IRC CTCP                      April 2021
 
 
 
-Mikulėnas & Oakley       Expires 17 October 2021                [Page 3]
+Mikulėnas & Oakley      Expires 24 November 2021                [Page 3]
 
-Internet-Draft                  IRC CTCP                      April 2021
+Internet-Draft                  IRC CTCP                        May 2021
 
 
 4.  Messages
@@ -198,15 +198,15 @@ Internet-Draft                  IRC CTCP                      April 2021
    and not widely implemented.  Implementations SHOULD NOT implement
    "low-level quoting" or "CTCP-level quoting" when parsing messages.
 
+   CTCP requests can be abused to flood clients off the server they are
+   connected to.  Clients SHOULD ignore or delay excessive incoming
+   requests to protect against this.
+
    Older CTCP specifications describe including more than one CTCP
    message inside a single PRIVMSG or NOTICE command.  Implementations
    SHOULD NOT implement this form of CTCP parsing as it is not widely-
    implemented and may result in an implementation that can be more
    easily flooded off the server they are connected to.
-
-   CTCP requests can be abused to flood clients off the server they are
-   connected to.  Clients SHOULD ignore or delay excessive incoming
-   requests to protect against this.
 
 7.  IANA Considerations
 
@@ -221,9 +221,9 @@ Internet-Draft                  IRC CTCP                      April 2021
 
 
 
-Mikulėnas & Oakley       Expires 17 October 2021                [Page 4]
+Mikulėnas & Oakley      Expires 24 November 2021                [Page 4]
 
-Internet-Draft                  IRC CTCP                      April 2021
+Internet-Draft                  IRC CTCP                        May 2021
 
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
@@ -258,9 +258,9 @@ A.1.  ACTION
    Query:  ACTION <text>
    Reply:  None
 
-   Clients receiving this message MUST display <text> as a third-person
-   action or emote.  Users typically use the "/me" command in their IRC
-   clients to send this message.
+   Clients which implement this message MUST display <text> as a third-
+   person action or emote.  Users typically use the "/me" command in
+   their IRC clients to send this message.
 
    If <text> is empty, clients SHOULD still include a single space after
    "ACTION" (i.e. an empty params section) to help ensure compatibility.
@@ -277,9 +277,9 @@ A.1.  ACTION
 
 
 
-Mikulėnas & Oakley       Expires 17 October 2021                [Page 5]
+Mikulėnas & Oakley      Expires 24 November 2021                [Page 5]
 
-Internet-Draft                  IRC CTCP                      April 2021
+Internet-Draft                  IRC CTCP                        May 2021
 
 
      Raw:        :dan!user@host PRIVMSG #ircv3 :\x01ACTION does it!\x01
@@ -297,8 +297,8 @@ A.2.  CLIENTINFO
    Query:  CLIENTINFO
    Reply:  CLIENTINFO <tokens>
 
-   Clients receiving this message MUST reply with a list of the CTCP
-   messages they support, delimited by an ASCII space.  Some legacy
+   Clients which implement this message MUST reply with a list of the
+   CTCP messages they support, delimited by an ASCII space.  Some legacy
    implementations add an extra text message at the end prefixed by a
    colon, as demonstrated in the examples.
 
@@ -333,9 +333,9 @@ A.3.  DCC
 
 
 
-Mikulėnas & Oakley       Expires 17 October 2021                [Page 6]
+Mikulėnas & Oakley      Expires 24 November 2021                [Page 6]
 
-Internet-Draft                  IRC CTCP                      April 2021
+Internet-Draft                  IRC CTCP                        May 2021
 
 
 A.4.  FINGER
@@ -343,7 +343,7 @@ A.4.  FINGER
    Query:  FINGER
    Reply:  FINGER <info>
 
-   Clients receiving this message MUST reply with miscellaneous
+   Clients which implement this message MUST reply with miscellaneous
    information about the user (typically the contents of their realname/
    gecos field).  However, some implementations return the client name
    and version instead.
@@ -360,10 +360,10 @@ A.5.  PING
    Query:  PING <info>
    Reply:  PING <info>
 
-   Clients receiving this message MUST send a reply containing exactly
-   the same params as the original query.  However, leading spaces MAY
-   be stripped.  This message confirms reachability and latency between
-   two clients.
+   Clients which implement this message MUST send a reply containing
+   exactly the same params as the original query.  However, leading
+   spaces MAY be stripped.  This message confirms reachability and
+   latency between two clients.
 
    PING is universally implemented.  Clients SHOULD implement this CTCP
    message.
@@ -381,17 +381,17 @@ A.6.  SOURCE
    Query:  SOURCE
    Reply:  SOURCE <info>
 
-   Clients receiving this message MUST reply with a URL where the source
-   code for the client can be found.
+   Clients which implement this message MUST reply with a URL where the
+   source code for the client can be found.
 
    SOURCE is rarely implemented.  Clients MAY implement this CTCP
    message.
 
 
 
-Mikulėnas & Oakley       Expires 17 October 2021                [Page 7]
+Mikulėnas & Oakley      Expires 24 November 2021                [Page 7]
 
-Internet-Draft                  IRC CTCP                      April 2021
+Internet-Draft                  IRC CTCP                        May 2021
 
 
    Example:
@@ -404,8 +404,8 @@ A.7.  TIME
    Query:  TIME
    Reply:  TIME <timestring>
 
-   Clients receiving this message MUST reply with the client's local
-   time in a human-readable format.  In practice, both the format
+   Clients which implement this message MUST reply with the client's
+   local time in a human-readable format.  In practice, both the format
    returned by ctime() and the format described in Section 3.3 of
    [RFC5322] are common.  Earlier specifications recommended prefixing
    the time string with a colon, but this is no longer recommended.
@@ -426,9 +426,9 @@ A.8.  VERSION
    Query:  VERSION
    Reply:  VERSION <verstring>
 
-   Clients receiving this message MUST reply with the name and version
-   of the client software in use.  There is no specified format for the
-   version string.
+   Clients which implement this message MUST reply with the name and
+   version of the client software in use.  There is no specified format
+   for the version string.
 
    Clients MAY receive more than one reply after sending a VERSION
    query.  Clients may allow users to customise the response value for
@@ -445,9 +445,9 @@ A.8.  VERSION
 
 
 
-Mikulėnas & Oakley       Expires 17 October 2021                [Page 8]
+Mikulėnas & Oakley      Expires 24 November 2021                [Page 8]
 
-Internet-Draft                  IRC CTCP                      April 2021
+Internet-Draft                  IRC CTCP                        May 2021
 
 
 A.9.  USERINFO
@@ -455,7 +455,7 @@ A.9.  USERINFO
    Query:  USERINFO
    Reply:  USERINFO <info>
 
-   Clients receiving this message MUST reply with miscellaneous
+   Clients which implement this message MUST reply with miscellaneous
    information about the user (typically the contents of their realname/
    gecos field).
 
@@ -501,9 +501,9 @@ Authors' Addresses
 
 
 
-Mikulėnas & Oakley       Expires 17 October 2021                [Page 9]
+Mikulėnas & Oakley      Expires 24 November 2021                [Page 9]
 
-Internet-Draft                  IRC CTCP                      April 2021
+Internet-Draft                  IRC CTCP                        May 2021
 
 
    Email: grawity@gmail.com
@@ -557,4 +557,4 @@ Internet-Draft                  IRC CTCP                      April 2021
 
 
 
-Mikulėnas & Oakley       Expires 17 October 2021               [Page 10]
+Mikulėnas & Oakley      Expires 24 November 2021               [Page 10]
